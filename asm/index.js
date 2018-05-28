@@ -12,24 +12,42 @@ function assemblerInterpreter(program) {
     };
   }
 
-  const lines = program.split('\n');
-  lines.forEach(line => {line = line.trim()});
+  const rawLines = program.split('\n');
+  const lines = [];
+  rawLines.forEach(line => {
+    var trimmedLine = line.trim();
+    if (trimmedLine && trimmedLine[0] !== ';')
+      lines.push(trimmedLine);
+  });
 
   for (let i = 0; i < lines.length; i++) {
-    const lexems = lines[i].match(/'[^']*'|[^\,\s]+/g).map(lexem => lexem.match(/[^']*/g));
-    //const lexems = lines[i].split(/,?\s+/);
-    if (lexems[0] === undefined || lexems[0] === ';')
-      continue; // ignore empty lines and comments
+    const rawLexems = lines[i].match(/;[\s\S]*$|'[^']*'|[^,\s]+/g);
+    const lexems = [];
+    for (let j = 0; j < rawLexems.length; j++) {
+      const lexem = rawLexems[j];
+      if (lexem[0] === ';')
+        break;  // tail comment
+      lexems.push(lexem.match(/[^']*/)[0]);
+    }
+    console.log(lexems);
+    //
+    //const lexems = lines[i].match(/'[^']*'|[^,\s]+/g).reduce((acc, lexem) => {
+    //  const expression = lexem.match(/[^']*/g);
+    //  return expression ? expression[0] : null;
+    //}, []);
+    //if (lexems[0] === undefined || lexems[0] === ';')
+    //  continue; // ignore empty lines and comments
     const op = {
       operation: lexems[0],
       args: lexems.slice(1)
     };
-    let commentInx = op.args.findIndex(';');
+    let commentInx = op.args.indexOf(';');
     if (commentInx > -1) {
+      debugger;
       op.args.splice(commentInx - 1); // ignore of a line tail comment
     }
-    if (operation[operation.length - 1] === ':') {
-      labels[operation.substr(0, -1)] = i; // just add to the list of functions
+    if (operations[operations.length - 1] === ':') {
+      labels[operations.substr(0, -1)] = i; // just add to the list of functions
       continue;
     }
     operations.push(op);
@@ -79,7 +97,13 @@ function assemblerInterpreter(program) {
   let cmp = null;
 
   function nextOperationNumber(k) {
-    const operation = operations[k].operation;
+    debugger;
+    let operation = operations[k].operation;
+    while (!operation) {
+      if (k > operations.length - 2)
+        break;
+      operation = operations[++k].operation;
+    }
     const args = operations[k].args;
     switch (operation) {
       case 'jmp':
@@ -148,12 +172,25 @@ function assemblerInterpreter(program) {
           }
         }, ''));
         break;
+      case 'call':
+      case 'jmp':
+      case 'ret':
+      case 'cmp':
+      case 'jle':
+      case 'jge':
+      case 'jl':
+      case 'jg':
+      case 'je':
+      case 'jne':
+        break;
       default:
         throw Error(`Unknows operation: "${operation}: args=[${args.join(', ')}]"`);
     }
 
     operationNumber = nextOperationNumber(operationNumber);
+    console.log('operationNumber=' + operationNumber);
     operation = operations[operationNumber].operation;
+    args = operations[operationNumber].args;
   }
 }
 
