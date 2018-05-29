@@ -4,37 +4,53 @@ const path = require('path');
 
 const staticDir = path.resolve(__dirname, '../static');
 
+const contentTypes = {
+  text: 'text/plain',
+  html: 'text/html',
+  js: 'text/javascript',
+  css: 'text/css',
+  json: 'application/json',
+  png: 'image/png',
+  jpg: 'image/jpg',
+  ico: 'image/x-icon',
+};
+
 const server = http.createServer();
 
 server.on('request', (req, res) => {
   const { method, url, headers } = req;
-  console.log('URL: ' + url);
-  console.log('method: ' + method);
-
   req.on('error', err => {
     console.log('captured error: ', err.stack);
   });
 
   if (method === 'GET') {
-    res.setHeader('Content-Type', 'text/plain');
-    if (url === '/' || '/index' || '/index.html') {
-      const pathname = path.resolve(staticDir, 'index.html');
-      fs.exists(pathname, exists => {
-        if (!exists) {
-          res.statusCode = 404;
-          res.end(`File ${pathname} is not found`);
-          return;
-        }
-        fs.readFile(path.resolve(staticDir, 'index.html'), (err, data) => {
-          res.setHeader('Content-Type', 'text/html');
-          res.write(data);
-          res.end();
+    const rawExt = url.match(/\.([^\.]*)$/);
+    const ext = rawExt && rawExt[1] ? rawExt[1] : 'html';
+    const fileNotFoundPath = path.resolve(staticDir, '404.html');
+    const filePath = url === '/' || url === '/index' || url === '/index.html'
+      ? path.resolve(staticDir, 'index.html')
+      : path.resolve(staticDir, url.slice(url.indexOf('/') + 1));
+
+    fs.exists(filePath, exists => {
+      if (!exists) {
+        fs.readFile(fileNotFoundPath, (err, content) => {
+          if (err) {
+            res.writeHead(500);
+            res.end(`Sorry, check with the site admin error ${err.code} (${err.info})`);
+            return;
+          }
+          res.writeHead(200, {'Content-Type': contentTypes[ext]});
+          res.end(content, 'utf-8');
         });
+        return;
+      }
+      fs.readFile(filePath, (err, content) => {
+        if (err)
+          throw err;
+        res.writeHeader(200, {'Content-Type': contentTypes[ext]});
+        res.end(content, 'utf-8');
       });
-    } else {
-      res.whiteHead(400, {'Content-Type': 'text/html'});
-      res.end('no data');
-    }
+    });
   }
 
   if (method === 'POST') {

@@ -5,6 +5,13 @@
   <title>Title</title>
 </head>
 <body>
-  This is a main web-page
+<form id="form" action="post">
+  <input type="text" name="id" autocomplete="off">
+  <input type="password" name="password" autocomplete="off">
+  <input type="hidden" name="csrf_token" value="123456">
+  <br><br>
+  <button id="start">Start</button>
+  <script src="./index.js"></script>
+</form>
 </body>
 </html>
