@@ -1,13 +1,14 @@
 {
   "name": "react-backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "no description",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./backend/server.js"
   },
   "author": "Aliaksandr Varachai",
+  "repository": "empty",
   "license": "ISC",
   "devDependencies": {
     "express": "^4.16.3",
