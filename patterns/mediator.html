@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<script>
+  // mediator has all need information about users, so users don't have to know about each other
+  var mediator = (function(){
+    var users = {};
+
+    var subscribe = function(user) {
+      if (users[user.name])
+        throw Error('User "' + user.name + '" already subscribed');
+      users[user.name] = user;
+    }
+
+    var unsubscribe = function(userName) {
+      if (!users[userName])
+        throw Error('User "' + userName + '" is absent');
+      users[userName] = null;
+    }
+
+    var publish = function(msg) {
+      if (!users[msg.to])
+        throw Error('Receiver "' + msg.to + '" is not subscribed');
+      users[msg.to].getMessage(msg);
+    }
+
+    var unpublish = function(msg) {
+      // call unpublish methods on a sender and receiver
+    }
+
+    return {
+      subscribe: subscribe,
+      unsubscribe: unsubscribe,
+      publish: publish,
+      unpublish: unpublish,
+    }
+  })();
+
+
+  var messageFactory = (function() {
+    return {
+      create: function(text, to, from, props) {
+        var message = {
+          text: text,
+          to: to,
+          from: from,
+          props: props,
+          type: 'message'
+        };
+        Object.defineProperty(message, 'date', {
+          enumerable: true,
+          value: Date.now()
+        });
+        return message;
+      },
+      isMessage: function(obj) {
+        return obj.type === 'message';
+      }
+    };
+  })();
+
+  var userContainer = (function(){
+    // requires MessageFactory
+    var defaultUserProps = {
+      canRead: true,
+      canWrite: false,
+      isVisible: true,
+      canSwitchVisibility: false,
+      canWritePrivate: false,
+    }
+
+    var userGroups = {
+      readers: {},
+      writers: {
+        canWrite: true
+      },
+      hidden: {
+        canWrite: true,
+        isVisible: false
+      },
+      vip: {
+        canWrite: true,
+        canWritePrivate: true,
+        canSwitchVisibility: true
+      }
+    }
+
+    var userProto = {
+      createMessage: function(text, to, props) { // this = current user
+        var message = messageFactory.create(text, to, this.name, props);
+        this.messages.push(message);
+        return message;
+      },
+      getMessage: function(message) { // this = current user
+        this.messages.push(message);
+      },
+      getHistory: function() {
+        return this.messages;
+      }
+    }
+
+    var userFactory = {
+      create: function(name, group) {
+        return Object.assign(Object.create(userProto), {
+          name: name,
+          group: group,
+          type: 'user',
+          messages: []
+        });
+      },
+      isUser: function(obj) {
+        return obj.type === 'user';
+      }
+    };
+
+    return {
+      userGroups: userGroups,
+      userFactory: userFactory
+    }
+  })();
+
+
+  var userGroups = userContainer.userGroups;
+  var userFactory = userContainer.userFactory;
+
+  var users = {
+    'Ivan': userFactory.create('Ivan', userGroups.readers),
+    'Sergey': userFactory.create('Sergey', userGroups.writers),
+    'Alice': userFactory.create('Alice', userGroups.hidden),
+    'Alex': userFactory.create('Alex', userGroups.vip),
+  };
+
+  Object.keys(users).forEach(function(userName) {
+    mediator.subscribe(users[userName]);
+  });
+
+  mediator.publish(users['Sergey'].createMessage('Hi!', 'Ivan', {}));
+  console.log('Sergey', users['Sergey'].getHistory());
+  console.log('Ivan', users['Ivan'].getHistory());
+  console.log('Alice', users['Alice'].getHistory());
+</script>
+<body>
+<p>
+  <b>Observer</b> (<i>Listener, subscribe / broadcast, publisher / subscriber</i>) is useful when the order of events does not matter.
+  That is objects with event handlers and the handlers are independent from each other.
+</p>
+<p>
+  <b>Mediator</b> based on <i>Observer</i> but more specific. It uses when the order of event does matter or objects
+  have to know about the state of each other. That is <b>mediator is a globally entity which can be queried for info.</b>
+</p>
+
+
+</body>
+</html>
