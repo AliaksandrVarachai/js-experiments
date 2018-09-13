@@ -1,0 +1,25 @@
+{
+  "name": "js-experiments-git",
+  "version": "1.0.0",
+  "description": "Experiments with javascript are here.",
+  "main": "index.js",
+  "dependencies": {
+    "fs": "^0.0.1-security",
+    "jsdoc": "^3.5.5",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AliaksandrVarachai/js-experiments.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AliaksandrVarachai/js-experiments/issues"
+  },
+  "homepage": "https://github.com/AliaksandrVarachai/js-experiments#readme"
+}
