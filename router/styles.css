@@ -1,0 +1,16 @@
+.navigation-content {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid green;
+}
+
+.content-page {
+  width: 100%;
+  left: 0;
+  top: 0;
+  position: absolute;
+}
+
+.hidden {
+  visibility: hidden;
+}

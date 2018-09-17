@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Router</title>
+  <script src="./index.js" defer></script>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<div class="navigation-toolbar">
+  <span class="navigation-item">
+    <input type="radio" name="pages" checked="true" page-id="page-1">
+    <span>Page 1</span>
+  </span>
+  <label class="navigation-item">
+    <input type="radio" name="pages">
+    <span>Page 2</span>
+  </label>
+  <label class="navigation-item">
+    <input type="radio" name="pages" page-id="page-3">
+    Page 3
+  </label>
+</div>
+<div class="navigation-content">
+  <div id="page-1" class="page-content">Content page #1</div>
+  <div id="page-2" class="page-content hidden">Content page #1</div>
+  <div id="page-3" class="page-content hidden">Content page #1</div>
+</div>
+</body>
+</html>
