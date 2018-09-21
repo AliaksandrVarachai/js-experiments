@@ -18,12 +18,32 @@
     td > th:first-child {
       width: 50%;
     }
+    .instructions {
+      color: red;
+    }
   </style>
   <script src="./script.js" defer></script>
 </head>
 
 <body>
   <h1>Container Site</h1>
+  <p class="instructions">
+  <b>Instructions:</b>
+  <ul>
+    <li>
+      Go to <code>cross-origin-communication</code> folder
+    </li>
+    <li>
+      Start a static <code>http</code> server on <code>localhost:9080</code> to provide <code>frame-1.html</code>
+    </li>
+    <li>
+      Open <code>index.html</code> with any local server
+    </li>
+    <li>
+      Enter data into inputs and click Send button to check two-directional messages between iframe and container window
+    </li>
+  </ul>
+  </p>
   <p>
     Message to send: <input type="text" id="message-to-send">
   </p>
