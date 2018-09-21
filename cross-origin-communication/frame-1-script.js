@@ -7,11 +7,9 @@ sendNode.onclick = function(event) {
 };
 
 
-const targetWindow = window.parent;
-
 sendNode.onclick = function(event) {
   console.log('Container says: ' + messageToSendNode.value);
-  targetWindow.postMessage(messageToSendNode.value, '*');
+  window.parent.postMessage(messageToSendNode.value, '*');
 };
 
 
