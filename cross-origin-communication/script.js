@@ -2,15 +2,28 @@ const messageToSendNode = document.getElementById('message-to-send');
 const receivedMessageNode = document.getElementById('received-message');
 const sendNode = document.getElementById('send');
 
+const channel = new MessageChannel();
+let frameIsLoaded = false;
+
 sendNode.onclick = function(event) {
   console.log('Container says: ' + messageToSendNode.value);
-  window.frames[0].postMessage(messageToSendNode.value, '*');
+  if (!frameIsLoaded) {
+    console.log('Wait a bit while frames are loading');
+    return;
+  }
+  channel.port1.postMessage(messageToSendNode.value)
 };
 
 // Listen iframe
-window.addEventListener('message', receiveMessage, false) ;
-
-function receiveMessage(event) {
-  // TODO: always check origin
-  receivedMessageNode.innerText = event.data;
-}
+window.onmessage = function(event) {
+  if (event.origin !== 'http://localhost:9080') {
+    console.warn(`${event.origin} is not allowed`);
+    return;
+  }
+  frameIsLoaded = true;
+  window.frames[0].postMessage(messageToSendNode.value, event.origin, [channel.port2]);
+  channel.port1.onmessage = function(event) {
+    // It is not necessary to check an event.origin
+    receivedMessageNode.innerText = event.data;
+  };
+};
