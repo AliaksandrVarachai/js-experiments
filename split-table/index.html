@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    table {
+      margin: 20px auto;
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+
+<p>Click on the button to split the table</p>
+<button id="split">Split table</button>
+<table id="t-1">
+  <tr>
+    <td>1.1</td>
+    <td>1.2</td>
+    <td>1.3</td>
+  </tr>
+  <tr>
+    <td>1.1</td>
+    <td>1.2</td>
+    <td>1.3</td>
+  </tr>
+</table>
+
+<script>
+  document.getElementById('split').onclick = function(event) {
+    var originTable = document.getElementById('t-1');
+    var originInnerHTML = originTable.innerHTML;
+    console.log('originInnerHTML=', originInnerHTML);
+
+    var newInnerHTML = originInnerHTML.replace(
+      /<\/tr>\s*<tr>/,           // split marker
+      '</tr></table><table><tr>' // '</table><table>' will be replaced so no attributes needed here
+    );
+    // TODO: copy attributes without id
+    var newTables = [
+      document.createElement('table'),
+      document.createElement('table')
+    ];
+    var newInnerHTMLs = newInnerHTML.split('</table><table>');
+    newTables[0].innerHTML = newInnerHTMLs[0];
+    newTables[1].innerHTML = newInnerHTMLs[1];
+    originTable.parentNode.insertBefore(newTables[0], originTable);
+    originTable.parentNode.insertBefore(newTables[1], originTable);
+
+    originTable.remove();
+    originTable = null;
+  };
+</script>
+
+</body>
+</html>
