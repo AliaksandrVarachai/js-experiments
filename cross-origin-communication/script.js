@@ -28,6 +28,24 @@ window.onmessage = function(event) {
   };
 };
 
+// EventBus Channel
+const eventBusChannel = new MessageChannel();
+const eventBusPort1 = eventBusChannel.port1;
+
+eventBusPort1.onmessage = function(event) {
+  console.log('Port1 received: ' + event.data);
+};
+
+const readyPostMessageListener = function(event) {
+  if (event.data !== 'READY') // check the origin
+    return;
+  frames[0].postMessage('PORT', event.origin, [eventBusChannel.port2]);
+  window.removeEventListener('message', readyPostMessageListener);
+};
+
+window.addEventListener('message', readyPostMessageListener);
+
+
 function EventBus() {
   this.events = {};
 }
