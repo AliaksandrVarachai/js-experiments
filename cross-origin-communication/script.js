@@ -1,14 +1,21 @@
 const eventBusChannel = new MessageChannel();
 const eventBusPort1 = eventBusChannel.port1;
 
+/**
+ * Contains properties with names of events are to sent via the message channel.
+ * @type { {[eventName]: ?function} } - functions sending data via the message channel.
+ */
 const eventNames = {};
 
+/**
+ * Sends via the opened message channel names of events fired on the document.
+ * @param {Object} event - a PostMessageEvent.
+ * @param {string} event.data - in format `${eventListenerMethod}:${eventName}`.
+ */
 eventBusPort1.onmessage = function(event) {
-  // console.log('Port1 received: ' + event.data);
   const [eventListenerMethod, eventName] = event.data.split(':');
   if (!eventListenerMethod || !eventName)
     throw Error(`Post message cannot be converted to eventListenerMethod and eventName: "${event.data}"`);
-  // eventListenerMethod = 'addEventListener' || 'removeEventListener'
   if (eventListenerMethod === 'addEventListener') {
     // eventBus is singleton, so only every listener will be added only once
     eventNames[eventName] = function(event) {
@@ -17,7 +24,6 @@ eventBusPort1.onmessage = function(event) {
   }
   document[eventListenerMethod](eventName, eventNames[eventName]);
   if (eventListenerMethod === 'removeEventListener') {
-    // eventBus is singleton, so only every listener will be added only once
     eventNames[eventName] = null;
   }
 

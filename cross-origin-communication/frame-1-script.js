@@ -6,20 +6,13 @@ function EventBus() {
 
 const eventBus = new EventBus(); // must be a singleton
 
-const portPostMessageListener = function(event) {
+window.addEventListener('message', function portPostMessageListener(event) {
   if (event.data !== 'PORT') // check the origin
     return;
   window.removeEventListener('message', portPostMessageListener);
   eventBusPort2 = event.ports[0];
 
   eventBusPort2.onmessage = function(event) {
-    const eventNames = ['click', 'dblclick', 'contextmenu'];
-    if (eventNames.indexOf(event.data) > -1) {
-      eventBus.dispatch(event.data);
-    } else {
-      throw Error(`Event name "${event.data}" must be included in [${eventNames.join()}]`);
-    }
-    // TODO: only eventBus events here or check is needed?
     eventBus.dispatch(event.data); // fires local eventBus Event
   };
 
@@ -28,9 +21,8 @@ const portPostMessageListener = function(event) {
       this.events[name].push(cb);
     } else {
       this.events[name] = [cb];
-      eventBusPort2.postMessage(`addEventListener:${name}`); // 1st time only
+      eventBusPort2.postMessage(`addEventListener:${name}`); // the first time only
     }
-    //console.log(`Callback is added for "${name}" event`);
   };
 
   EventBus.prototype.removeEventListener = function(name, cb) {
@@ -38,12 +30,8 @@ const portPostMessageListener = function(event) {
       throw Error(`There is no "${name}" event listener`);
 
     const removeEvent = name => {
-      //const { [name]: _, ...res } = this.events;
-      this.events = Object.keys(this.events).reduce((acc, key) => {
-        if (key !== name)
-          acc[key] = this.events[key];
-        return acc;
-      }, {});
+      const { [name]: _, ...res } = this.events;
+      return res;
     };
 
     const callbacks = this.events[name];
@@ -61,14 +49,12 @@ const portPostMessageListener = function(event) {
       removeEvent(name);
       eventBusPort2.postMessage(`removeEventListener:${name}`); // no listeners anymore
     }
-    // console.log(`Callback is removed from "${name}" event`);
   };
 
   EventBus.prototype.dispatch = function(name) {
     if (!this.events[name])
       throw Error(`Dispatched "${name}" events is not found`);
     this.events[name].forEach(cb => cb());
-    // console.log(`Dispatch for "${name}" is called`)
   };
 
   // Tests
@@ -89,11 +75,7 @@ const portPostMessageListener = function(event) {
     eventBus.removeEventListener('click', click3);
     eventBus.removeEventListener('dblclick', dblclick);
     eventBus.removeEventListener('contextmenu', contextmenu);
-  }, 5000)
-};
-
-window.addEventListener('message', portPostMessageListener); // waiting for the 'PORT' message
+  }, 5000);
+});
 
 window.parent.postMessage('READY', '*'); // 'I am ready'
-
-
