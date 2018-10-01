@@ -10,7 +10,7 @@ const eventNames = {};
 /**
  * Sends via the opened message channel names of events fired on the document.
  * @param {Object} event - a PostMessageEvent.
- * @param {string} event.data - in format `${eventListenerMethod}:${eventName}`.
+ * @param {string} event.data - in format `${eventListenerMethod}:${eventName}`, e.g. 'addEventListener:click'.
  */
 eventBusPort1.onmessage = function(event) {
   const [eventListenerMethod, eventName] = event.data.split(':');
