@@ -17,7 +17,7 @@ eventBusPort1.onmessage = function(event) {
   if (!eventListenerMethod || !eventName)
     throw Error(`Post message cannot be converted to eventListenerMethod and eventName: "${event.data}"`);
   if (eventListenerMethod === 'addEventListener') {
-    // eventBus is singleton, so only every listener will be added only once
+    // eventBus is singleton, so every eventName will be added only once (it controls when eventName is added/removed)
     eventNames[eventName] = function(event) {
       eventBusPort1.postMessage(eventName);
     }
