@@ -16,6 +16,7 @@ if (areEventsDelegatedToParentWindow) {
   initializeEventBus(null, document);
 }
 
+
 /**
  * Creates a message channel with parent window when the first parameter is a non-null object (i.e. is called as a 'message' listener)
  * or calls events on event emitter object otherwise (i.e. is called with two params).
