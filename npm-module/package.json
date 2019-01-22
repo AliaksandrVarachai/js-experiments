@@ -1,0 +1,21 @@
+{
+  "name": "npm-module",
+  "version": "1.0.0",
+  "description": "\"no description\"",
+  "main": "main-umd.js",
+  "scripts": {
+    "build": "webpack"
+  },
+  "author": "Aliaksandr Varachai",
+  "license": "ISC",
+  "bin": {
+    "say-hi": "./hi.js",
+    "say-by": "./by.js"
+  },
+  "repository": "https://github.com/AliaksandrVarachai/js-experiments.git",
+  "dependencies": {},
+  "devDependencies": {
+    "webpack": "^4.29.0",
+    "webpack-cli": "^3.2.1"
+  }
+}
