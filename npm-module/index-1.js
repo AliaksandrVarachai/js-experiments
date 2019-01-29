@@ -12,7 +12,7 @@ function resetCounter() {
   counter = 0;
 }
 
-module.exports = {
+export default {
   increment,
   getCounter,
   resetCounter,

@@ -1,40 +1,18 @@
 const path = require('path');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const dist = path.resolve(__dirname, 'dist');
 
-
-module.exports = [{
-  entry: './index.js',
+module.exports = {
+  entry: {
+    'simple': './index-1',
+    'extended': './index-2'
+  },
   mode: 'development',
   output: {
-    library: 'myLibCommonjs',
-    libraryTarget: 'commonjs2',
-    filename: 'main-commonjs2.js',
-    path: path.resolve(__dirname, 'dist'),
+    filename: 'calculator.[name].js',
+    path: dist,
+    library: ['calculator', '[name]'],
+    libraryTarget: 'umd'
   },
-}, {
-  entry: './index.js',
-  mode: 'development',
-  output: {
-    library: 'myLibAmd',
-    libraryTarget: 'amd',
-    filename: 'main-amd.js',
-    path: path.resolve(__dirname, 'dist'),
-  },
-}, {
-  entry: './index.js',
-  mode: 'development',
-  output: {
-    library: 'myLibVar',
-    libraryTarget: 'var',
-    filename: 'main-var.js',
-    path: path.resolve(__dirname, 'dist'),
-  },
-}, {
-  entry: './index.js',
-  mode: 'development',
-  output: {
-    library: 'myLibUmd',
-    libraryTarget: 'umd',
-    filename: 'main-umd.js',
-    path: path.resolve(__dirname, 'dist'),
-  },
-}];
+  plugins: [new CleanWebpackPlugin([dist])],
+};
