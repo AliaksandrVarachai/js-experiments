@@ -1,0 +1,21 @@
+{
+  "name": "square",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib-square/bundle.js",
+  "module": "index-square.js",
+  "browser": {
+    "./square.js": "./dist-square/bundle.js"
+  },
+  "scripts": {
+    "build": "webpack --mode=development",
+    "build:lib": "webpack --mode=development --env.isLibrary"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^4.29.0",
+    "webpack-cli": "^3.2.1"
+  }
+}
