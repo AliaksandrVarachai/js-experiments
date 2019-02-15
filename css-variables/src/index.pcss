@@ -4,14 +4,19 @@
   --conetne-height: 100px;
 }
 
-.header {
+:global .header {
   color: var(--header-color)
 }
 
-.content {
+:global .content {
   background: var(--content-background);
   height: var(--conetne-height);
 }
+
+.container {
+  display: flex;
+}
+
 
 :export {
   headerColor: var(--header-color);

@@ -21,7 +21,8 @@ module.exports = {
           }, {
             loader: 'css-loader',
             options: {
-              modules: false
+              modules: true,
+              localIdentName: '[name]__[local]--[hash:base64:5]' //must be the same as for react-css-modules
             }
           }, {
             loader: 'postcss-loader',
@@ -31,7 +32,6 @@ module.exports = {
               plugins: [
                 require('postcss-css-variables'),
               ]
-
             }
           }
         ]
@@ -46,6 +46,10 @@ module.exports = {
             }
           }
         ]
+      }, {
+        test: /\.js$/,
+        include: src,
+        use: 'babel-loader'
       }
     ]
   },
