@@ -30,7 +30,13 @@ module.exports = {
               syntax: 'postcss-scss',
               ident: 'postcss', // any unique string for webpack require
               plugins: [
-                require('postcss-css-variables'),
+                require('postcss-nested'),
+                // {preserve: false} allows to export local css variables in {} or :root{} section with :export selector
+                // provided by babel-plugin-react-css-modules.
+                // The option replaces variables names with their values then removes :root{} or {} section
+                // and does not mud global :root scope.
+                // Otherwise we need to use additional modules like postcss-module-values
+                require('postcss-css-variables')({preserve: false}),
               ]
             }
           }
@@ -54,12 +60,7 @@ module.exports = {
     ]
   },
 
-  plugins: [
-    // new HtmlWebpackPlugin({
-    //   filename: 'index.html',
-    //   template: './src/index.html',
-    // })
-  ],
+  plugins: [],
 
   devServer: {
     publicPath: '/',  // default

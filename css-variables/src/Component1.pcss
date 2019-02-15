@@ -1,5 +1,16 @@
-:root {
+{
+  /* local variables */
   --component-var-1: black;
+  --background: orange;
+  --content-width: 50%;
+}
+
+
+.class-for-nesting {
+  &.content {
+    background: var(--background);
+    width: calc(var(--content-width) + 100px);
+  }
 }
 
 .container {
@@ -10,10 +21,7 @@
   color: blue;
 }
 
-.content {
-  background: orange;
-}
-
-:localScope :export {
+:export {
   componentVar1: var(--component-var-1);
+  background1: var(--background);
 }

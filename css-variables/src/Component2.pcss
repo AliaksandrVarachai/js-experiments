@@ -1,3 +1,8 @@
+{
+  /* local variables */
+  --border: 2px solid red;
+}
+
 .container {
   border: 2px solid red;
 }
@@ -11,5 +16,5 @@
 }
 
 :export {
-  componentVar2: value-2;
+  componentVar2: var(--border);
 }

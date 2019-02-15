@@ -4,6 +4,7 @@ import styles from './Component1.pcss';
 console.log('\n**** Component1.js sees just its own variables:');
 console.log('  component1: componentVar1=', styles.componentVar1);
 console.log('  component1: componentVar2=', styles.componentVar2);
+console.log('  component1: background1=', styles.background1);
 
 export default class Component1 extends React.Component {
   render() {
@@ -12,7 +13,7 @@ export default class Component1 extends React.Component {
         <h3 styleName="header">
           Component #1: Header
         </h3>
-        <div styleName="content">
+        <div styleName="content class-for-nesting">
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid cumque dignissimos dolor dolorum eligendi fuga, illum laborum molestias nisi non quo reiciendis, reprehenderit sint sunt tenetur velit vero voluptatem voluptates!
         </div>
       </div>
