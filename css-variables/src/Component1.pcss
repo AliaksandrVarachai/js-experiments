@@ -1,3 +1,7 @@
+:root {
+  --component-var-1: black;
+}
+
 .container {
   border: 2px solid gray;
 }
@@ -10,6 +14,6 @@
   background: orange;
 }
 
-:export {
-  componentVar1: value-1;
+:localScope :export {
+  componentVar1: var(--component-var-1);
 }
