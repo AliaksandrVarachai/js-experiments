@@ -99,7 +99,7 @@ function createSelectableTreeElementNode(element, parent) {
 
 function createSelectableTreeTextNode(value, parent) {
   return {
-    type: Node.TEXT_NODE, // text
+    type: Node.TEXT_NODE,
     value: value.substring(0, 100),
     parent
   }
@@ -130,10 +130,10 @@ function traverseSelectableTree(node, callback) {
   for (let i = 0; i < node.children.length; i++) {
     const child = node.children[i];
     if (child.type === Node.ELEMENT_NODE) {
-      callback(node);
+      callback(child);
       traverseSelectableTree(child, callback);
     } else if (child.type === Node.TEXT_NODE) {
-      callback(node);
+      callback(child);
     } else {
       throw Error(`Node type "${child.nodeType}" is not supported in selectableTree.`);
     }
@@ -142,7 +142,7 @@ function traverseSelectableTree(node, callback) {
 
 // fills selectableTree, textMap, classListMap
 function createSelectableTree() {
-  function traverseDOM(node, selectableTreePointer, callback) {
+  function traverseDOM(node, selectableTreePointer) {
     const children = node.childNodes;
     for (let i = 0; i < children.length; i++) {
       const child = children[i];
@@ -150,16 +150,17 @@ function createSelectableTree() {
         if (isSelectableElement(child)) {
           const selectableTreeElementNode = createSelectableTreeElementNode(child);
           selectableTreePointer.children.push(selectableTreeElementNode);
-          selectableTreePointer.parent = node;
+          selectableTreeElementNode.parent = node;
           traverseDOM(child, selectableTreeElementNode); //TODO: go up
-        } else {
+        } else if (child.tagName !== 'SCRIPT' && child.tagName !== 'STYLE') {
           traverseDOM(child, selectableTreePointer)
         }
       } else if (child.nodeType === Node.TEXT_NODE) {
-        const textNodeValue = node.nodeValue && node.nodeValue.trim();
+        const textNodeValue = child.nodeValue && child.nodeValue.trim();
         if (textNodeValue) {
-          selectableTreePointer.children.push(createSelectableTreeTextNode(textNodeValue));
-          selectableTreePointer.parent = node;
+          const selectableTreeTextNode = createSelectableTreeTextNode(textNodeValue);
+          selectableTreePointer.children.push(selectableTreeTextNode);
+          selectableTreeTextNode.parent = node;
         }
       } else {
         // other types of nodes are not traversed
@@ -186,6 +187,7 @@ function createSelectableTree() {
       } else {
         textMap[value] = [selectableNode]
       }
+
     }
   })
 }
@@ -196,9 +198,11 @@ createSelectableTree();
 //   (key, value) => key === 'parent' ? undefined : value,
 //   2
 // ));
+console.log(selectableTree)
 
 console.log(textMap, classListMap);
 
+/*
 // ******************************************
 // load selectableTree & create proper textMap & classListMap
 let loadedSelectableTree = selectableTree;
@@ -240,7 +244,7 @@ function areSelectableNodesEqual(node1, node2) {
   }
   throw Error(`"Node type ${node1.nodeType}" is not supported when nodes are compared.`)
 }
-
+ */
 
 
 
