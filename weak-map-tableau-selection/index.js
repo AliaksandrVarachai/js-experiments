@@ -195,14 +195,11 @@ function areSelectableNodesEqual(node1, node2) {
 // ***********************************
 // Highlighting of selectable elements
 
-let selectableElements = document.getElementsByTagName('p'); // all tabWidgets
-for (let i = 0; i < selectableElements.length; i++) {
-  // TODO: filter only visible ( width/height > 0, visibility != hidden, display != hidden)
-}
 const weakMapSelectableElements = new WeakMap();
-for (let i = 0; i < selectableElements.length; i++) {
-  weakMapSelectableElements.set(selectableElements[i], i); //add some info about object
-}
+traverseSelectableTree(selectableTree, selectedNode => {
+  if (selectedNode.type === Node.ELEMENT_NODE)
+    weakMapSelectableElements.set(selectedNode.parent, true);  //add some info about object
+});
 
 // returns Node || null
 function getNearestSelectableParentNode(element) {
