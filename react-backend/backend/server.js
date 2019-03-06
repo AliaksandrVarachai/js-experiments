@@ -27,7 +27,7 @@ server.on('request', (req, res) => {
     const rawExt = url.match(/\.([^\.]*)$/);
     const ext = rawExt && rawExt[1] ? rawExt[1] : 'html';
     const fileNotFoundPath = path.resolve(staticDir, '404.html');
-    const filePath = url === '/' || url === '/index' || url === '/index.html'
+    const filePath = url === '/' || url === '/index' || url === '/index-origin.html'
       ? path.resolve(staticDir, 'index.html')
       : path.resolve(staticDir, url.slice(url.indexOf('/') + 1));
 

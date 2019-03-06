@@ -25,7 +25,7 @@ module.exports = {
   },
 
   plugins: [
-    new HtmlWebpackPlugin({template: 'resources/index.html'})
+    new HtmlWebpackPlugin({template: 'resources/index-origin.html'})
   ],
 
   devServer: {
