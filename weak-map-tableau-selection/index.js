@@ -210,9 +210,11 @@ function getNearestSelectableParentNode(element) {
   return currentElement;
 }
 
+// TODO: replace with overlay
 const selectedStyle = {
-  background: 'yellow',
-  color: 'red'
+  border: '2px solid red'
+  // background: 'yellow',
+  // color: 'red'
 };
 const selectedStyles = Object.keys(selectedStyle).map(propName => [propName, selectedStyle[propName]]);
 const originStyles = selectedStyles.map(([propName, propValue]) => [propName, '']);
