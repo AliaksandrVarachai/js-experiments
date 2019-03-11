@@ -1,14 +1,4 @@
-// function areArraysEqual(arr1, arr2) {
-//   if (arr1.length !== arr2.length)
-//     return false;
-//   for (let i = 0; i < arr1.length; i++) {
-//     if (arr1[i] !== arr2[i])
-//       return false;
-//   }
-//   return true;
-// }
-
-function createSelectableTreeElementNode(element, parent) {
+function createSelectableVTreeElementNode(element, vParent) {
   const sortedClassList = [];
   element.classList.forEach(className => {
     const loweredClassName = className.toLowerCase();
@@ -26,17 +16,19 @@ function createSelectableTreeElementNode(element, parent) {
   // element.style.border = '1px solid red';
   return {
     type: Node.ELEMENT_NODE,
+    domElement: element,
     classList: sortedClassList.join(' '),
     children: [],
-    parent
+    parent: vParent
   }
 }
 
-function createSelectableTreeTextNode(value, parent) {
+function createSelectableVTreeTextNode(element, vParent) {
   return {
     type: Node.TEXT_NODE,
-    value: value.substring(0, 100),
-    parent
+    domElement: element,
+    value: element.nodeValue.trim().substring(0, 100),
+    parent: vParent
   }
 }
 
@@ -51,49 +43,52 @@ function isSelectableElement(element) {
   return true;
 }
 
-let selectableTree = {
+let selectableVTree = {
   type: Node.ELEMENT_NODE,
   classList: [],  // empty for the root element
-  children: []
+  children: [],
+  parent: null
 };
 
-let textMap;
-let classListMap;
+let textVMap;
+let classListVMap;
 
 // DFS implementation
-function traverseSelectableTree(node, callback) {
-  for (let i = 0; i < node.children.length; i++) {
-    const child = node.children[i];
-    if (child.type === Node.ELEMENT_NODE) {
-      callback(child);
-      traverseSelectableTree(child, callback);
-    } else if (child.type === Node.TEXT_NODE) {
-      callback(child);
+// if callback(node) returns false then stop traversing children of node
+function traverseSelectableVTree(vNode, callback) {
+  for (let i = 0; i < vNode.children.length; i++) {
+    const vChild = vNode.children[i];
+    if (vChild.type === Node.ELEMENT_NODE) {
+      if (callback(vChild) === false)
+        break;
+      traverseSelectableVTree(vChild, callback);
+    } else if (vChild.type === Node.TEXT_NODE) {
+      callback(vChild);
     } else {
-      throw Error(`Node type "${child.nodeType}" is not supported in selectableTree.`);
+      throw Error(`Node type "${vChild.nodeType}" is not supported in selectableTree.`);
     }
   }
 }
 
-// fills selectableTree, textMap, classListMap
-function createSelectableTree() {
-  function traverseDOM(node, selectableTreePointer) {
+// fills selectableVTree, textVMap, classListVMap
+function createSelectableVTree() {
+  function traverseDOM(node, selectableVTreePointer) {
     const children = node.childNodes;
     for (let i = 0; i < children.length; i++) {
       const child = children[i];
       if (child.nodeType === Node.ELEMENT_NODE) {
         if (isSelectableElement(child)) {
-          const selectableTreeElementNode = createSelectableTreeElementNode(child);
-          selectableTreePointer.children.push(selectableTreeElementNode);
-          selectableTreeElementNode.parent = node;
-          traverseDOM(child, selectableTreeElementNode); //TODO: go up
+          const selectableVTreeElementNode = createSelectableVTreeElementNode(child, selectableVTreePointer);
+          selectableVTreePointer.children.push(selectableVTreeElementNode);
+          //selectableVTreeElementNode.parent = node;
+          traverseDOM(child, selectableVTreeElementNode); //TODO: go up
         } else if (child.tagName !== 'SCRIPT' && child.tagName !== 'STYLE') {
-          traverseDOM(child, selectableTreePointer)
+          traverseDOM(child, selectableVTreePointer)
         }
       } else if (child.nodeType === Node.TEXT_NODE) {
         let isTextNodeAmongChildren = false; // Just the 1st text node is a header
-        for (let k = 0; k < selectableTreePointer.children.length; k++) {
-          if (selectableTreePointer.children[k].type === Node.TEXT_NODE) {
+        for (let k = 0; k < selectableVTreePointer.children.length; k++) {
+          if (selectableVTreePointer.children[k].type === Node.TEXT_NODE) {
             isTextNodeAmongChildren = true;
             break;
           }
@@ -102,9 +97,9 @@ function createSelectableTree() {
           continue;
         const textNodeValue = child.nodeValue && child.nodeValue.trim();
         if (textNodeValue) {
-          const selectableTreeTextNode = createSelectableTreeTextNode(textNodeValue);
-          selectableTreePointer.children.push(selectableTreeTextNode);
-          selectableTreeTextNode.parent = node;
+          const selectableVTreeTextNode = createSelectableVTreeTextNode(child, selectableVTreePointer);
+          selectableVTreePointer.children.push(selectableVTreeTextNode);
+          //selectableVTreeTextNode.parent = node;
         }
       } else {
         // other types of nodes are not traversed
@@ -112,96 +107,53 @@ function createSelectableTree() {
     }
   }
 
-  traverseDOM(document.body, selectableTree);
+  traverseDOM(document.body, selectableVTree);
 
-  textMap = {};
-  classListMap = {};
-  traverseSelectableTree(selectableTree, function fillMaps(selectableNode) {
-    if (selectableNode.type === Node.ELEMENT_NODE) {
-      const classList = selectableNode.classList;
-      if (classListMap[classList]) {
-        classListMap[classList].push(selectableNode);
+  textVMap = {};
+  classListVMap = {};
+  traverseSelectableVTree(selectableVTree, function fillVMaps(selectableVNode) {
+    if (selectableVNode.type === Node.ELEMENT_NODE) {
+      const classList = selectableVNode.classList;
+      if (classListVMap[classList]) {
+        classListVMap[classList].push(selectableVNode);
       } else {
-        classListMap[classList] = [selectableNode];
+        classListVMap[classList] = [selectableVNode];
       }
-    } else if (selectableNode.type === Node.TEXT_NODE) {
-      const value = selectableNode.value;
-      if (textMap[value]) {
-        textMap[value].push(selectableNode)
+    } else if (selectableVNode.type === Node.TEXT_NODE) {
+      const value = selectableVNode.value;
+      if (textVMap[value]) {
+        textVMap[value].push(selectableVNode)
       } else {
-        textMap[value] = [selectableNode]
+        textVMap[value] = [selectableVNode]
       }
 
     }
+    return true;
   })
 }
 
-createSelectableTree();
+createSelectableVTree();
 // console.log(JSON.stringify(
-//   selectableTree,
+//   selectableVTree,
 //   (key, value) => key === 'parent' ? undefined : value,
 //   2
 // ));
-console.log(selectableTree)
+console.log(selectableVTree);
 
-console.log(textMap, classListMap);
-
-/*
-// ******************************************
-// load selectableTree & create proper textMap & classListMap
-let loadedSelectableTree = selectableTree;
-let loadedTextMap = textMap;
-let loadedClassListMap = classListMap;
-let loadedTourStepIds = { // is filled when loaded
-  '0000-0001': true,
-  '0000-0002': true,
-};
-let loadedTourStepsLeaved = {
-  '0000-0001': false,
-  '0000-0002': false,  // removed
-};
-
-Object.keys(loadedTextMap).forEach(textKey => {
-  // loadedSelectableTree contains tour step IDs
-  if (!loadedTextMap[textKey])
-    return;
-  Object.keys(loadedTextMap).forEach(loadedTextKey => {
-    let parent = classListMap[textKey].parent;
-    let loadedParent = loadedClassListMap[loadedTextKey].parent;
-      if (areSelectableNodesEqual(parent, loadedParent)) {
-        if (loadedParent.tourId) {
-          loadedTourStepsLeaved[tourId] = true;
-        }
-      }
-  })
-});
-
-
-
-function areSelectableNodesEqual(node1, node2) {
-  if (node1.nodeType !== node2.nodeType) {
-    return false
-  } else if (node1.nodeType === Node.TEXT_NODE) {
-    return node1.nodeValue === node2.nodeValue;
-  } else if (node1.nodeType === Node.ELEMENT_NODE) {
-    return node1.classList === node2.classList; // we are do not care about children
-  }
-  throw Error(`"Node type ${node1.nodeType}" is not supported when nodes are compared.`)
-}
- */
-
+console.log(textVMap, classListVMap);
 
 
 // ***********************************
 // Highlighting of selectable elements
 
 const weakMapSelectableElements = new WeakMap();
-traverseSelectableTree(selectableTree, selectedNode => {
-  if (selectedNode.type === Node.ELEMENT_NODE)
-    weakMapSelectableElements.set(selectedNode.parent, true);  //add some info about object
+traverseSelectableVTree(selectableVTree, vNode => {
+  if (vNode.type === Node.ELEMENT_NODE)
+    weakMapSelectableElements.set(vNode.domElement, vNode);
+  return true;
 });
 
-// returns Node || null
+// returns DOM Node || null
 function getNearestSelectableParentNode(element) {
   let currentElement = element;
   while (currentElement && !weakMapSelectableElements.has(currentElement)) {
@@ -221,44 +173,109 @@ const originStyles = selectedStyles.map(([propName, propValue]) => [propName, ''
 
 
 function selectElement(element) {
+  const el = element.nodeType === Node.ELEMENT_NODE ? element : element.parentNode;
   selectedStyles.forEach(([propName, propValue], inx) => {
-    originStyles[inx][1] = element.style.getPropertyValue(propName);
-    element.style.setProperty(propName, propValue);
+    originStyles[inx][1] = el.style.getPropertyValue(propName);
+    el.style.setProperty(propName, propValue);
   });
 }
 
 function unselectElement(element) {
+  const el = element.nodeType === Node.ELEMENT_NODE ? element : element.parentNode;
   originStyles.forEach(([propName, propValue]) => {
-    element.style.setProperty(propName, propValue);
+    el.style.setProperty(propName, propValue);
   });
 }
 
-let selectedElement = null;
+let selectedVElement = null; // virtual element
 
 function mouseOverHandler(event) {
   const nearestSelectableParentNode = getNearestSelectableParentNode(event.target);
-  if (selectedElement) {
-    if (nearestSelectableParentNode) {
-      if (selectedElement === nearestSelectableParentNode)
-        return;
-      unselectElement(selectedElement);
-      selectedElement = nearestSelectableParentNode;
-      selectElement(selectedElement);
-    } else {
-      unselectElement(selectedElement);
-      selectedElement = null;
-    }
+  if (!nearestSelectableParentNode)
+    return;
+  const oldSelectedVElement = selectedVElement;
+  selectedVElement = weakMapSelectableElements.get(nearestSelectableParentNode);
+  if (oldSelectedVElement) {
+    if (selectedVElement === oldSelectedVElement)
+      return;
+    unselectElement(oldSelectedVElement.domElement);
+    selectElement(selectedVElement.domElement);
   } else {
-    if (nearestSelectableParentNode) {
-      selectedElement = nearestSelectableParentNode;
-      selectElement(selectedElement);
-    }
+    selectElement(selectedVElement.domElement);
   }
 }
 
 document.addEventListener('mouseover', mouseOverHandler);
 
+function getNextSelectableVElement(vElement) {
+  if (!vElement || vElement.children && vElement.children.length)
+    return vElement.children[0];
+  let vParent = vElement;
+  let index = -1;
+  do {
+    vElement = vParent;  // TODO: remove the shadowing
+    vParent = vParent.parent;
+    if (!vParent)
+      return selectableVTree.children[0];
+    index = vParent.children.indexOf(vElement);
+  } while (index === vParent.children.length - 1);
+  return vParent.children[index + 1];
+}
 
+// finding last selectable element is not very good for performance
+function getLastSelectableVElement(selectableVTree) {
+  return (function _getLastSelectableElement(vElement) {
+    if (!vElement.children || vElement.children.length === 0)
+      return vElement;
+    return _getLastSelectableElement(vElement.children[vElement.children.length - 1]);
+  })(selectableVTree);
+}
+
+function getPreviousSelectableVElement(vElement) {
+  if (!vElement.parent) {
+    return getLastSelectableVElement(selectableVTree);
+  }
+  let vParent = vElement;
+  let index = -1;
+  do {
+    vElement = vParent;  // TODO: remove the shadowing
+    vParent = vParent.parent;
+    if (!vParent)
+      return getLastSelectableVElement(selectableVTree);
+    index = vParent.children.indexOf(vElement);
+  } while (index === 0);
+  return vParent.children[index - 1];
+}
+
+// The possibility of choice elements with keyboard (some elements can be inaccessible for the selection with the mouse)
+function selectTargetWithKey(event) {
+  if (!selectedVElement && selectableVTree.children.length === 0)
+    throw Error ('There are not selectable elements');
+  if (event.altKey && event.key === 'ArrowLeft') {
+    if (selectedVElement) {
+      unselectElement(selectedVElement.domElement);
+      selectedVElement = getPreviousSelectableVElement(selectedVElement);
+    } else {
+      selectedVElement = selectableVTree.children[0];
+    }
+    selectElement(selectedVElement.domElement);
+    // TODO: scroll to the selected element
+    // document.documentElement.scrollTop = document.body.scrollTop = selectedVElement.domElement.offsetTop;
+  } else if (event.altKey && event.key === 'ArrowRight') {
+    if (selectedVElement) {
+      unselectElement(selectedVElement.domElement);
+      selectedVElement = getNextSelectableVElement(selectedVElement);
+    } else {
+      selectedVElement = getLastSelectableVElement(selectableVTree);
+    }
+    selectElement(selectedVElement.domElement);
+    // TODO: scroll to the selected element
+    document.documentElement.scrollTop = document.body.scrollTop = selectedVElement.domElement.offsetTop;
+  }
+
+}
+
+document.addEventListener('keydown', selectTargetWithKey);
 
 
 
