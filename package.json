@@ -8,7 +8,9 @@
     "jsdoc": "^3.5.5",
     "path": "^0.12.7"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "express": "^4.16.4"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
