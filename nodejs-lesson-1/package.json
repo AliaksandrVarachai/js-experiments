@@ -1,0 +1,23 @@
+{
+  "name": "nodejs",
+  "version": "1.0.0",
+  "main": "dns.js",
+  "scripts": {
+    "build": "babel src -w -d dist",
+    "serve": "nodemon dist/app.js",
+    "start": "npm run build & npm run serve",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@babel/cli": "^7.4.3",
+    "@babel/core": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
+    "@babel/preset-flow": "^7.0.0",
+    "@babel/register": "^7.4.0",
+    "nodemon": "^1.18.11"
+  }
+}

@@ -1,4 +1,4 @@
-const dns = require('dns');
+const dns = require('nodejs-experiments/dns');
 dns.lookup('iana.org', (err, address, family) => {
   console.log('address %j family: IPv%s', address, family)
 });
