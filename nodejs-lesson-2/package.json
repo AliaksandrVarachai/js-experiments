@@ -1,15 +1,19 @@
 {
   "name": "nodejs-lesson-2",
   "version": "1.0.0",
-  "description": "",
+  "description": "Node.js homowork",
   "main": "index.js",
   "scripts": {
     "test": "mocha src/csv-loader.test"
   },
+  "repository": "my-subrepo",
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "mocha": "^6.1.4"
+    "chai": "^4.2.0",
+    "mocha": "^6.1.4",
+    "nyc": "^14.0.0",
+    "sinon": "^7.3.2"
   }
 }

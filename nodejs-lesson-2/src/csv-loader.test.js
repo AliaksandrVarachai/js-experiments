@@ -23,11 +23,9 @@ describe('CSV Loader', function() {
     delete require.cache[require.resolve('./csv-loader')];
   });
 
-  it('should throw when wrong file path passed as an argument', function() {
+  it('should throw when wrong file path passed as an argument', function(done) {
     const wrongPath = path.resolve('/fake-root/fake-dir', 'fake-name.ext');
-    csvLoader.load(wrongPath, function(err, _) {
-      assert.ifError(err);
-    });
+    csvLoader.load(wrongPath, assert.throws(done));
   });
 
   it('should call callback for existing file', function(done) {
