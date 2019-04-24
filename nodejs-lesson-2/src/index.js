@@ -59,7 +59,7 @@ function getDirStat(path, cb) {
       if (dirent.isDirectory()) {
         const newDirPath = path.resolve(path, dirent.name);
         return linkToPrevObj[getFilenameFromPath(newDirPath)] = []
-        getDirStat(path.resolve(path, dirent.name), cb111);
+        getDirStat(path.resolve(path, dirent.name), cb);
       } else if (dirent.isFile() || dirent.isSymbolicLink()) {
 
       } else {
