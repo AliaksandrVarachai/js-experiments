@@ -1,0 +1,39 @@
+{
+  "name": "draft",
+  "version": "1.0.0",
+  "description": "draft image plugin",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "start": "webpack-dev-server --hot --mode=development"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "repository": "http://example.com",
+  "devDependencies": {
+    "@babel/core": "^7.4.4",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "@babel/preset-react": "^7.0.0",
+    "@mikeljames/draft-js-drag-n-drop-upload-plugin": "^2.0.1",
+    "babel-loader": "^8.0.5",
+    "css-loader": "^2.1.1",
+    "draft-js": "^0.10.5",
+    "draft-js-alignment-plugin": "^2.0.5",
+    "draft-js-drag-n-drop-plugin": "^2.0.3",
+    "draft-js-focus-plugin": "^2.2.0",
+    "draft-js-image-plugin": "^2.0.6",
+    "draft-js-plugins-editor": "^2.1.1",
+    "draft-js-resizeable-plugin": "^2.0.8",
+    "html-webpack-plugin": "^3.2.0",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.30.0",
+    "webpack-cli": "^3.3.1",
+    "webpack-dev-server": "^3.3.1"
+  },
+  "dependencies": {
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
+  }
+}
