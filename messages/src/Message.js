@@ -58,11 +58,11 @@ export default class Message extends React.Component {
   }
 
   render() {
-    const { messages } = this.state;
+    const { messages, isMessageShown } = this.state;
     if (!messages[0])
       return null;
     return (
-      <div className={'msg-container ' + ''}>
+      <div className={'msg-container ' + (isMessageShown ? 'msg-animated' : '')}>
         {
           messages.length > 1 ? (
             <span className="msg-queue-length">
