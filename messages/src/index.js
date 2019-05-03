@@ -11,7 +11,7 @@ type AppState = {
   destroyMessages: boolean
 }
 
-class App extends React.PureComponent<AppProps, AppState> {
+class App extends React.Component<AppProps, AppState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -31,15 +31,6 @@ class App extends React.PureComponent<AppProps, AppState> {
       destroyMessages: true
     });
   };
-
-  componentWillUnmount() {
-    console.log('App: componentWillUnmount')
-  }
-
-  componentDidMount(): void {
-    console.log('App: componentDidMount')
-  }
-
 
   render() {
     const { message, destroyMessages } = this.state;

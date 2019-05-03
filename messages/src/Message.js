@@ -28,7 +28,6 @@ export default class Message extends React.Component {
   }
 
   componentDidMount() {
-    // console.log('componentDidMount', this.props);
     this.showNextMessage();
   }
 
@@ -40,7 +39,6 @@ export default class Message extends React.Component {
 
   componentWillUnmount() {
     this.timeoutIds.forEach(timeoutId => clearTimeout(timeoutId));
-    // console.log('componentWillUnmount');
   }
 
   showNextMessage() {
@@ -68,7 +66,7 @@ export default class Message extends React.Component {
         {
           messages.length > 1 ? (
             <span className="msg-queue-length">
-              Queue {messages.length}:
+              [Queued {messages.length}]:
             </span>
           )
           : null
