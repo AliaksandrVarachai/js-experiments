@@ -1,15 +1,16 @@
 import React from 'react';
+import { emptyMessage } from './constants';
 import './Message.css';
 
 const messageShowDuration = 3000; //ms
-const emptyMessage = '';
 
 // same messages in row are shown as one message
 export default class Message extends React.Component {
   constructor(props) {
     super(props);
+    this.timeoutIds = [];
     this.state = {
-      messages: [], // queue
+      messages: [],
       isMessageShown: false,
       prevMessage: emptyMessage
     };
@@ -17,20 +18,17 @@ export default class Message extends React.Component {
 
   static getDerivedStateFromProps(props, state) {
     const { messages, prevMessage } = state;
-    const len = messages.length;
-    if (props.message !== prevMessage) {
-      const newMsg = messages.slice();
-      newMsg.push(props.message);
+    if (props.message && props.message !== prevMessage) {
       return {
         prevMessage: props.message,
-        // messages: [...messages, props.message]
-        messages: newMsg,
+        messages: [...messages, props.message]
       }
     }
     return null;
   }
 
   componentDidMount() {
+    // console.log('componentDidMount', this.props);
     this.showNextMessage();
   }
 
@@ -40,33 +38,45 @@ export default class Message extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    this.timeoutIds.forEach(timeoutId => clearTimeout(timeoutId));
+    // console.log('componentWillUnmount');
+  }
+
   showNextMessage() {
     if (this.state.messages.length === 0)
       return;
     this.setState({
       isMessageShown: true
     });
-    setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       this.setState((state, props) => ({
         messages: state.messages.slice(1),
         isMessageShown: false
       }));
+      this.timeoutIds.unshift();
     }, messageShowDuration);
+    this.timeoutIds.push(timeoutId);
   }
 
   render() {
     const { messages } = this.state;
-    return messages[0]
-      ? (
-        <div className={'msg-container ' + ''}>
-          <span className="msg-queue-length">
-            {messages.length}
-          </span>
-          <span className="msg-text">
-            {messages[0]}
-          </span>
-        </div>
-      )
-      : null;
+    if (!messages[0])
+      return null;
+    return (
+      <div className={'msg-container ' + ''}>
+        {
+          messages.length > 1 ? (
+            <span className="msg-queue-length">
+              Queue {messages.length}:
+            </span>
+          )
+          : null
+        }
+        <span className="msg-text">
+          {messages[0]}
+        </span>
+      </div>
+    )
   }
 }
