@@ -1,12 +1,17 @@
 {
   "presets": [
     [
+      "@babel/preset-flow",
+      {
+        "all": false
+      }
+    ],
+    [
       "@babel/preset-env",
       {
         "modules": false
       }
     ],
-    "@babel/preset-flow",
     "@babel/preset-react"
   ],
   "plugins": [

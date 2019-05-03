@@ -1,10 +1,17 @@
+// @flow
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { emptyMessage } from './constants';
 import Message from './Message';
 import Hello from './Hello';
 
-class App extends React.PureComponent {
+type AppProps = {};
+type AppState = {
+  message: string,
+  destroyMessages: boolean
+}
+
+class App extends React.PureComponent<AppProps, AppState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -49,7 +56,9 @@ class App extends React.PureComponent {
   }
 }
 
-
-ReactDOM.render(<App />, document.getElementById('root'));
+const root = document.getElementById('root');
+if (root === null)
+  throw Error('Root is not found');
+ReactDOM.render(<App />, root);
 
 
