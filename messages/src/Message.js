@@ -1,18 +1,20 @@
 import React from 'react';
 import { emptyMessage } from './constants';
 import './Message.css';
+import classnames from 'classnames';
 
-const messageShowDuration = 3000; //ms
+const messageShowDuration = 4500; //ms
 
 // same messages in row are shown as one message
-export default class Message extends React.Component {
+export default class Message extends React.PureComponent {
   constructor(props) {
     super(props);
     this.timeoutIds = [];
     this.state = {
       messages: [],
       isMessageShown: false,
-      prevMessage: emptyMessage
+      prevMessage: emptyMessage,
+      isOddMessage: true, // for synchronizing of CSS animation when a queue of messages is shown
     };
   }
 
@@ -50,7 +52,8 @@ export default class Message extends React.Component {
     const timeoutId = setTimeout(() => {
       this.setState((state, props) => ({
         messages: state.messages.slice(1),
-        isMessageShown: false
+        isMessageShown: false,
+        isOddMessage: !this.state.isOddMessage
       }));
       this.timeoutIds.unshift();
     }, messageShowDuration);
@@ -58,11 +61,11 @@ export default class Message extends React.Component {
   }
 
   render() {
-    const { messages, isMessageShown } = this.state;
+    const { messages, isMessageShown, isOddMessage } = this.state;
     if (!messages[0])
       return null;
     return (
-      <div className={'msg-container ' + (isMessageShown ? 'msg-animated' : '')}>
+      <div className={classnames('msg-container', isOddMessage ? 'msg-animated-odd' : 'msg-animated-even')}>
         {
           messages.length > 1 ? (
             <span className="msg-queue-length">

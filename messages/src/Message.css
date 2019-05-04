@@ -1,17 +1,37 @@
+:root {
+  --end-opacity: 0.3;
+}
+
 .msg-container {
   color: green;
 }
 
-.msg-animated {
-  animation: fadeout-message 3s infinite ease-out;
+/* two classes are for synchronizing CSS animation and a queue of JS timeout callbacks */
+.msg-animated-odd {
+  opacity: var(--end-opacity);
+  animation: fadeout-message-odd 3s ease-out;
 }
 
-@keyframes fadeout-message {
+.msg-animated-even {
+  opacity: var(--end-opacity);
+  animation: fadeout-message-even 3s ease-out;
+}
+
+@keyframes fadeout-message-odd {
   from {
     opacity: 1;
   }
   to {
-    opacity: 0.3;
+    opacity:var(--end-opacity);
+  }
+}
+
+@keyframes fadeout-message-even {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: var(--end-opacity);
   }
 }
 
