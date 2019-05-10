@@ -7,10 +7,10 @@ const mockedDataDirPath = path.resolve(__dirname, '../mocked-data');
 describe('Array', function() {
   describe('#indexOf()', function() {
     it('should return -1 when the value is not present', function() {
-      assert.equal([1, 2, 3].indexOf(4), -1);
+      assert.strictEqual([1, 2, 3].indexOf(4), -1);
     });
     it('should return the first element equal to the given one', function() {
-      assert.equal([3, 2, 2, 1].indexOf(2), 1);
+      assert.strictEqual([3, 2, 2, 1].indexOf(2), 1);
     });
     // it('should return the first element equal to the given one', () => {
     //   [3, 2, 2, 1].indexOf(2).should.equal(1);
