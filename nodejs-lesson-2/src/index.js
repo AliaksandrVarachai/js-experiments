@@ -97,7 +97,7 @@ function getDirStat(path, cb) {
    name: 'test.js',
    type: file/dir/link,
    ctimeMs: 123
-   mtimeMs: 456
+   mtimeMs: subdir
    size: (for any case)
    // if dir
    children: []

@@ -1,3 +1,1 @@
-#!bin/usr/env node
-
-console.log('111111111111');
+console.log('File "1.test.js" is launched.');

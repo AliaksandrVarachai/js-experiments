@@ -1,6 +1,8 @@
+#!/usr/bin/env node
+
 const assert = require('assert');
 const path = require('path');
-const csvLoader = require('./csv-loader');
+const csvLoader = require('../src/csv-loader');
 
 const mockedDataDirPath = path.resolve(__dirname, '../mocked-data');
 
