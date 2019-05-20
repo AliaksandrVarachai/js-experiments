@@ -4,7 +4,7 @@
   "description": "Node.js homowork",
   "main": "index.js",
   "scripts": {
-    "test": "mocha src/csv-loader.test"
+    "test": "mocha"
   },
   "repository": "my-subrepo",
   "keywords": [],
