@@ -25,12 +25,13 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'Charts'
+      template: path.resolve(src, 'index.html')
     })
   ],
-  // externals: {
-  //   chart: 'chart.js'
-  // },
+  externals: {
+    //Chart: 'chart.js',
+    moment: 'moment',  // time functionality is not needed
+  },
   devtool: process.env.mode === 'development' ? 'source-map' : false,
   devServer: {
     port: 9090,

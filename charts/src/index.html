@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Charts</title>
+</head>
+<style>
+    .chart-table {
+        display: inline-table;
+        position: relative;
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .chart-container {
+        position: relative;
+        display: table-cell;
+        width: 50%;
+        height: 500px;
+        border: 1px solid black;
+    }
+    .chart-canvas {
+        display: block;
+        height: 100%;
+    }
+</style>
+<body>
+    <div class="chart-table">
+        <div class="chart-container">
+            <!--  Parent container must be relatively positioned and dedicated to the canvas only  -->
+            <canvas id="chart-bar" class="chart-canvas"></canvas>
+        </div>
+
+        <div class="chart-container">
+            <!--  Parent container must be relatively positioned and dedicated to the canvas only  -->
+            <canvas id="chart-line" class="chart-canvas"></canvas>
+        </div>
+    </div>
+</body>
+</html>
