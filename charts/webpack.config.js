@@ -7,7 +7,8 @@ const dist = path.resolve(__dirname, 'dist');
 
 module.exports = {
   entry: {
-    'build': path.resolve(src, 'script')
+    'build': path.resolve(src, 'script'),
+    'three': path.resolve(src, 'three')
   },
   output: {
     path: dist,
@@ -25,8 +26,14 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.resolve(src, 'index.html')
-    })
+      template: path.resolve(src, 'index.html'),
+      inject: false
+    }),
+    new HtmlWebpackPlugin({
+      template: path.resolve(src, 'three.html'),
+      inject: false,
+      filename: 'three.html'
+    }),
   ],
   externals: {
     //Chart: 'chart.js',

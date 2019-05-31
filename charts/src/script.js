@@ -1,4 +1,5 @@
 import Chart from 'chart.js';
+import * as Three from 'three';
 
 Chart.defaults.global.animation.duration  = 0;  // turn off the animation
 
@@ -97,16 +98,31 @@ console.log(`Spent on a chart build: ${chartIsReady - dataIsReady} ms`);
 
 /* WebGL */
 (function() {
-  const canvas = document.getElementById('chart-webgl');
-  stretchCanvas(canvas); // throws
-  const ctx = canvas.getContext('webgl');
-  if (ctx === null) {
-    alert ('Browser does not support WebGL');
-    return;
-  }
+  const container = document.getElementById('webgl-container');
+  const containerStyle = getComputedStyle(container);
+  const width = parseInt(containerStyle.getPropertyValue('width'), 10);
+  const height = parseInt(containerStyle.getPropertyValue('height'), 10);
 
-  ctx.clearColor(0.0, 1.0, 1.0, 1);
-  ctx.clear(ctx.COLOR_BUFFER_BIT);
+  const scene = new Three.Scene();
+  const camera = new Three.PerspectiveCamera(75, width/height, 0.1, 1000);
+  const renderer = new Three.WebGLRenderer();
+  renderer.setSize(width, height);
+  container.appendChild(renderer.domElement);
+
+  const geometry = new Three.BoxGeometry(1, 1, 1);
+  const material = new Three.MeshBasicMaterial({color: 0x00ff00});
+  const cube = new Three.Mesh(geometry, material);
+  scene.add(cube);
+  camera.position.z = 5;
+
+  function animate() {
+    requestAnimationFrame(animate);
+    cube.rotation.x += 0.01;
+    cube.rotation.y += 0.01;
+    renderer.render(scene, camera);
+  }
+  animate();
+
 })();
 
 /* 2D */

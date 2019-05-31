@@ -13,7 +13,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "chart.js": "^2.8.0"
+    "chart.js": "^2.8.0",
+    "three": "^0.105.1"
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",
