@@ -14,6 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "chart.js": "^2.8.0",
+    "gl-matrix": "^3.0.0",
     "three": "^0.105.1"
   },
   "devDependencies": {

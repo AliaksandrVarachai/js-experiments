@@ -8,7 +8,8 @@ const dist = path.resolve(__dirname, 'dist');
 module.exports = {
   entry: {
     'build': path.resolve(src, 'script'),
-    'three': path.resolve(src, 'three')
+    'three': path.resolve(src, 'three'),
+    'webgl': path.resolve(src, 'webgl'),
   },
   output: {
     path: dist,
@@ -33,6 +34,11 @@ module.exports = {
       template: path.resolve(src, 'three.html'),
       inject: false,
       filename: 'three.html'
+    }),
+    new HtmlWebpackPlugin({
+      template: path.resolve(src, 'webgl.html'),
+      inject: false,
+      filename: 'webgl.html'
     }),
   ],
   externals: {
