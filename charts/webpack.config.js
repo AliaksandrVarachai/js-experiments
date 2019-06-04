@@ -7,9 +7,10 @@ const dist = path.resolve(__dirname, 'dist');
 
 module.exports = {
   entry: {
-    'build': path.resolve(src, 'script'),
+    'charts-comparison': path.resolve(src, 'charts-comparison'),
     'three': path.resolve(src, 'three'),
     'webgl': path.resolve(src, 'webgl'),
+    'earth-orbit': path.resolve(src, 'earth-orbit'),
   },
   output: {
     path: dist,
@@ -31,6 +32,11 @@ module.exports = {
       inject: false
     }),
     new HtmlWebpackPlugin({
+      template: path.resolve(src, 'charts-comparison.html'),
+      inject: false,
+      filename: 'charts-comparison.html'
+    }),
+    new HtmlWebpackPlugin({
       template: path.resolve(src, 'three.html'),
       inject: false,
       filename: 'three.html'
@@ -39,6 +45,11 @@ module.exports = {
       template: path.resolve(src, 'webgl.html'),
       inject: false,
       filename: 'webgl.html'
+    }),
+    new HtmlWebpackPlugin({
+      template: path.resolve(src, 'earth-orbit.html'),
+      inject: false,
+      filename: 'earth-orbit.html'
     }),
   ],
   externals: {

@@ -1,52 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Charts</title>
+    <meta charset="UTF-8">
+    <title>Navigaion page</title>
 </head>
-<style>
-    .chart-table {
-        display: table;
-        position: relative;
-        width: 100%;
-        border-collapse: collapse;
-    }
-    .table-row {
-        display: table-row;
-    }
-    .chart-container {
-        position: relative;
-        display: table-cell;
-        width: 50%;
-        height: 350px;
-        border: 1px solid black;
-    }
-    .chart-canvas {
-        display: block;
-        height: 100%;
-    }
-</style>
 <body>
-    <div class="chart-table">
-        <div class="table-row">
-            <div class="chart-container">
-                <!--  Parent container must be relatively positioned and dedicated to the canvas only  -->
-                <canvas id="chart-bar" class="chart-canvas"></canvas>
-            </div>
-            <div class="chart-container">
-                <!--  Parent container must be relatively positioned and dedicated to the canvas only  -->
-                <canvas id="chart-line" class="chart-canvas"></canvas>
-            </div>
-        </div>
-        <div class="table-row">
-            <div id="webgl-container" class="chart-container">
-<!--                <canvas id="chart-webgl" class="chart-canvas"></canvas>-->
-            </div>
-            <div class="chart-container">
-                <canvas id="chart-2d" class="chart-canvas"></canvas>
-            </div>
-        </div>
-    </div>
+<h3>Table of content</h3>
+<ul>
+    <li>
+        <a href="charts-comparison.html">Comparison of charts</a>
+    </li>
+    <li>
+        <a href="three.html">Chart built by Three.js</a>
+    </li>
+    <li>
+        <a href="webgl.html">Pure WebGL: white square</a>
+    </li>
+    <li>
+        <a href="earth-orbit.html">Animation in Three.js: Earth orbit</a>
+    </li>
+</ul>
 
-    <script src="build.js"></script>
+
+
 </body>
 </html>
