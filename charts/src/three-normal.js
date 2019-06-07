@@ -1,4 +1,6 @@
 import * as THREE from 'three';
+import * as dat from "dat.gui";
+const gui = new dat.GUI();
 
 const options = {
   name: 'normal',
@@ -86,6 +88,46 @@ fetch(`http://localhost:9091/data?${searchParams}`, {
   const points = new THREE.Points(pointsGeometry, pointsMaterial);
 
   scene.add(points);
+
+
+  // BEGIN of AXES (does not work for a while)
+
+  class AxisGridHelper {
+    constructor(units = 10) {
+      const axes = new THREE.AxesHelper();
+      axes.material.depthTest = false;
+      axes.renderOrder = 2;  // after the grid
+      scene.add(axes);
+
+      const grid = new THREE.GridHelper(units, units);
+      grid.material.depthTest = false;
+      grid.renderOrder = 1;
+      scene.add(grid);
+
+      this.grid = grid;
+      this.axes = axes;
+      this.visible = false;
+    }
+    get visible() {
+      return this._visible;
+    }
+    set visible(v) {
+      this._visible = v;
+      this.grid.visible = v;
+      this.axes.visible = v;
+    }
+  }
+
+
+  function makeAxisGrid(label, units) {
+    const helper = new AxisGridHelper(units);
+    gui.add(helper, 'visible').name(label);
+  }
+
+  makeAxisGrid('Scatter Plot for X', 50);
+
+  // END of AXES
+
 
   camera.position.z = 5;
 
