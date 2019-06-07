@@ -1,42 +1,61 @@
 const http = require('http');
+const url = require('url');
 const cephes = require('cephes');
+const fs = require('fs');
 
-const port = 9091;
-const url = `http://localhost:${port}`;
+
+const SERVER_PORT = 9091;
+const SERVER_URL = `http://localhost:${SERVER_PORT}`;
 const server = http.createServer();
 
 server.on('request', (req, res) => {
-  const { method, url } = req;
-  const options = {};
+  const { pathname, search } = url.parse(req.url);
 
-  if (req.method === 'GET' && url === '/data') {
+  if (req.method === 'GET' && pathname === '/data') {
+    const searchParams = new URLSearchParams(search);
+    const distributionOptions = {
+      name: '',
+      length: 0,
+      params: {}
+    };
+    searchParams.forEach((value, name) => {
+      switch (name) {
+        case 'name':
+          distributionOptions.name = value;
+          break;
+        case 'length':
+          distributionOptions.length = parseInt(value, 10);
+          break;
+        default:
+          distributionOptions.params[name] = parseFloat(value);
+      }
+    });
+
     res.writeHead(200, {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
-      'Access-Control-Request-Method': 'GET,OPTIONS',
-      'Access-Control-Request-Headers': 'access-control-allow-headers'
     });
     //res.write(JSON.stringify(generateValues()));
-    return res.end(JSON.stringify(generateValues(options)));
+    return res.end(JSON.stringify(generateValues(distributionOptions)));
   } else
 
-  if (req.method === 'OPTIONS' && url === '/data') {
+  if (req.method === 'OPTIONS' && pathname === '/data') {
     res.writeHead(200, {
-      'Access-Control-Allow-Origin': '*',  // TODO: check http://localhost:80
-      'Access-Control-Request-Method': 'GET,OPTIONS',
-      'Access-Control-Request-Headers': 'access-control-allow-headers'
+      'Access-Control-Allow-Origin': '*',  // TODO: check http://localhost:9091
+      'Access-Control-Allow-Headers': 'My-Custom-Header'
+      // 'Access-Control-Allow-Methods': 'GET,POST',
     });
     return res.end();
   }
 
-  console.log(`"${method}" request to "${url}" was not processed.`)
+  console.log(`"${req.method}" request to "${req.url}" was not processed.`)
 
 });
 
-server.listen(port, () => console.log(`Server started on ${url}`));
+server.listen(SERVER_PORT, () => console.log(`Server started on ${SERVER_URL}`));
 
 // returns array of values or null
-function generateValues({ name = 'normal', length = 100, params: {} }) {
+function generateValues({ name = 'normal', length = 100, params = {} }) {
   // TODO: redo as a ArrayBuffer (application/contet-stream)
   const generatedValues = new Array(length);
 

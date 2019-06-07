@@ -1,18 +1,40 @@
 import * as THREE from 'three';
 
+const options = {
+  name: 'normal',
+  length: 1000,
+  params: {
+    mean: 300,
+    sigma: 100
+  }
+};
+
+// const options = {
+//   name: 'uniform',
+//   length: 1000,
+//   params: {
+//     min: 0,
+//     max: 600
+//   }
+// };
+
+const searchParams = new URLSearchParams();
+searchParams.append('name', options.name);
+searchParams.append('length', options.length);
+Object.keys(options.params).forEach(key => searchParams.append(key, options.params[key]));
+searchParams.append('name', options.name);
+
 /* Three.js */
-fetch('http://localhost:9091/data', {
+fetch(`http://localhost:9091/data?${searchParams}`, {
   headers: {
     'Accept': 'application/json',
-    'Access-Control-Allow-Headers': '*'
+    'My-Custom-Header': '42',
   }
 }).then(response => {
   if (!response.ok)
     throw Error(`HTTP error, status = ${response.status}`);
   return response.json();
-}).then(data => {
-  console.log(data)
-  const rawGeneratedData = JSON.parse(data);
+}).then(rawGeneratedData => {
   if (rawGeneratedData === null)
     throw Error('Response contains null data');
   const n = rawGeneratedData.length;
@@ -26,8 +48,8 @@ fetch('http://localhost:9091/data', {
   for (let i = 0; i < n; i++) {
     generatedData[i] = {
       position: [
-        rawGeneratedData,                             // x (real value)
-        Math.round(Math.random() * 600) - 300      // y (jittering)
+        rawGeneratedData[i],                          // x (real value)
+        Math.round(Math.random() * 100) + 100      // y (jittering)
       ],
       group: Math.floor(Math.random() * groupColors.length),
       name: `Pint #${i}`
