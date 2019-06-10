@@ -12,6 +12,7 @@ module.exports = {
     'three-normal': path.resolve(src, 'three-normal'),
     'webgl': path.resolve(src, 'webgl'),
     'earth-orbit': path.resolve(src, 'earth-orbit'),
+    'twojs': path.resolve(src, 'twojs'),
   },
   output: {
     path: dist,
@@ -56,6 +57,11 @@ module.exports = {
       template: path.resolve(src, 'earth-orbit.html'),
       inject: false,
       filename: 'earth-orbit.html'
+    }),
+    new HtmlWebpackPlugin({
+      template: path.resolve(src, 'twojs.html'),
+      inject: false,
+      filename: 'twojs.html'
     }),
   ],
   externals: {

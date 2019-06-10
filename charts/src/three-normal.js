@@ -4,7 +4,7 @@ const gui = new dat.GUI();
 
 const options = {
   name: 'normal',
-  length: 1000,
+  length: 5e6,
   params: {
     mean: 300,
     sigma: 100
@@ -24,7 +24,6 @@ const searchParams = new URLSearchParams();
 searchParams.append('name', options.name);
 searchParams.append('length', options.length);
 Object.keys(options.params).forEach(key => searchParams.append(key, options.params[key]));
-searchParams.append('name', options.name);
 
 /* Three.js */
 fetch(`http://localhost:9091/data?${searchParams}`, {
