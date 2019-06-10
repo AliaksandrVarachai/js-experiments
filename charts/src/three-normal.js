@@ -4,7 +4,7 @@ const gui = new dat.GUI();
 
 const options = {
   name: 'normal',
-  length: 5e6,
+  length: 1e5,
   params: {
     mean: 300,
     sigma: 100
@@ -62,7 +62,10 @@ fetch(`http://localhost:9091/data?${searchParams}`, {
 
   const scene = new THREE.Scene();
   const camera = new THREE.OrthographicCamera(width / -2, width / 2, height / 2, height / -2, 0, 1000);
-  const renderer = new THREE.WebGLRenderer();
+  // TODO: add antialiasing just for arrows and text
+  const renderer = new THREE.WebGLRenderer({
+    antialias: true
+  });
   renderer.setSize(width, height);
   document.body.appendChild(renderer.domElement);
 
@@ -91,44 +94,78 @@ fetch(`http://localhost:9091/data?${searchParams}`, {
 
   // BEGIN of AXES (does not work for a while)
 
-  class AxisGridHelper {
-    constructor(units = 10) {
-      const axes = new THREE.AxesHelper();
-      axes.material.depthTest = false;
-      axes.renderOrder = 2;  // after the grid
-      scene.add(axes);
+  // class AxisGridHelper {
+  //   constructor(units = 10) {
+  //     const axes = new THREE.AxesHelper(200);
+  //     axes.material.depthTest = false;
+  //     axes.renderOrder = 2;  // after the grid
+  //     scene.add(axes);
+  //
+  //     const grid = new THREE.GridHelper(units, units);
+  //     grid.material.depthTest = false;
+  //     grid.renderOrder = 1;
+  //     scene.add(grid);
+  //
+  //     this.grid = grid;
+  //     this.axes = axes;
+  //     this.visible = false;
+  //   }
+  //   get visible() {
+  //     return this._visible;
+  //   }
+  //   set visible(v) {
+  //     this._visible = v;
+  //     this.grid.visible = v;
+  //     this.axes.visible = v;
+  //   }
+  // }
+  //
+  //
+  // function makeAxisGrid(label, units) {
+  //   const helper = new AxisGridHelper(units);
+  //   gui.add(helper, 'visible').name(label);
+  // }
+  //
+  // makeAxisGrid('Scatter Plot for X', 50);
 
-      const grid = new THREE.GridHelper(units, units);
-      grid.material.depthTest = false;
-      grid.renderOrder = 1;
-      scene.add(grid);
+  const grid = new THREE.GridHelper(1000, 10);
+  grid.material.depthTest = false;
+  grid.renderOrder = 1;
+  grid.rotateX(Math.PI / 2);
+  scene.add(grid);
 
-      this.grid = grid;
-      this.axes = axes;
-      this.visible = false;
-    }
-    get visible() {
-      return this._visible;
-    }
-    set visible(v) {
-      this._visible = v;
-      this.grid.visible = v;
-      this.axes.visible = v;
-    }
-  }
-
-
-  function makeAxisGrid(label, units) {
-    const helper = new AxisGridHelper(units);
-    gui.add(helper, 'visible').name(label);
-  }
-
-  makeAxisGrid('Scatter Plot for X', 50);
 
   // END of AXES
 
+  const axisCommonOptions = {
+    hexColor: 0x000000,
+    headLength: 30,
+    headWidth: 10
+  };
 
-  camera.position.z = 5;
+  const dirX = new THREE.Vector3(1, 0, 0);
+  const dirY = new THREE.Vector3(0, 1, 0);
+  const origin = new THREE.Vector3(0, 0, 0);
+
+  const arrowHelperX = new THREE.ArrowHelper(
+    dirX,
+    origin,
+    Math.floor(0.9 * width / 2),
+    axisCommonOptions.hexColor,
+    axisCommonOptions.headLength,
+    axisCommonOptions.headWidth
+  );
+  const arrowHelperY = new THREE.ArrowHelper(
+    dirY,
+    origin, Math.floor(0.9 * height / 2),
+    axisCommonOptions.hexColor,
+    axisCommonOptions.headLength,
+    axisCommonOptions.headWidth
+  );
+  scene.add(arrowHelperX, arrowHelperY);
+
+
+  camera.position.z = 100;
 
   function animate() {
     renderer.render(scene, camera);
