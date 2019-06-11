@@ -4,7 +4,7 @@ const gui = new dat.GUI();
 
 const options = {
   name: 'normal',
-  length: 1e5,
+  length: 1e3,
   params: {
     mean: 300,
     sigma: 100
@@ -164,13 +164,48 @@ fetch(`http://localhost:9091/data?${searchParams}`, {
   );
   scene.add(arrowHelperX, arrowHelperY);
 
+  const raycaster = new THREE.Raycaster();
+  const clientMouse = new THREE.Vector3();
+  const mouse = new THREE.Vector2();
+
+  const canvasTopLeft = new THREE.Object3D();
+  canvasTopLeft.translateX(-width / 2);
+  canvasTopLeft.translateY(height / 2);
+  canvasTopLeft.rotateX(Math.PI);
+  scene.add(canvasTopLeft);
+
+
+  function onMouseMove(event) {
+    // mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    // mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+    clientMouse.set(event.clientX, event.clientY, 0);
+    const canvasTopLeftWorldCoords = canvasTopLeft.localToWorld(clientMouse);
+    //const _position = new THREE.Vector3();
+    //console.log(canvasTopLeft.getWorldPosition(_position));
+    //console.log('position:', _position)
+    //console.log(canvasTopLeft.getWorldQuaternion())
+    mouse.set(canvasTopLeftWorldCoords.x, canvasTopLeftWorldCoords.y);
+    console.log(mouse.x, mouse.y)
+  }
 
   camera.position.z = 100;
 
-  function animate() {
+  function render() {
+    raycaster.setFromCamera(mouse, camera);
+    // const intersects = raycaster.intersectObjects(scene.children);
+    const intersects = raycaster.intersectObjects(points);
+    console.log('render')
+    for (let i = 0; i < intersects.length; i++) {
+      console.log(i);
+      intersects[i].object.material.color.set(0xff0000);
+    }
     renderer.render(scene, camera);
   }
-  animate();
+
+  window.addEventListener('mousemove', onMouseMove, false);
+
+  requestAnimationFrame(render);
+
 
 }).catch(err => {
   throw(err);
