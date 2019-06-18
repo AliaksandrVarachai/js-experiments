@@ -4,7 +4,7 @@ const gui = new dat.GUI();
 
 const options = {
   name: 'normal',
-  length: 1e3,
+  length: 1e2,
   params: {
     mean: 300,
     sigma: 100
@@ -59,6 +59,7 @@ fetch(`http://localhost:9091/data?${searchParams}`, {
 
   const width = window.innerWidth;
   const height = window.innerHeight;
+  const dotSize = 4;
 
   const scene = new THREE.Scene();
   const camera = new THREE.OrthographicCamera(width / -2, width / 2, height / 2, height / -2, 0, 1000);
@@ -83,7 +84,7 @@ fetch(`http://localhost:9091/data?${searchParams}`, {
   pointsGeometry.colors = colors;
 
   const pointsMaterial = new THREE.PointsMaterial({
-    size: 4,
+    size: dotSize,
     vertexColors: THREE.VertexColors,
   });
 
@@ -185,7 +186,15 @@ fetch(`http://localhost:9091/data?${searchParams}`, {
     //console.log('position:', _position)
     //console.log(canvasTopLeft.getWorldQuaternion())
     mouse.set(canvasTopLeftWorldCoords.x, canvasTopLeftWorldCoords.y);
-    console.log(mouse.x, mouse.y)
+    console.log(mouse.x, mouse.y);
+    const selectedDots = [];
+    for (let i = 0, len = generatedData.length; i < len; i++) {
+      const pos = generatedData[i].position;
+      if (mouse.x >= pos[0] - dotSize && mouse.x <= pos[0] + dotSize) {
+        selectedDots.push(i);
+      }
+    }
+    console.log(selectedDots);
   }
 
   camera.position.z = 100;

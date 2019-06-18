@@ -10,6 +10,7 @@ module.exports = {
     'charts-comparison': path.resolve(src, 'charts-comparison'),
     'three': path.resolve(src, 'three'),
     'three-normal': path.resolve(src, 'three-normal'),
+    'three-scaled': path.resolve(src, 'three-scaled'),
     'webgl': path.resolve(src, 'webgl'),
     'earth-orbit': path.resolve(src, 'earth-orbit'),
     'twojs': path.resolve(src, 'twojs'),
@@ -47,6 +48,11 @@ module.exports = {
       template: path.resolve(src, 'three-normal.html'),
       inject: false,
       filename: 'three-normal.html'
+    }),
+    new HtmlWebpackPlugin({
+      template: path.resolve(src, 'three-scaled.html'),
+      inject: false,
+      filename: 'three-scaled.html'
     }),
     new HtmlWebpackPlugin({
       template: path.resolve(src, 'webgl.html'),
