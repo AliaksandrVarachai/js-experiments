@@ -29,7 +29,7 @@ function fetchData(options, filters = []) {
     for (let i = 0; i < n; i++) {
       generatedData[i] = {
         position: [
-          Math.round(Math.random() * jitteringWidth) - jitteringWidth / 2,   // x (jittering)
+          Math.random() * jitteringWidth - jitteringWidth / 2,   // x (jittering)
           json[i]                                                            // y (real value)
         ],
         group: Math.floor(Math.random() * groupColors.length),
@@ -42,19 +42,18 @@ function fetchData(options, filters = []) {
 
 fetchData({
   name: 'normal',
-  length: 1e2,
+  length: 1e4,
   params: {
     mean: 300,
     sigma: 100
   }
 }).then(generatedData => {
-  const width = window.innerWidth;
-  const height = window.innerHeight;
+  const width = 400; //window.innerWidth;
+  const height = 400; //window.innerHeight;
   const renderer = new THREE.WebGLRenderer({
     antialias: true
   });
-  //renderer.setSize(width, height);
-  renderer.setSize(400, 400)
+  renderer.setSize(width, height);
   document.body.appendChild(renderer.domElement);
 
   let [xMin, yMin] = generatedData[0].position;
@@ -75,26 +74,49 @@ fetchData({
 
   const xTicksDensity = 50;  // px per tick
   const yTicksDensity = 50;  // px per tick
-  const chartMargins = {
-    left: 10,
-    right: 20,
-    top: 20,
-    bottom: 40
+
+  const chart = {
+    margins: {
+      left: 10,
+      right: 20,
+      top: 20,
+      bottom: 40
+    }
   };
-  const xTicks = d3Array.ticks(xMin, xMax, Math.floor((width - chartMargins.left - chartMargins.right) / xTicksDensity));
-  const yTicks = d3Array.ticks(yMin, yMax, Math.floor((height - chartMargins.top - chartMargins.bottom) / yTicksDensity));
+  chart.axes = {
+    rangeX: {
+      min: chart.margins.left,
+      max: width - chart.margins.right
+    },
+    rangeY: {
+      min: chart.margins.bottom,
+      max: height - chart.margins.top
+    }
+  };
 
-  console.log(xMin, xMax, xTicks)
-  console.log(yMin, yMax, yTicks)
+  const xTicks = d3Array.ticks(xMin, xMax, Math.floor((chart.axes.rangeX.max - chart.axes.rangeX.min) / xTicksDensity));
+  const yTicks = d3Array.ticks(yMin, yMax, Math.floor((chart.axes.rangeY.max - chart.axes.rangeY.min) / yTicksDensity));
+  // TODO: add fix to cover with ticks the whole range
+  const xStep = xTicks[1] - xTicks[0];
+  xTicks.shift(xTicks[0] - xStep);
+  xTicks.push(xTicks[xTicks.length - 1] + xStep);
+  const yStep = yTicks[1] - yTicks[0];
+  yTicks.shift(yTicks[0] - yStep);
+  yTicks.push(yTicks[yTicks.length - 1] + yStep);
 
-  const camera = new THREE.OrthographicCamera(
-    xTicks[0] - chartMargins.left,
-    xTicks[xTicks.length - 1] + chartMargins.right,
-    yTicks[yTicks.length - 1] + chartMargins.top,
-    yTicks[0] + chartMargins.bottom,
-    0,
-    1000);
-  camera.position.z = 100;
+  chart.axes.domainX = {
+    min: xTicks[0],
+    max: xTicks[xTicks.length - 1]
+  };
+  chart.axes.domainY = {
+    min: yTicks[0],
+    max: yTicks[yTicks.length - 1]
+  };
+  const xScaler = createScaleTransformer([chart.axes.domainX.min, chart.axes.domainX.max], [chart.axes.rangeX.min, chart.axes.rangeX.max]);
+  const yScaler = createScaleTransformer([chart.axes.domainY.min, chart.axes.domainY.max], [chart.axes.rangeY.min, chart.axes.rangeY.max]);
+
+  const camera = new THREE.OrthographicCamera(0, width, height, 0, 0, 1000);
+  camera.position.z = 10;
 
   const scene = new THREE.Scene();
   scene.background = new THREE.Color('white');
@@ -102,7 +124,7 @@ fetchData({
   const pointsGeometry = new THREE.Geometry();
   const pointsColors = new Array(generatedData.length);
   generatedData.forEach((datum, i) => {
-    const vertex = new THREE.Vector3(datum.position[0], datum.position[1], 0);
+    const vertex = new THREE.Vector3(xScaler.toRange(datum.position[0]), yScaler.toRange(datum.position[1]), 0);
     pointsGeometry.vertices.push(vertex);
     pointsColors[i] = new THREE.Color(groupColors[datum.group]);
   });
@@ -130,22 +152,22 @@ fetchData({
 
   let j = 0;
   for (let i = 0; i < xTicks.length; i++) {
-    gridVertices[j]     = xTicks[i];
-    gridVertices[j + 1] = yTicksMin;
+    gridVertices[j]     = xScaler.toRange(xTicks[i]);
+    gridVertices[j + 1] = yScaler.toRange(yTicksMin);
     gridVertices[j + 2] = 0;
-    gridVertices[j + 3] = xTicks[i];
-    gridVertices[j + 4] = yTicksMax;
+    gridVertices[j + 3] = xScaler.toRange(xTicks[i]);
+    gridVertices[j + 4] = yScaler.toRange(yTicksMax);
     gridVertices[j + 5] = 0;
     gridColor.toArray(gridColors, j);
     gridColor.toArray(gridColors, j + 3);
     j += 6;
   }
   for (let i = 0; i < yTicks.length; i++) {
-    gridVertices[j]     = xTicksMin;
-    gridVertices[j + 1] = yTicks[i];
+    gridVertices[j]     = xScaler.toRange(xTicksMin);
+    gridVertices[j + 1] = yScaler.toRange(yTicks[i]);
     gridVertices[j + 2] = 0;
-    gridVertices[j + 3] = xTicksMax;
-    gridVertices[j + 4] = yTicks[i];
+    gridVertices[j + 3] = xScaler.toRange(xTicksMax);
+    gridVertices[j + 4] = yScaler.toRange(yTicks[i]);
     gridVertices[j + 5] = 0;
     gridColor.toArray(gridColors, j);
     gridColor.toArray(gridColors, j + 3);
@@ -167,5 +189,19 @@ fetchData({
 }).catch(err => {
   throw(err);
 });
+
+function createScaleTransformer([domainMin, domainMax], [rangeMin, rangeMax]) {
+  if (domainMin === domainMax || rangeMin === rangeMax)
+    throw Error('Both domain and range must contain different elements.');
+  const dDomain = domainMax - domainMin;
+  const dRange = rangeMax - rangeMin;
+
+  return {
+    toRange: x => rangeMin + dRange / dDomain * (x - domainMin),
+    toRangeW: size => dRange / dDomain * size,
+    toDomain: y => domainMin + dDomain / dRange * (y - rangeMin)
+  };
+}
+
 
 
