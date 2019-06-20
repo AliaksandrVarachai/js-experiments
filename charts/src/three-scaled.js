@@ -43,14 +43,14 @@ function fetchData(options, filters = []) {
 
 fetchData({
   name: 'normal',
-  length: 1e4,
+  length: 1e2,
   params: {
     mean: 300,
     sigma: 100
   }
-}).then(([generatedData, font]) => {
-  const width = 400; //window.innerWidth;
-  const height = 400; //window.innerHeight;
+}).then(generatedData => {
+  const width = 600;  // window.innerWidth;
+  const height = 400; // window.innerHeight;
   const renderer = new THREE.WebGLRenderer({
     antialias: true
   });
@@ -78,7 +78,7 @@ fetchData({
 
   const chart = {
     margins: {
-      left: 10,
+      left: 80,
       right: 20,
       top: 20,
       bottom: 40
@@ -95,8 +95,10 @@ fetchData({
     }
   };
 
-  const xTicks = d3Array.ticks(xMin, xMax, Math.floor((chart.axes.rangeX.max - chart.axes.rangeX.min) / xTicksDensity));
-  const yTicks = d3Array.ticks(yMin, yMax, Math.floor((chart.axes.rangeY.max - chart.axes.rangeY.min) / yTicksDensity));
+  const xOffset = 0.2 * (xMax - xMin);
+  const yOffset = 0.2 * (yMax - yMin);
+  const xTicks = d3Array.ticks(xMin - xOffset, xMax + xOffset, Math.floor((chart.axes.rangeX.max - chart.axes.rangeX.min) / xTicksDensity));
+  const yTicks = d3Array.ticks(yMin - yOffset, yMax + yOffset, Math.floor((chart.axes.rangeY.max - chart.axes.rangeY.min) / yTicksDensity));
   // TODO: add fix to cover with ticks the whole range
   const xStep = xTicks[1] - xTicks[0];
   xTicks.shift(xTicks[0] - xStep);
@@ -185,23 +187,62 @@ fetchData({
   scene.add(grid);
 
   // Draw grid labels
-  const labelShape = new THREE.Font(font);
-  const labelMaterial = new THREE.MeshBasicMaterial({color: 0xff0000});
+  const labelFontSize = 10;
+  const labelFontColor = 0x000000;
+  const labelFont = new THREE.Font(font);
+  xTicks.forEach(x => {
+    const labelShapes = labelFont.generateShapes(x.toString(), labelFontSize);
+    const labelGeometry = new THREE.ShapeBufferGeometry(labelShapes);
+    const labelMaterial = new THREE.MeshBasicMaterial({color: labelFontColor});
+    labelGeometry.computeBoundingBox();
+    const labelWidth = labelGeometry.boundingBox.max.x - labelGeometry.boundingBox.min.x;
+    const labelHeight = labelGeometry.boundingBox.max.y - labelGeometry.boundingBox.min.y;
+    labelGeometry.translate(-labelWidth / 2, -labelHeight, 0);
+    const label = new THREE.Mesh(labelGeometry, labelMaterial);
+    label.position.x = xScaler.toRange(x);
+    label.position.y = chart.margins.bottom - 5;
+    scene.add(label);
+  });
+  yTicks.forEach(y => {
+    const labelShapes = labelFont.generateShapes(y.toString(), labelFontSize);
+    const labelGeometry = new THREE.ShapeBufferGeometry(labelShapes);
+    const labelMaterial = new THREE.MeshBasicMaterial({color: labelFontColor});
+    labelGeometry.computeBoundingBox();
+    const labelWidth = labelGeometry.boundingBox.max.x - labelGeometry.boundingBox.min.x;
+    const labelHeight = labelGeometry.boundingBox.max.y - labelGeometry.boundingBox.min.y;
+    labelGeometry.translate(-labelWidth, -labelHeight / 2, 0);
+    const label = new THREE.Mesh(labelGeometry, labelMaterial);
+    label.position.x = chart.margins.left - 5;
+    label.position.y = yScaler.toRange(y);
+    scene.add(label);
+  });
 
 
-  const extrudeLabelSettings = {
-    bevelEnabled: false, // vor performance
-
-    font: new THREE.Font(font),
-    size: 100,
-    height: 16,
-  };
 
 
 
-  const labelGeometry = new THREE.TextBufferGeometry('123', labelOptions);
 
-  scene.add()
+
+
+  // const xRight = xTicks[0];
+  // console.log('labelWidth=', labelWidth);
+
+
+
+  // console.log(label);
+
+
+
+  // const extrudeLabelSettings = {
+  //   bevelEnabled: false, // vor performance
+  //
+  //   font: new THREE.Font(font),
+  //   size: 100,
+  //   height: 16,
+  // };
+    //const labelGeometry = new THREE.TextBufferGeometry('123', labelOptions);
+
+
 
   renderer.render(scene, camera);
 
