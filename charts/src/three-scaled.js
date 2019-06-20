@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import * as d3Array from 'd3-array';
+import font from 'three/examples/fonts/optimer_regular.typeface.json';
 
 const groupColors = [
   'red',
@@ -47,7 +48,7 @@ fetchData({
     mean: 300,
     sigma: 100
   }
-}).then(generatedData => {
+}).then(([generatedData, font]) => {
   const width = 400; //window.innerWidth;
   const height = 400; //window.innerHeight;
   const renderer = new THREE.WebGLRenderer({
@@ -182,6 +183,25 @@ fetchData({
   const grid = new THREE.LineSegments(gridGeometry, gridMaterial);
 
   scene.add(grid);
+
+  // Draw grid labels
+  const labelShape = new THREE.Font(font);
+  const labelMaterial = new THREE.MeshBasicMaterial({color: 0xff0000});
+
+
+  const extrudeLabelSettings = {
+    bevelEnabled: false, // vor performance
+
+    font: new THREE.Font(font),
+    size: 100,
+    height: 16,
+  };
+
+
+
+  const labelGeometry = new THREE.TextBufferGeometry('123', labelOptions);
+
+  scene.add()
 
   renderer.render(scene, camera);
 
