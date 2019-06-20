@@ -217,34 +217,51 @@ fetchData({
     scene.add(label);
   });
 
-
-
-
-
-
-
-
-  // const xRight = xTicks[0];
-  // console.log('labelWidth=', labelWidth);
-
-
-
-  // console.log(label);
-
-
-
-  // const extrudeLabelSettings = {
-  //   bevelEnabled: false, // vor performance
-  //
-  //   font: new THREE.Font(font),
-  //   size: 100,
-  //   height: 16,
-  // };
-    //const labelGeometry = new THREE.TextBufferGeometry('123', labelOptions);
-
-
-
   renderer.render(scene, camera);
+
+  // ***************** Integration
+  const raycaster = new THREE.Raycaster();
+  const clientMouse = new THREE.Vector3();
+  const mouse = new THREE.Vector2();
+
+  const canvasTopLeft = new THREE.Object3D();
+  canvasTopLeft.translate(0, height / 2, 0);
+  canvasTopLeft.rotateX(Math.PI);
+  scene.add(canvasTopLeft);
+
+  function onMouseMove(event) {
+    // mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    // mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+    clientMouse.set(event.clientX, event.clientY, 0);
+    const canvasTopLeftWorldCoords = canvasTopLeft.localToWorld(clientMouse);
+    //const _position = new THREE.Vector3();
+    //console.log(canvasTopLeft.getWorldPosition(_position));
+    //console.log('position:', _position)
+    //console.log(canvasTopLeft.getWorldQuaternion())
+    mouse.set(canvasTopLeftWorldCoords.x, canvasTopLeftWorldCoords.y);
+    console.log(mouse.x, mouse.y);
+    const selectedDots = [];
+    for (let i = 0, len = generatedData.length; i < len; i++) {
+      const pos = generatedData[i].position;
+      if (mouse.x >= pos[0] - dotSize && mouse.x <= pos[0] + dotSize) {
+        selectedDots.push(i);
+      }
+    }
+    console.log(selectedDots);
+  }
+
+  function render() {
+    raycaster.setFromCamera(mouse, camera);
+    // const intersects = raycaster.intersectObjects(scene.children);
+    const intersects = raycaster.intersectObjects(points);
+    for (let i = 0; i < intersects.length; i++) {
+      console.log(i);
+      intersects[i].object.material.color.set(0xff0000);
+    }
+    renderer.render(scene, camera);
+  }
+
+  window.addEventListener('mousemove', onMouseMove, false);
 
 
 }).catch(err => {
