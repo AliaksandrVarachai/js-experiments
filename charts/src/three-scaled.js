@@ -31,7 +31,7 @@ function fetchData(options, filters = []) {
       generatedData[i] = {
         position: [
           Math.random() * jitteringWidth - jitteringWidth / 2,   // x (jittering)
-          json[i]                                                            // y (real value)
+          json[i]                                                // y (real value)
         ],
         group: Math.floor(Math.random() * groupColors.length),
         name: `Pint #${i}`
@@ -119,7 +119,9 @@ fetchData({
   const yScaler = createScaleTransformer([chart.axes.domainY.min, chart.axes.domainY.max], [chart.axes.rangeY.min, chart.axes.rangeY.max]);
 
   const camera = new THREE.OrthographicCamera(0, width, height, 0, 0, 1000);
-  camera.position.z = 10;
+  camera.position.z = 100;
+  const cameraDirection = new THREE.Vector3(0, 0, -1);
+  camera.getWorldDirection(cameraDirection);
 
   const scene = new THREE.Scene();
   scene.background = new THREE.Color('white');
@@ -133,7 +135,7 @@ fetchData({
   });
   pointsGeometry.colors = pointsColors;
 
-  const dotSize = 4;
+  const dotSize = 12;
   const pointsMaterial = new THREE.PointsMaterial({
     size: dotSize,
     vertexColors: THREE.VertexColors,
@@ -217,52 +219,47 @@ fetchData({
     scene.add(label);
   });
 
-  renderer.render(scene, camera);
-
-  // ***************** Integration
+  // Integration
+  const pointThreshold = dotSize / 2;
   const raycaster = new THREE.Raycaster();
-  const clientMouse = new THREE.Vector3();
-  const mouse = new THREE.Vector2();
+  raycaster.params.Points.threshold = pointThreshold;
 
-  const canvasTopLeft = new THREE.Object3D();
-  canvasTopLeft.translate(0, height / 2, 0);
-  canvasTopLeft.rotateX(Math.PI);
-  scene.add(canvasTopLeft);
+  const mouse = new THREE.Vector3(0, 0, camera.position.z);
+  const mouseTransformer = createMouseTransformer(renderer, mouse); // calls update for mouse;
+
+  let previousIntersects = [];
 
   function onMouseMove(event) {
-    // mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    // mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
-    clientMouse.set(event.clientX, event.clientY, 0);
-    const canvasTopLeftWorldCoords = canvasTopLeft.localToWorld(clientMouse);
-    //const _position = new THREE.Vector3();
-    //console.log(canvasTopLeft.getWorldPosition(_position));
-    //console.log('position:', _position)
-    //console.log(canvasTopLeft.getWorldQuaternion())
-    mouse.set(canvasTopLeftWorldCoords.x, canvasTopLeftWorldCoords.y);
-    console.log(mouse.x, mouse.y);
-    const selectedDots = [];
-    for (let i = 0, len = generatedData.length; i < len; i++) {
-      const pos = generatedData[i].position;
-      if (mouse.x >= pos[0] - dotSize && mouse.x <= pos[0] + dotSize) {
-        selectedDots.push(i);
-      }
+    points.geometry.colorsNeedUpdate = true;
+    mouseTransformer.toRange(event.clientX, event.clientY);
+    raycaster.set(mouse, cameraDirection);
+
+    const intersects = raycaster.intersectObject(points);
+
+    for (let i = 0; i < previousIntersects.length; i++) {
+      const index = previousIntersects[i].index;
+      // sets old color
+      points.geometry.colors[index].set(groupColors[generatedData[index].group]);
     }
-    console.log(selectedDots);
+
+
+    for (let i = 0; i < intersects.length; i++) {
+      points.geometry.colors[intersects[i].index].set(0x000000);
+    }
+    previousIntersects = intersects;
+    console.log(`intersected ${intersects.length} points`)
   }
 
-  function render() {
-    raycaster.setFromCamera(mouse, camera);
-    // const intersects = raycaster.intersectObjects(scene.children);
-    const intersects = raycaster.intersectObjects(points);
-    for (let i = 0; i < intersects.length; i++) {
-      console.log(i);
-      intersects[i].object.material.color.set(0xff0000);
-    }
+  function animate() {
+    requestAnimationFrame(animate);
     renderer.render(scene, camera);
   }
 
+
+
   window.addEventListener('mousemove', onMouseMove, false);
 
+  animate();
 
 }).catch(err => {
   throw(err);
@@ -279,6 +276,30 @@ function createScaleTransformer([domainMin, domainMax], [rangeMin, rangeMax]) {
     toRangeW: size => dRange / dDomain * size,
     toDomain: y => domainMin + dDomain / dRange * (y - rangeMin)
   };
+}
+
+// TODO: update on resize and scroll
+function createMouseTransformer(renderer, mouse) {
+  let rect, borderLeft, borderTop, height;
+  const canvas = renderer.domElement;
+
+  function update() {
+    rect = canvas.getBoundingClientRect();
+    const canvasStyle = getComputedStyle(canvas);
+    borderLeft = parseFloat(canvasStyle.getPropertyValue('border-left'));
+    borderTop = parseFloat(canvasStyle.getPropertyValue('border-top'));
+    height = renderer.getSize().height;
+  }
+
+  update();
+
+  return {
+    toRange: (clientX, clientY) => {
+      mouse.x = clientX - rect.left - borderLeft;
+      mouse.y = height - (clientY - rect.top - borderTop);
+    },
+    update
+  }
 }
 
 
