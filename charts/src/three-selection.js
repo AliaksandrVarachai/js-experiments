@@ -30,13 +30,11 @@ const rendererInstance = (function() {
     drawDot(x, y);
   }
 
-  function stopSelectPoint(x, y) {
-    console.log(`stopSelectPoint: (${x}, ${y})`);
+  function finishSelectPoint(x, y) {
     drawDot(x, y)
   }
 
   function updateSelectPoint(x, y) {
-    console.log(`updateSelectPoint: (${x}, ${y})`);
     drawDot(startSelectPos.x, startSelectPos.y)
   }
 
@@ -44,7 +42,7 @@ const rendererInstance = (function() {
     drawRect(x, y, startSelectPos.x, startSelectPos.y, true);
   }
 
-  function stopSelectGroupPoints(x, y) {
+  function finishSelectGroupPoints(x, y) {
     console.log(`stopSelectGroupPoints: (${x}, ${y})`);
     drawRect(x, y, startSelectPos.x, startSelectPos.y, true);
   }
@@ -81,8 +79,8 @@ const rendererInstance = (function() {
     startSelect,
     updateSelectPoint,
     updateSelectGroupPoints,
-    stopSelectPoint,
-    stopSelectGroupPoints,
+    finishSelectPoint,
+    finishSelectGroupPoints,
   };
 })();
 
@@ -90,7 +88,7 @@ const rendererInstance = (function() {
 /**
  * Chart Instance
  */
-const chartInstance = (function({domElement, startSelect, updateSelectPoint, updateSelectGroupPoints, stopSelectPoint, stopSelectGroupPoints}) {
+const chartInstance = (function({domElement, startSelect, updateSelectPoint, updateSelectGroupPoints, finishSelectPoint, finishSelectGroupPoints}) {
   let rect;
   let border;
   let mouseDownPos = {clientX: 0, clientY: 0};
@@ -160,10 +158,10 @@ const chartInstance = (function({domElement, startSelect, updateSelectPoint, upd
     isMouseDown = false;
     if (checkClickThreshold(event.clientX, event.clientY)) {
       // process a click
-      stopSelectPoint(x, y);
+      finishSelectPoint(x, y);
     } else {
       // process a border selection
-      stopSelectGroupPoints(x, y);
+      finishSelectGroupPoints(x, y);
     }
   };
 
@@ -181,7 +179,7 @@ const chartInstance = (function({domElement, startSelect, updateSelectPoint, upd
   startSelect: rendererInstance.startSelect,
   updateSelectPoint: rendererInstance.updateSelectPoint,
   updateSelectGroupPoints: rendererInstance.updateSelectGroupPoints,
-  stopSelectPoint: rendererInstance.stopSelectPoint,
-  stopSelectGroupPoints: rendererInstance.stopSelectGroupPoints
+  finishSelectPoint: rendererInstance.finishSelectPoint,
+  finishSelectGroupPoints: rendererInstance.finishSelectGroupPoints
 });
 
