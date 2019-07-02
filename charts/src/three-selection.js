@@ -136,12 +136,10 @@ const chartInstance = (function({domElement, startSelect, updateSelectPoint, upd
   }
 
   domElement.onmouseenter = event => {
-    isMouseMoveHandlerActive = true;
     addEventListener('mousemove', mouseMoveHandler);
   };
 
   domElement.onmouseleave = event => {
-    isMouseMoveHandlerActive = false;
     removeEventListener('mousemove', mouseMoveHandler);
   };
 
