@@ -1,0 +1,36 @@
+{
+  "name": "charts",
+  "version": "1.0.0",
+  "description": "Experiments with chart libraries",
+  "repository": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server --config=webpack.config.dev.js",
+    "build": "webpack --config=webpack.config.prod.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chart.js": "^2.8.0",
+    "d3-array": "^2.2.0",
+    "dat.gui": "^0.7.6",
+    "gl-matrix": "^3.0.0",
+    "three": "^0.105.1",
+    "two.js": "^0.7.0-beta.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "babel-loader": "^8.0.6",
+    "cephes": "^1.1.2",
+    "dotenv": "^8.0.0",
+    "html-replace-webpack-plugin": "^2.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "webpack": "^4.32.2",
+    "webpack-cli": "^3.3.2",
+    "webpack-dev-server": "^3.4.1",
+    "webpack-merge": "^4.2.1"
+  }
+}
