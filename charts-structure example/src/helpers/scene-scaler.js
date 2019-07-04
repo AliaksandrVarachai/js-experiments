@@ -10,8 +10,6 @@ export default function SceneScaler([domainMin, domainMax], [rangeMin, rangeMax]
   let dDomain = 1;
   let dRange = 1;
 
-  this.update([domainMin, domainMax], [rangeMin, rangeMax]);
-
   /**
    * Scales origin data to adjust its range to a scene size.
    * @param {number} x - real value to be shown.
@@ -55,5 +53,8 @@ export default function SceneScaler([domainMin, domainMax], [rangeMin, rangeMax]
     rangeMax = newRangeMax;
     dDomain = newDomainMax - newDomainMin;
     dRange = newRangeMax - newRangeMin;
-  }
+  };
+
+  // Constructor
+  this.update([domainMin, domainMax], [rangeMin, rangeMax]);
 }

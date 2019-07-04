@@ -50,8 +50,8 @@ function dispatch(eventName, ...args) {
   if (!eventName && typeof eventName !== 'string')
     throw Error('Event name must be not empty string.');
   if (!listeners[eventName])
-    throw Error(`There is no registered event "${eventName}".`);
-  listeners.forEach(listener => listener(...args));
+    return;
+  listeners[eventName].forEach(listener => listener(...args));
 }
 
 

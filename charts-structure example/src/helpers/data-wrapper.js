@@ -25,18 +25,40 @@
 export default function DataWrapper(data) {
   let columns;
 
-  this.set(data);
-
   /**
    * Updates data in the store.
    * @param {Object} newData
    */
-  this.set = function(newData) {
+  this.set = (newData) => {
     data = newData;
     columns = {};
     data.Columns.forEach((columnName, inx) => {
       columns[columnName] = inx;
     });
+
+    // TODO: remove min/max calculation
+    let xMin = +this.getXValue(0);
+    let yMin = +this.getYValue(0);
+    let xMax = xMin,
+      yMax = yMin;
+    this.forEach((row, index) => {
+      const x = +this.getXValue(row);
+      const y = +this.getYValue(row);
+      if (x < xMin) {
+        xMin = x;
+      } else if (x > xMax) {
+        xMax = x;
+      }
+      if (y < yMin) {
+        yMin = y;
+      } else if (y > yMax) {
+        yMax = y;
+      }
+    });
+    data.LimitsByColumn = [
+      {MinValue: xMin, MaxValue: xMax},
+      {MinValue: yMin, MaxValue: yMax},
+    ];
   };
 
   /**
@@ -58,17 +80,21 @@ export default function DataWrapper(data) {
   /**
    * Gets data item by its row and column.
    * @param {number|Object} row - row index or row object.
-   * @param {string} colName - column name.
+   * @param {number} axisIndex - 0 for X and 1 for Y axis.
    * @returns {*} - data item.
    */
-  this.getValue = function(row, colName) {
-    const colIndex = columns[colName];
+  function getValue(row, axisIndex) {
     if (typeof row === 'number')
-      return data.Rows[row][colIndex];
+      return data.Rows[row].R[axisIndex];
     if (typeof row === 'object')
-      return row[colIndex];
-    throw Error(`Row must be an object or a number, but ${typeof row} provided`);
-  };
+      return row.R[axisIndex];
+    throw Error(`Row must be an object or a number, but ${typeof row} provided.`);
+  }
+
+  this.getXValue = (row) => getValue(row, 0);
+  this.getYValue = (row) => getValue(row, 1);
+
+
 
   /**
    * Provides array-like forEach method.
@@ -83,4 +109,7 @@ export default function DataWrapper(data) {
       return data.Dimensions.RowCount;
     }
   });
+
+  // Constructor
+  this.set(data);
 }

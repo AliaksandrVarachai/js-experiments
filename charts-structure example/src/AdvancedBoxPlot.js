@@ -1,5 +1,6 @@
 import eventBus from './event-bus/event-bus';
 import SceneManager from './scene-manager/scene-manager';
+import * as SFWrapper from './spotfire-api-wrapper/spotfire-api-wrapper';
 
 
 const canvas = document.getElementById('boxplot');
@@ -10,13 +11,12 @@ const mouseDownPos = {clientX: 0, clientY: 0};
 const clickThreshold = 10;
 let isMouseDown = false;
 
-window.addEventListener('SpotfireLoaded', initializeAdvancedBoxPlot);
-
-function initializeAdvancedBoxPlot() {
+SFWrapper.isReadyPromise.then(_ => {
   updateSize();
 
   window.onresize = updateSize;
 
+  /*
   function mouseMoveHandler(event) {
     const {x, y} = toCanvasCoordinateSystem(event.clientX, event.clientY);
     if (isMouseDown) {
@@ -35,15 +35,17 @@ function initializeAdvancedBoxPlot() {
     sceneManager.update()
   }
 
-  domElement.onmouseenter = event => {
+
+  canvas.onmouseenter = event => {
     addEventListener('mousemove', mouseMoveHandler);
   };
 
-  domElement.onmouseleave = event => {
+  canvas.onmouseleave = event => {
     removeEventListener('mousemove', mouseMoveHandler);
   };
+  */
 
-  domElement.onmousedown = event => {
+  canvas.onmousedown = event => {
     isMouseDown = true;
     mouseDownPos.clientX = event.clientX;
     mouseDownPos.clientY = event.clientY;
@@ -51,7 +53,7 @@ function initializeAdvancedBoxPlot() {
     eventBus.dispatch('startSelect', x, y);
   };
 
-  domElement.onmouseup = event => {
+  canvas.onmouseup = event => {
     const {x, y} = toCanvasCoordinateSystem(event.clientX, event.clientY);
     isMouseDown = false;
     if (checkClickThreshold(event.clientX, event.clientY)) {
@@ -64,10 +66,12 @@ function initializeAdvancedBoxPlot() {
   };
 
   sceneManager.update();
-}
+});
 
 function updateSize() {
   // TODO: check if we need to rerender canvas after resizing
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
   rect = canvas.getBoundingClientRect();
   const canvasStyle = getComputedStyle(canvas);
   border = {

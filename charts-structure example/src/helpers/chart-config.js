@@ -37,11 +37,6 @@ export default function ChartConfig(data, canvas, customSettings) {
     OBJECT: 3,
   };
 
-  // Constructor
-  this.updateData(data);
-  this.updateCanvasSize({width: canvas.width, height: canvas.height});
-  this.updateSettings(customSettings);
-
   /**
    * Checks if data is primitive.
    * @param {*} val - checked value.
@@ -161,4 +156,9 @@ export default function ChartConfig(data, canvas, customSettings) {
   this.getSettings = function() {
     return settings;
   };
+
+  // Constructor
+  this.updateData(data);
+  this.updateCanvasSize({width: canvas.width, height: canvas.height});
+  this.updateSettings(customSettings);
 }

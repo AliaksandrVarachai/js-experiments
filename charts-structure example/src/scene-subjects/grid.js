@@ -1,20 +1,17 @@
+import * as THREE from 'three';
 import * as d3Array from 'd3-array';
 import font from 'three/examples/fonts/optimer_regular.typeface.json';
 
-export default function Grid(scene, dataWrapper, xScaler, yScaler) {
+export default function Grid(scene, dataWrapper, chartConfig, xScaler, yScaler) {
   const xTicksDensity = 50;  // px per tick
   const yTicksDensity = 50;  // px per tick
-
-  this.update();
-
 
   this.update = function() {
     const [{ MinValue: xMin, MaxValue: xMax }, { MinValue: yMin, MaxValue: yMax }] = dataWrapper.getLimitsByColumn();
 
-    const xOffset = 0.2 * (xMax - xMin);
-    const yOffset = 0.2 * (yMax - yMin);
-    const xTicks = d3Array.ticks(xMin - xOffset, xMax + xOffset, Math.floor((chart.axes.rangeX.max - chart.axes.rangeX.min) / xTicksDensity));
-    const yTicks = d3Array.ticks(yMin - yOffset, yMax + yOffset, Math.floor((chart.axes.rangeY.max - chart.axes.rangeY.min) / yTicksDensity));
+    const chart = chartConfig.get();
+    const xTicks = d3Array.ticks(xMin, xMax, Math.floor((chart.axes.rangeX.max - chart.axes.rangeX.min) / xTicksDensity));
+    const yTicks = d3Array.ticks(yMin, yMax, Math.floor((chart.axes.rangeY.max - chart.axes.rangeY.min) / yTicksDensity));
 
     // Draw grid
     const gridColor = new THREE.Color(0xe5e8e8);
@@ -88,5 +85,8 @@ export default function Grid(scene, dataWrapper, xScaler, yScaler) {
       label.position.y = yScaler.toRange(y);
       scene.add(label);
     });
-  }
+  };
+
+  // Constructor
+  this.update();
 }

@@ -8,8 +8,6 @@ export default function MousePosTransformer(renderer, targetMousePosition) {
   let rect, borderLeft, borderTop, height;
   const canvas = renderer.domElement;
 
-  this.updateSceneSize();
-
   // TODO: call update on resize and scroll
   /**
    * Updates sizes of the scene.
@@ -31,4 +29,7 @@ export default function MousePosTransformer(renderer, targetMousePosition) {
     targetMousePosition.x = clientX - rect.left - borderLeft;
     targetMousePosition.y = height - (clientY - rect.top - borderTop);
   };
+
+  // Constructor
+  this.updateSceneSize();
 }
