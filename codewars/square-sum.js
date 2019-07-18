@@ -105,7 +105,7 @@ function square_sums_row(n){
   return pathIndex === n - 1 ? path : false;
 }
 
-console.log(square_sums_row(50).sort((a, b) => a - b).join(','));
+console.log(square_sums_row(25).join(','));
 
 // for n = 46:
 var results = [];
