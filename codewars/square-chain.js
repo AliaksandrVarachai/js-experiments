@@ -1,25 +1,86 @@
-var n = 60;
-var chain = new Int32Array(n).fill(0);
-var chainBits = new Int32Array(32).fill(0); // 32*32=1024
-var chainTop;
+function FastArray(maxLength = 1024) {
+  if (maxLength > 1024)
+    throw Error('Array must have max length 1024.');
+  this.array = new Int32Array(maxLength);                         // contains numbers
+  this.arrayBits = new Int32Array(Math.ceil(maxLength / 32));  // for fast search
+  this.arrayTop = -1;                                             // last array index
+}
 
-// TODO: calculate free elements, check hamilton path. When negative - decrease chain and repeat
-var freeElements = new Int32Array(n).fill(0); // TODO: Provide the same functionality like for chain - inheritance
+FastArray.prototype.push = function(number) {
+  this.arrayTop++;
+  this.array[this.arrayTop] = number;
+  var bit = 1 << (number << 27 >>> 27);
+  this.arrayBits[number >>> 5] |= bit;
+};
 
+FastArray.prototype.pop = function() {
+  var number = this.array[this.arrayTop];
+  this.array[this.arrayTop] = 0;
+  var bit = 1 << (number << 27 >>> 27);
+  this.arrayBits &= ~bit;
+  this.arrayTop--;
+  return number;
+};
+
+FastArray.prototype.contains = function(number) {
+  var mask = 1 << (number << 27 >>> 27);
+  return this.arrayBits[number >>> 5] & mask;
+};
+
+FastArray.prototype.get = function(index) {
+  return this.array[index];
+};
+
+FastArray.prototype.erase  = function() {
+  this.array.fill(0);
+  this.arrayBits.fill(0);
+  this.arrayTop = -1;
+};
+
+FastArray.prototype.toString = function() {
+  var s = '';
+  for (var i = 0; i <= this.arrayTop; i++) {
+    s += this.array[i] + ',';
+  }
+  return s.slice(0, s.length - 1);
+};
+
+Object.defineProperties(FastArray.prototype, {
+  length: {
+    get() { return this.arrayTop + 1; }
+  },
+  last: {
+    get() {return this.array[this.arrayTop]; }
+  }
+});
+
+var n = 30;
 
 var maxSquare = Math.floor(Math.sqrt(2 * n - 1));
 var squares = new Int32Array(maxSquare - 1);
 for (var i = 2; i <= maxSquare; i++) {
   squares[i - 2] = i * i;
 }
-console.log(squares.join(','));
+var squaresIndexes = {};
+squares.forEach((square, index) => {
+  squaresIndexes[square] = index;
+});
 
-function createMaxChain() {
+// console.log(squares.join(','));
+
+
+var chain = new FastArray(n);
+
+function createMaxChain(startNumber) {
   function extendChain(number) {
-    chainPush(number);
+    chain.push(number);
     var i = maxSquare - 2;
     var pairNumber = squares[i] - number;
-    while (pairNumber > 0 && chainContains(pairNumber) && i > 0) {
+    while (pairNumber > n) {
+      i--;
+      pairNumber = squares[i] - number;
+    }
+    while (pairNumber > 0 && chain.contains(pairNumber) && i > 0) {
       i--;
       pairNumber = squares[i] - number;
     }
@@ -28,28 +89,159 @@ function createMaxChain() {
     }
   }
 
-  extendChain(n);
+  extendChain(startNumber);
 }
 
-function chainPush(number) {
-  chainTop++;
-  chain[chainTop] = number;
-  var bit = 1 << (number << 27 >>> 27);
-  chainBits[number >>> 5] |= bit;
+// build first approximation
+createMaxChain(n);
+console.log('chain', chain.toString())
+
+
+var rest = new FastArray(n);
+
+var edges = new Int32Array(n * squares.length);
+var edgesTops = new Int32Array(n).fill(-1);
+
+console.log('chain before', chain.toString())
+
+function addEdge(fromNumber, toNumber) {
+  var fromIndex = fromNumber - 1;
+  edgesTops[fromIndex]++;
+  edges[fromIndex * squares.length + edgesTops[fromIndex]] = toNumber;
 }
 
-function chainPop() {
-  var number = chain[chainTop];
-  chain[chainTop] = 0;
-  var bit = 1 << (number << 27 >>> 27);
-  chainBits &= ~bit;
-  chainTop--;
-  return number;
+// Forms a graph from elements that chain does not contain
+function fillRestEdges() {
+  debugger;
+  for (var i = 0; i < n; i++) {
+    var fromNumber = i + 1;
+    for (var j = 0; j < squares.length; j++) {
+      var toNumber = j + 1;
+      if (squares[j] <= toNumber || squares[j] === toNumber << 1 || chain.contains(fromNumber))
+        continue;
+      if (squares[j] >= toNumber + n)
+        break;
+
+      if (!rest.contains(fromNumber)) {
+        rest.push(fromNumber);
+      }
+      addEdge(fromNumber, toNumber);
+    }
+  }
 }
 
-function chainContains(number) {
-  var mask = 1 << (number << 27 >>> 27);
-  return chainBits[number >>> 5] & mask;
+fillRestEdges();
+
+console.log(rest.toString())
+debugger;
+
+// Updates edges basing ont its previous state
+function moveLastFromChainToRest() {
+  var movedNumber = chain.pop();
+  var i, j;
+
+  // Adds movedNumber to all rest elements in edge
+  for (i = 0; i < rest.length; i++) {
+    var restNumber = rest.get(i);
+    if (squaresIndexes[restNumber + movedNumber] !== undefined) {
+      addEdge(restNumber, movedNumber);
+    }
+  }
+
+  rest.push(movedNumber);
+
+  // Adds movedNumber row to edge
+  for (j = 0; j < squares.length; j++) {
+    var toNumber = j + 1;
+    if (squares[j] <= toNumber || squares[j] === toNumber << 1)
+      continue;
+    if (squares[j] >= toNumber + n)
+      break;
+    if (rest.contains(toNumber)) {
+      addEdge(movedNumber, toNumber);
+    }
+  }
 }
 
+// Now there are next objects:
+// 1. chain
+// 2. rest
+// 3. edges / edgesTops
+
+
+// Checks the necessary criterion for Hamiltonian. Returns false if there are isolated vertices or more than two vertices
+// with one degree (one of them must be equal to startVertex), otherwise returns true.
+function checkVertexDegrees(startVertex) {
+  var vertexDegrees = new Int32Array(rest.length);
+  var i;
+  for (i = rest.length - 1; i > -1; i--) {
+    var fromNumber = rest[i];
+    for (var j = edgesTops[fromNumber]; j > -1; j--) {
+      var toNumber = edges[j];
+      vertexDegrees[toNumber - 1]++;
+    }
+  }
+
+  var oneDegreeVertices = [];
+  for (i = vertexDegrees.length - 1; i > -1; i--) {
+    if (vertexDegrees[i] === 0)
+      return false;  // there is an isolated vertex
+    if (vertexDegrees[i] === 1) {
+      if (vertexDegrees.length > 1)
+        return false;  // more than 2 vertices with 1 degree
+      oneDegreeVertices.push(i);
+    }
+  }
+
+  if (oneDegreeVertices.length > 0)
+    return oneDegreeVertices.indexOf(startVertex) > -1; // 2 or less vertices with 1 degree;
+
+  return true;
+}
+
+
+
+// chain, rest, edges, edgesTops are ready
+function getRestPath() {
+  var MAX_REST_LENGTH = 32;
+  var path = new FastArray(MAX_REST_LENGTH); // I hope there is always a hamiltonian for 32 elements!!!
+
+  function findHamiltonian(restIndex) {
+    if (path.length === rest.length)
+      return true;
+    if (path.contains(rest[restIndex]))
+      return false;
+    path.push(rest[restIndex]);
+    for (var i = 0; i <= edgesTops[restIndex]; i++) {
+      if (findHamiltonian(i)) {
+        return true;
+      }
+    }
+    path.pop();
+  }
+
+  while(rest.length <= MAX_REST_LENGTH) {
+    path.erase();
+    if (checkVertexDegrees(chain.last)) {
+      // try to find a hamiltonian in rest
+      findHamiltonian(chain.last);
+      if (path.length === rest.length)
+        return path;
+      moveLastFromChainToRest();
+    }
+    moveLastFromChainToRest();
+  }
+
+  if (rest.length > MAX_REST_LENGTH) {
+    return 'SUCKS!'; // TODO: remove
+  }
+
+  return false;
+}
+
+var restPath = getRestPath();
+console.log('chain: ' + chain);
+console.log('rest path: ' + restPath);
+
+console.log(`hamiltonian: ${chain},${restPath}`);
 
