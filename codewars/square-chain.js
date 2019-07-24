@@ -17,7 +17,7 @@ FastArray.prototype.pop = function() {
   var number = this.array[this.arrayTop];
   this.array[this.arrayTop] = 0;
   var bit = 1 << (number << 27 >>> 27);
-  this.arrayBits &= ~bit;
+  this.arrayBits[number >>> 5] &= ~bit;
   this.arrayTop--;
   return number;
 };
@@ -31,13 +31,15 @@ FastArray.prototype.get = function(index) {
   return this.array[index];
 };
 
-FastArray.prototype.erase  = function() {
+FastArray.prototype.erase = function() {
   this.array.fill(0);
   this.arrayBits.fill(0);
   this.arrayTop = -1;
 };
 
 FastArray.prototype.toString = function() {
+  if (this.arrayTop < 0)
+    return '';
   var s = '';
   for (var i = 0; i <= this.arrayTop; i++) {
     s += this.array[i] + ',';
@@ -54,7 +56,7 @@ Object.defineProperties(FastArray.prototype, {
   }
 });
 
-var n = 30;
+var n = 17;
 
 var maxSquare = Math.floor(Math.sqrt(2 * n - 1));
 var squares = new Int32Array(maxSquare - 1);
@@ -92,6 +94,9 @@ function createMaxChain(startNumber) {
 
 // build first approximation
 createMaxChain(n);
+chain.erase();
+chain.push(8);
+chain.push(17);
 
 
 var rest = new FastArray(n);
@@ -141,7 +146,6 @@ function fillRestEdges() {
 }
 
 fillRestEdges();
-console.log(edges.toString())
 
 
 // Updates edges basing ont its previous state
@@ -181,24 +185,16 @@ function moveLastFromChainToRest() {
 // Checks the necessary criterion for Hamiltonian. Returns false if there are isolated vertices or more than two vertices
 // with one degree (one of them must be equal to startVertex), otherwise returns true.
 function checkVertexDegrees(startVertex) {
-  var vertexDegrees = new Int32Array(rest.length);
-  var i;
-  for (i = rest.length - 1; i > -1; i--) {
-    var fromNumber = rest.get(i);
-    for (var j = edgesTops[fromNumber]; j > -1; j--) {
-      var toNumber = getEdgeValue(i, j);
-      vertexDegrees[toNumber - 1]++;
-    }
-  }
-
   var oneDegreeVertices = [];
-  for (i = vertexDegrees.length - 1; i > -1; i--) {
-    if (vertexDegrees[i] === 0)
-      return false;  // there is an isolated vertex
-    if (vertexDegrees[i] === 1) {
-      if (vertexDegrees.length > 1)
+  for (var i = rest.length - 1; i > -1; i--) {
+    var restNumber = rest[i];
+    var edgesTopsValue = edgesTops[restNumber - 1];
+    if (edgesTopsValue <= 0)
+      return false; // there is an isolated vertex
+    if (edgesTopsValue === 1) {
+      if (oneDegreeVertices.length > 1)
         return false;  // more than 2 vertices with 1 degree
-      oneDegreeVertices.push(i);
+      oneDegreeVertices.push(restNumber);
     }
   }
 
@@ -212,34 +208,66 @@ function checkVertexDegrees(startVertex) {
 
 // chain, rest, edges, edgesTops are ready
 function getRestPath() {
-  var MAX_REST_LENGTH = 40;
+  var MAX_REST_LENGTH = Math.min(n, 50);
   var path = new FastArray(MAX_REST_LENGTH); // I hope there is always a hamiltonian for 32 elements!!!
 
-  function findHamiltonian(restIndex) {
-    if (path.length === rest.length)
-      return true;
-    if (path.contains(rest.get(restIndex)))
-      return false;
-    path.push(rest.get(restIndex));
-    for (var i = 0; i <= edgesTops[restIndex]; i++) {
-      if (findHamiltonian(i)) {
-        return true;
+  function findHamiltonian(fromNumber) {
+    // debugger;
+    // var fromNumber = rest.get(restIndex);
+    // if (path.length === rest.length)
+    //   return true;
+    // if (path.contains(fromNumber))
+    //   return false;
+    // path.push(fromNumber);
+    for (var i = 0; i <= edgesTops[fromNumber - 1]; i++) {
+      var toNumber = getEdgeValue(fromNumber - 1, i);
+      if (fromNumber !== toNumber && squaresIndexes[fromNumber + toNumber] !== undefined && !path.contains(toNumber) && rest.contains(toNumber)) {
+        path.push(toNumber);
+        if (path.length === rest.length || findHamiltonian(toNumber))
+          return true;
+        path.pop(toNumber);
       }
     }
-    path.pop();
+    // path.pop();
   }
 
   while(rest.length <= MAX_REST_LENGTH) {
-    debugger;
-    path.erase();
-    if (checkVertexDegrees(chain.last)) {
-      // try to find a hamiltonian in rest
-      findHamiltonian(chain.last);
-      if (path.length === rest.length)
-        return path;
-      moveLastFromChainToRest();
+    //if (rest.length > 35)
+       //debugger;
+    for (var i = 0, l = rest.length; i < l; i++) {
+      //debugger;
+      var restValue = rest.get(i);
+
+      if (!chain.last || restValue !== chain.last && squaresIndexes[restValue + chain.last] !== undefined) {
+        if (checkVertexDegrees(restValue)) {
+          path.erase();
+          path.push(restValue);
+          // try to find a hamiltonian in rest
+          findHamiltonian(restValue);
+          if (path.length === rest.length)
+            return path;
+        }
+      }
+
     }
-    moveLastFromChainToRest();
+    if (chain.length > 0) {
+      moveLastFromChainToRest();
+    } else if(path.length === rest.length) {
+      return path;
+    } else {
+      return false;
+    }
+
+
+    // path.erase();
+    // if (checkVertexDegrees(chain.last)) {
+    //   // try to find a hamiltonian in rest
+    //   findHamiltonian(chain.last);
+    //   if (path.length === rest.length)
+    //     return path;
+    //   moveLastFromChainToRest();
+    // }
+    // moveLastFromChainToRest();
   }
 
   if (rest.length > MAX_REST_LENGTH) {
@@ -251,6 +279,7 @@ function getRestPath() {
 
 var restPath = getRestPath();
 console.log('chain: ' + chain);
+console.log('rest: ' + rest);
 console.log('rest path: ' + restPath);
 
 console.log(`hamiltonian: ${chain},${restPath}`);
