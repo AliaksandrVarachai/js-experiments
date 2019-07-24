@@ -66,8 +66,6 @@ squares.forEach((square, index) => {
   squaresIndexes[square] = index;
 });
 
-// console.log(squares.join(','));
-
 
 var chain = new FastArray(n);
 
@@ -94,15 +92,24 @@ function createMaxChain(startNumber) {
 
 // build first approximation
 createMaxChain(n);
-console.log('chain', chain.toString())
 
 
 var rest = new FastArray(n);
 
 var edges = new Int32Array(n * squares.length);
 var edgesTops = new Int32Array(n).fill(-1);
+edges.toString = function() {
+  var s = '';
+  for (var i = 0; i < n; i++) {
+    s += i + ':';
+    for (var j = 0; j < squares.length; j++) {
+      s += getEdgeValue(i, j) + ',';
+    }
+    s = s.slice(0, s.length - 1) + '\n';
+  }
+  return s;
+};
 
-console.log('chain before', chain.toString())
 
 function addEdge(fromNumber, toNumber) {
   var fromIndex = fromNumber - 1;
@@ -110,18 +117,21 @@ function addEdge(fromNumber, toNumber) {
   edges[fromIndex * squares.length + edgesTops[fromIndex]] = toNumber;
 }
 
+function getEdgeValue(fromIndex, toIndex) {
+  return edges[fromIndex * squares.length + toIndex];
+}
+
 // Forms a graph from elements that chain does not contain
 function fillRestEdges() {
-  debugger;
+  // TODO: use symmetry of edge to improve performance
   for (var i = 0; i < n; i++) {
     var fromNumber = i + 1;
     for (var j = 0; j < squares.length; j++) {
-      var toNumber = j + 1;
-      if (squares[j] <= toNumber || squares[j] === toNumber << 1 || chain.contains(fromNumber))
-        continue;
-      if (squares[j] >= toNumber + n)
+      var toNumber = squares[j] - fromNumber;
+      if (toNumber > n)
         break;
-
+      if (toNumber < 1 || toNumber === fromNumber || chain.contains(fromNumber))
+        continue;
       if (!rest.contains(fromNumber)) {
         rest.push(fromNumber);
       }
@@ -131,9 +141,8 @@ function fillRestEdges() {
 }
 
 fillRestEdges();
+console.log(edges.toString())
 
-console.log(rest.toString())
-debugger;
 
 // Updates edges basing ont its previous state
 function moveLastFromChainToRest() {
@@ -175,9 +184,9 @@ function checkVertexDegrees(startVertex) {
   var vertexDegrees = new Int32Array(rest.length);
   var i;
   for (i = rest.length - 1; i > -1; i--) {
-    var fromNumber = rest[i];
+    var fromNumber = rest.get(i);
     for (var j = edgesTops[fromNumber]; j > -1; j--) {
-      var toNumber = edges[j];
+      var toNumber = getEdgeValue(i, j);
       vertexDegrees[toNumber - 1]++;
     }
   }
@@ -203,15 +212,15 @@ function checkVertexDegrees(startVertex) {
 
 // chain, rest, edges, edgesTops are ready
 function getRestPath() {
-  var MAX_REST_LENGTH = 32;
+  var MAX_REST_LENGTH = 40;
   var path = new FastArray(MAX_REST_LENGTH); // I hope there is always a hamiltonian for 32 elements!!!
 
   function findHamiltonian(restIndex) {
     if (path.length === rest.length)
       return true;
-    if (path.contains(rest[restIndex]))
+    if (path.contains(rest.get(restIndex)))
       return false;
-    path.push(rest[restIndex]);
+    path.push(rest.get(restIndex));
     for (var i = 0; i <= edgesTops[restIndex]; i++) {
       if (findHamiltonian(i)) {
         return true;
@@ -221,6 +230,7 @@ function getRestPath() {
   }
 
   while(rest.length <= MAX_REST_LENGTH) {
+    debugger;
     path.erase();
     if (checkVertexDegrees(chain.last)) {
       // try to find a hamiltonian in rest
