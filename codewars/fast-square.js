@@ -134,6 +134,8 @@ function findPath(n) {
   for (var i = a.length + 1; i <= n; i++) {
     appendNextNumber();
   }
+
+  return a;
 }
 
-console.log(findPath(26));
+console.log(findPath(2000).join(','))
