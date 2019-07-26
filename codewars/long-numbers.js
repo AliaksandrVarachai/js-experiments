@@ -1,50 +1,74 @@
+function convertToString(bits) {
+  function double(arr) {
+    var buff = 0;
+    for (var i = arr.length - 1; i > -1; i--) {
+      p = 2 * arr[i] + buff;
+      buff = Math.floor(p / 10);
+      arr[i] = p % 10;
+    }
+    if (buff) {
+      arr.unshift(buff);
+    }
+  }
+
+  function addNumber(arr, number) {
+    var buff = 0;
+    var i = arr.length - 1;
+    var p = arr[i] + number;
+    arr[i] = p % 10;
+    buff = Math.floor(p / 10);
+    i--;
+    while(i > -1 && buff) {
+      p = arr[i] + buff;
+      buff = Math.floor(p / 10);
+      i--;
+    }
+    if (buff) {
+      arr.unshift(buff);
+    }
+  }
+
+  var i = bits.length - 1;
+  var result = [bits[i]];
+  i--;
+  while(i > -1) {
+    //debugger;
+    double(result);
+    addNumber(result, bits[i]);
+    i--;
+  }
+  return result.join('');
+}
+
 /**
- * Converts array number to a bit array with REVERSE order. Heading zeroes are ignored.
- * @param arr {number[]} - array containing integers 0...9.
+ * Converts string to a bit array with REVERSE order. Heading zeroes are ignored.
+ * @param str {string} - string consists of integers 0...9.
  * @returns {number[]} - array containing integers 0 or 1.
  */
-function convertToBits(arr) {
-  var tempArr = arr;
-  var rests = [];
-  do {
-    var tempRest = 0;
-    var tempQuotients = [];
-    var headingZeroes = true;
-    var number = 0;
-    for (var i = 0, len = tempArr.length; i < len; i++) {
-      number = tempArr[i] + 10 * tempRest;
-      if (headingZeroes && number < 2) {
-        tempRest = number;
-        continue;
-      }
-      headingZeroes = false;
-      tempRest = number % 2;
-      tempQuotients.push(number >> 1);
+function convertToBits(str) {
+  var result = [];
+  var a = str.split('').map(x => parseInt(x, 10));
+  var len = a.length;
+  while (len > 1 || a[0]) {
+    var q, r = 0;
+    for(var i = 0; i < len; i++) {
+      var num = a[i] + 10 * r;
+      q = num >> 1;
+      r = num % 2;
+      a[i] = q;
     }
-    rests.push(tempRest);
-    tempArr = tempQuotients;
-  } while(tempArr.length > 1 || tempArr[0] > 1);
-
-  if (tempArr.length === 0)
-    return [0];
-
-  rests.push(1);
-  return rests;
+    result.push(r);
+    var headZeroesNumber = 0;
+    while (!a[headZeroesNumber] && headZeroesNumber < len - 1) {
+      headZeroesNumber++;
+    }
+    a.splice(0, headZeroesNumber);
+    len = a.length;
+  }
+  return result;
 }
 
-function convertToString(bits) {
 
-}
-
-/*
-// test
-var s = '0123789745646546546454654687987897987987987897987987979879877987987987987987987546546546546546565465465465546546540456';
-var a = s.split('').map(v => parseInt(v, 10));
-var binary = divide2(a).reverse().join('');
-console.log(parseInt(s, 10) === parseInt(binary, 2))
-console.log(binary)
-
-*/
 
 
 function add(s1, s2) {
@@ -112,4 +136,9 @@ function divide(s1, s2) {
   return result;
 }
 
-console.log(add('55', '22'));
+//console.log(add('55', '22'));
+var s1 = '1666';
+var s2  = '333';
+//var bits = convertToBits(s);
+//console.log(s, bits, convertToString(bits));
+console.log(add(s1, s2));
