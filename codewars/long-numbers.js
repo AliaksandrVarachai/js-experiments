@@ -224,14 +224,15 @@ function divide(s1, s2) {
 
   var compareResult = compare(b1, b2);
   if (compareResult < 0) {
-    return 0;
+    return '0';
   } else if (compareResult === 0) {
-    return 1
+    return '1'
   }
 
   // case b1 > b2
   for (var i = b1.length - 1; i > -1; i--) {
     rest.unshift(b1[i]);
+    removeHeaderZeroes(rest);
     compareResult = compare(rest, b2);
     if (compareResult < 0) {
       if (addZero) {
@@ -248,8 +249,8 @@ function divide(s1, s2) {
 }
 
 // Tests:
-var s1 = '44';
-var s2 = '15';
+var s1 = '5456465465465655298797899456';
+var s2 = '897987946546546549879987';
 console.log(`${s1} + ${s2} = ${add(s1, s2)}`);
 console.log(`${s1} - ${s2} = ${subtract(s1, s2)}`);
 console.log(`${s1} * ${s2} = ${multiply(s1, s2)}`);
