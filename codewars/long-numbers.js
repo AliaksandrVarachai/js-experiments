@@ -1,3 +1,12 @@
+/**
+ * Application provides 4 arithmetic operations for long integers (up to 1000 numbers and even more).
+ */
+
+/**
+ * Converts a REVERSE array of 0 or 1 numbers to a string consists of 0...9 (without heading zeroes);
+ * @param bits {number[]} - array of integers 0 or 1.
+ * @returns {string} - string consists of integers 0...9.
+ */
 function convertToString(bits) {
   function double(arr) {
     var buff = 0;
@@ -12,11 +21,10 @@ function convertToString(bits) {
   }
 
   function addNumber(arr, number) {
-    var buff = 0;
     var i = arr.length - 1;
     var p = arr[i] + number;
     arr[i] = p % 10;
-    buff = Math.floor(p / 10);
+    var buff = Math.floor(p / 10);
     i--;
     while(i > -1 && buff) {
       p = arr[i] + buff;
@@ -162,16 +170,87 @@ function multiply(s1, s2) {
 
 
 function divide(s1, s2) {
+  // Returns: positive int, if b1 > b2;
+  //          negative int, if b2 > b1;
+  //          0,            if b2 = b1
+  function compare(b1, b2) {
+    var l1 = b1.length;
+    var l2 = b2.length;
+    if (l1 !== l2)
+      return l1 - l2;
+    var i = l1 - 1;
+    while (i > -1 && b1[i] === b2[i]) {
+      i--;
+    }
+    return i > -1 ? b1[i] - b2[i] : 0;
+  }
+
+  // For strict inequation only: b1 > b2
+  function sub(b1, b2) {
+    var buff = 0;
+    var l1 = b1.length;
+    var l2 = b2.length;
+    var result = [];
+    var i = 0;
+    for (i = 0; i < l2; i++) {
+      result.push(b1[i] ^ ~b2[i] ^ ~buff);
+      buff = b1[i] & b2[i] & buff | ~b1[i] & (buff | b2[i]);
+    }
+    while (i < l1) {
+      result.push(b1[i] ^ buff);
+      buff = ~b1[i] & buff;
+      i++;
+    }
+    removeHeaderZeroes(result);
+    return result;
+  }
+
+  // Removes heading zeroes from a bit array (it's tail here because the reverse order of bits)
+  function removeHeaderZeroes(b) {
+    for (var i = b.length - 1; i > 0 && !b[i]; i--) {
+      b.pop();
+    }
+  }
+
+
   var b1 = convertToBits(s1);
   var b2 = convertToBits(s2);
+  var result = [];
+  var rest = [];
+  var addZero = false;
 
-  // TODO: implement;
-  var result = '0';
-  return result;
+  if (!compare(b2, [0]))
+    throw Error('Division by zero is forbidden.');
+
+  var compareResult = compare(b1, b2);
+  if (compareResult < 0) {
+    return 0;
+  } else if (compareResult === 0) {
+    return 1
+  }
+
+  // case b1 > b2
+  for (var i = b1.length - 1; i > -1; i--) {
+    rest.unshift(b1[i]);
+    compareResult = compare(rest, b2);
+    if (compareResult < 0) {
+      if (addZero) {
+        result.unshift(0);
+      }
+    } else {
+      result.unshift(1);
+      rest = compareResult ? sub(rest, b2) : [0];
+      addZero = true;
+    }
+  }
+
+  return convertToString(result);
 }
 
-var s1 = '88';
-var s2 = '11';
+// Tests:
+var s1 = '44';
+var s2 = '15';
 console.log(`${s1} + ${s2} = ${add(s1, s2)}`);
 console.log(`${s1} - ${s2} = ${subtract(s1, s2)}`);
 console.log(`${s1} * ${s2} = ${multiply(s1, s2)}`);
+console.log(`${s1} / ${s2} = ${divide(s1, s2)}`);
