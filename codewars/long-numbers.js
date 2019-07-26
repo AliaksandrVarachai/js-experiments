@@ -32,7 +32,6 @@ function convertToString(bits) {
   var result = [bits[i]];
   i--;
   while(i > -1) {
-    //debugger;
     double(result);
     addNumber(result, bits[i]);
     i--;
@@ -65,7 +64,7 @@ function convertToBits(str) {
     a.splice(0, headZeroesNumber);
     len = a.length;
   }
-  return result;
+  return result.length ? result : [0];
 }
 
 
@@ -103,7 +102,6 @@ function add(s1, s2) {
     result.push(buff);
   }
   return convertToString(result);
-  //return parseInt(result.reverse().join(''), 2);
 }
 
 function subtract(s1, s2) {
@@ -139,11 +137,29 @@ function subtract(s1, s2) {
 function multiply(s1, s2) {
   var b1 = convertToBits(s1);
   var b2 = convertToBits(s2);
-
-  // TODO: implement;
-  var result = '0';
-  return result;
+  var l1 = b1.length;
+  var l2 = b2.length;
+  var result = [];
+  var i, j;
+  for (i = 0; i < l1; i ++) {
+    result.push(0);
+  }
+  for (i = 0; i < l2; i++) {
+    var b = b2[i];
+    var buff = 0;
+    for (j = 0; j < l1; j++) {
+      var oldResult = result[i + j] | 0;
+      var mul = b1[j] & b;
+      result[i + j] ^=  mul ^ buff;
+      buff = oldResult & (mul | buff) | mul & buff;
+    }
+    if(buff) {
+      result[i + j] = buff;
+    }
+  }
+  return convertToString(result);
 }
+
 
 function divide(s1, s2) {
   var b1 = convertToBits(s1);
@@ -154,7 +170,8 @@ function divide(s1, s2) {
   return result;
 }
 
-var s1 = '1666';
-var s2 = '333';
+var s1 = '88';
+var s2 = '11';
 console.log(`${s1} + ${s2} = ${add(s1, s2)}`);
 console.log(`${s1} - ${s2} = ${subtract(s1, s2)}`);
+console.log(`${s1} * ${s2} = ${multiply(s1, s2)}`);
