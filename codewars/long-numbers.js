@@ -69,8 +69,6 @@ function convertToBits(str) {
 }
 
 
-
-
 function add(s1, s2) {
   var b1 = convertToBits(s1);
   var b2 = convertToBits(s2);
@@ -104,17 +102,37 @@ function add(s1, s2) {
   if (buff) {
     result.push(buff);
   }
-
-  return parseInt(result.reverse().join(''), 2);
+  return convertToString(result);
+  //return parseInt(result.reverse().join(''), 2);
 }
 
 function subtract(s1, s2) {
   var b1 = convertToBits(s1);
   var b2 = convertToBits(s2);
-
-  // TODO: implement;
-  var result = '0';
-  return result;
+  var l1 = b1.length;
+  var l2 = b2.length;
+  if (l1 < l2)
+    throw Error('Subtraction: the first value must be more or equal then the second one.');
+  var i;
+  var buff = 0;
+  var result = [];
+  for (i = 0; i < l2; i++) {
+    result.push(b1[i] ^ ~b2[i] ^ ~buff);
+    buff = buff & b2[i] | ~b1[i] & (b2[i] | buff);
+  }
+  while(buff && i < l1) {
+    result.push(b1[i] ^ buff);
+    buff = buff & ~b1[i];
+    i++;
+  }
+  while(i < l1) {
+    result.push(b1[i]);
+    i++;
+  }
+  if (buff) {
+    result.push(buff);
+  }
+  return convertToString(result);
 }
 
 
@@ -136,9 +154,7 @@ function divide(s1, s2) {
   return result;
 }
 
-//console.log(add('55', '22'));
 var s1 = '1666';
-var s2  = '333';
-//var bits = convertToBits(s);
-//console.log(s, bits, convertToString(bits));
-console.log(add(s1, s2));
+var s2 = '333';
+console.log(`${s1} + ${s2} = ${add(s1, s2)}`);
+console.log(`${s1} - ${s2} = ${subtract(s1, s2)}`);
