@@ -69,14 +69,13 @@ function mousePath(s){
   var x = [intervals[0]], y = [0];
   var area = 0;
   for (var i = 1, len = turns.length; i < len; i++) {
-    debugger;
     var interval = intervals[i];
     turns[i] += turns[i - 1];
     switch (turns[i] % 4) {
       case 1: case -3:
         x[i] = x[i - 1] + interval;
         y[i] = y[i - 1];
-        area += interval * Math.abs(y[i]);
+        area += interval * y[i];
         break;
       case 2: case -2:
         x[i] = x[i - 1];
@@ -85,13 +84,15 @@ function mousePath(s){
       case 3: case -1:
         x[i] = x[i - 1] - interval;
         y[i] = y[i - 1];
-        area -= interval * Math.abs(y[i]);
+        area -= interval * y[i];
         break;
       case 0: case -0:
         x[i] = x[i - 1];
         y[i] = y[i - 1] + interval;
         break;
     }
+    // if (turns[turns.length - 1] % 2)
+    //   return null;
     if (1 < i && i < len - 1 && isIntersection(x[i - 1], y[i - 1], x[i], y[i], 0, 0, x[0], y[0]))
       return null;
     for (var j = 1, prevLen = i - 1; j < prevLen; j++) {
@@ -100,8 +101,7 @@ function mousePath(s){
     }
   }
 
-  // debugger;
   return x[x.length - 1] || y[y.length - 1] ? null : Math.abs(area);
 }
 
-console.log(mousePath('10R5R5R10L5L5')); //100
+console.log(mousePath('2R4R4R4R2')); //100
