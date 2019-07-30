@@ -91,8 +91,8 @@ function mousePath(s){
         y[i] = y[i - 1] + interval;
         break;
     }
-    // if (turns[turns.length - 1] % 2)
-    //   return null;
+    if (i === len - 1 && turns[i] % 4 === 1)
+      return null;
     if (1 < i && i < len - 1 && isIntersection(x[i - 1], y[i - 1], x[i], y[i], 0, 0, x[0], y[0]))
       return null;
     for (var j = 1, prevLen = i - 1; j < prevLen; j++) {
