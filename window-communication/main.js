@@ -47,7 +47,7 @@ btOpen.onclick = function(event) {
     console.error('Window cannot be opened');
     return;
   }
-  childReference.addEventListener('message', onOpenedMessage);
+  window.addEventListener('message', onOpenedMessage);
 };
 
 btSend.onclick = function(event) {

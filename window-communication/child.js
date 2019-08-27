@@ -8,7 +8,7 @@ var btSend = document.getElementById('bt-send');
 var inputDataElement = document.getElementById('input-data');
 var outputDataElement = document.getElementById('output-data');
 
-window.opener.onmessage = function(eventMsg) {
+window.onmessage = function(eventMsg) {
   var data = eventMsg.data;
   if (!data || !data.type) {
     console.log('Post message is empty or does not have type.');
