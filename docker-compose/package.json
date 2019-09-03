@@ -2,9 +2,9 @@
   "name": "docker-compose",
   "version": "1.0.0",
   "description": "nothing",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node index"
+    "start": "node server"
   },
   "author": "Alexandr Vorochai",
   "license": "ISC",
