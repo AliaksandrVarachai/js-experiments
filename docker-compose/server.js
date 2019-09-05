@@ -2,7 +2,8 @@ const http = require('http');
 const util = require('util');
 const MongoClient = require('mongodb').MongoClient;
 
-const serverDBUrl = 'mongodb://localhost:27017';
+// const serverDBUrl = 'mongodb://localhost:27017';
+const serverDBUrl = 'mongodb://db:27017';
 const dbName = 'tableau-extension-guided-tour';
 const collectionName = 'tours';
 

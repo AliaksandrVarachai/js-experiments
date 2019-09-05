@@ -1,11 +1,22 @@
-version: '2'
+version: "3"
 services:
-  web:
+  app:
+    container_name: my-app
+    restart: always
     build: .
-    command: npm run dev
-    volumes:
-      - .:/usr/app/
-      - /usr/app/node_modules
     ports:
-      - "3000:3000"
-      -
+      - 3000:3000
+    links:
+      - db
+    depends_on:
+      - db
+  db:
+    container_name: db
+    image: mongo
+    restart: always
+    volumes:
+      - /Volumes/Storage2/mongodb/data/db:/data/db  # TODO: document for mongodb path for development
+    ports:
+      - 27017:27017
+#    command: ["service", "mongod", "start"] #sudo service mongod start
+#    command: ["mongod"]
