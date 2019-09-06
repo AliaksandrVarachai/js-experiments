@@ -1,16 +1,15 @@
 const http = require('http');
 const util = require('util');
+const isDocker = require('is-docker/index');
 const MongoClient = require('mongodb').MongoClient;
 
-// const serverDBUrl = 'mongodb://localhost:27017';
-const serverDBUrl = 'mongodb://db:27017';
+const serverDBUrl = `mongodb://${isDocker() ? 'db' : 'localhost'}:27017`;
 const dbName = 'tableau-extension-guided-tour';
 const collectionName = 'tours';
 
-const port = 3000;
+const port = process.env.API_SERVER_PORT || 8080;
 
-
-
+// TODO: rewrite with a retry or circuit breaker pattern
 util.promisify(MongoClient.connect)(serverDBUrl)
   .then(mongoClient => {
     const db = mongoClient.db(dbName);

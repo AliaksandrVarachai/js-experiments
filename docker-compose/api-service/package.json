@@ -2,13 +2,14 @@
   "name": "docker-compose",
   "version": "1.0.0",
   "description": "nothing",
-  "main": "server.js",
+  "main": "src/server.js",
   "scripts": {
-    "start": "node server"
+    "start": "node src/server"
   },
   "author": "Alexandr Vorochai",
   "license": "ISC",
   "dependencies": {
+    "is-docker": "^2.0.0",
     "mongodb": "^3.3.2"
   }
 }
