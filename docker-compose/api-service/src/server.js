@@ -1,6 +1,6 @@
 const http = require('http');
 const util = require('util');
-const isDocker = require('is-docker/index');
+const isDocker = require('is-docker');
 const MongoClient = require('mongodb').MongoClient;
 
 const serverDBUrl = `mongodb://${isDocker() ? 'db' : 'localhost'}:27017`;
