@@ -35,6 +35,7 @@ function retry(func, customOptions = {}) {
     const argsWithoutCallback = args.slice(0, args.length - 1);
 
     function proxyCallback(err, ...data) {
+      ++attemptCounter;
       if (err) {
         const rejectTime = Date.now();
         if (isNewAttemptPossible(rejectTime)) {
@@ -64,7 +65,7 @@ function retry(func, customOptions = {}) {
     return requiredIntervalFromStart - (errorTime - startTime);
   }
 
-  
+
   return options.isPromise ? retryPromise : retryCallback;
 }
 
@@ -72,21 +73,21 @@ function retry(func, customOptions = {}) {
 
 // test promise version (default settings)
 let counter1 = 0;
-function promisifiedFunc() {
+function promisifiedFunc(n) {
   ++counter1;
   return new Promise((resolve, reject) => {
-    if (counter1 > 5)
+    if (counter1 > n)
       resolve(42);
     else
-      reject(new Error('Promise: Resource is not available yet'));
+      reject(new Error('Promise: Resource is not available'));
   });
 }
 
 const options1 = {
   maxAttempts: 2
 };
-const retriedPromise = retry(promisifiedFunc);
-retriedPromise(options1)
+const retriedPromise = retry(promisifiedFunc, options1);
+retriedPromise(5)
   .then(data => console.log(`Success! Received data: ${data}`))
   .catch(err => console.log(err.message));
 
