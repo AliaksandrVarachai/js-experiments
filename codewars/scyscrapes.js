@@ -59,7 +59,7 @@ function getRightSeen(p) {
 }
 
 function getMask(p) {
-  return (1 << 24) + p[0] + (1 << 16) + p[1] + (1 << 8) + p[2] + (1 << 0) + p[3];
+  return (1 << 24 + p[0]) + (1 << 16 + p[1]) + (1 << 8 + p[2]) + (1 << p[3]);
 }
 
 generatePermutations();
@@ -67,13 +67,13 @@ generatePermutations();
 
 function solvePuzzle (clues) {
   // check horizontal clues
-  var i, k, pIndexes = [];
+  var i, k, pIndexes = [], len = permutations.length;
   for (i = 0; i < n; ++i)
     pIndexes.push([]);
-  for (i = 0, len = permutations.length; i < len; ++i) {
+  for (i = 0, len; i < len; ++i) {
     var p = permutations[i];
     for (k = 0; k < n; ++k) {
-      if (p.left === clues[15 - k] && p.right === clues[4 + k])
+      if ((!clues[15 - k] || p.left === clues[15 - k]) && (!clues[4 + k] || p.right === clues[4 + k]))
         pIndexes[k].push(i);
     }
   }
@@ -98,7 +98,7 @@ function solvePuzzle (clues) {
           var isOK = true;
           for (k = 0; k < n; ++k) {
             var vp = [p0.perm[k], p1.perm[k], p2.perm[k], p3.perm[k]];
-            if (clues[k] !== getLeftSeen(vp) || clues[11 - k] !== getRightSeen(vp)) {
+            if (clues[k] && clues[k] !== getLeftSeen(vp) || clues[11 - k] && clues[11 - k] !== getRightSeen(vp)) {
               isOK = false;
               break;
             }
@@ -114,12 +114,21 @@ function solvePuzzle (clues) {
 
 // tests
 
-var clues = [
-  2, 2, 1, 3,
-  2, 2, 3, 1,
-  1, 2, 2, 3,
-  3, 2, 1, 3
+//var clues1 = [
+//  2, 2, 1, 3,
+//  2, 2, 3, 1,
+//  1, 2, 2, 3,
+//  3, 2, 1, 3
+//];
+//var result1 = solvePuzzle(clues1);
+//console.log(result1);
+
+var clues2 = [
+  0, 0, 1, 2,
+  0, 2, 0, 0,
+  0, 3, 0, 0,
+  0, 1, 0, 0
 ];
 
-var result = solvePuzzle(clues);
-console.log(result);
+var result2 = solvePuzzle(clues2);
+console.log(result2);
