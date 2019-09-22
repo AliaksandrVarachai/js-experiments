@@ -74,24 +74,27 @@ function solvePuzzle (clues) {
     var p = permutations[i];
     for (k = 0; k < n; ++k) {
       if (p.left === clues[15 - k] && p.right === clues[4 + k])
-        pIndexes[0].push(i);
+        pIndexes[k].push(i);
     }
   }
+  //debugger;
   for (var i0 = 0; i0 < pIndexes[0].length; ++i0) {
-    var p0 = permutations[i0];
+    var p0 = permutations[pIndexes[0][i0]];
+    debugger;
     for (var i1 = 0; i1 < pIndexes[1].length; ++i1) {
-      var p1 = permutations[i1];
+      var p1 = permutations[pIndexes[1][i1]];
       if (p0.mask & p1.mask)
         continue;
       for (var i2 = 0; i2 < pIndexes[2].length; ++i2) {
-        var p2 = permutations[i2];
+        var p2 = permutations[pIndexes[2][i2]];
         if (p0.mask & p2.mask || p1.mask & p2.mask)
           continue;
         for (var i3 = 0; i3 < pIndexes[3].length; ++i3) {
-          var p3 = permutations[i3];
+          var p3 = permutations[pIndexes[3][i3]];
           if (p0.mask & p3.mask || p1.mask & p3.mask || p2.mask & p3.mask)
             continue;
           // check vertical permutations
+          debugger;
           var isOK = true;
           for (k = 0; k < n; ++k) {
             var vp = [p0.perm[k], p1.perm[k], p2.perm[k], p3.perm[k]];
@@ -111,10 +114,12 @@ function solvePuzzle (clues) {
 
 // tests
 
-var clues = [2, 2, 1, 3,
+var clues = [
+  2, 2, 1, 3,
   2, 2, 3, 1,
   1, 2, 2, 3,
-  3, 2, 1, 3];
+  3, 2, 1, 3
+];
 
-var result = solvePuzzle(solvePuzzle);
+var result = solvePuzzle(clues);
 console.log(result);
