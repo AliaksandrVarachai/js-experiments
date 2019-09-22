@@ -1,0 +1,29 @@
+function permutation(n) {
+  var a = new Int32Array(n);
+  for (var i = 0; i < n; ++i)
+    a[i] = i + 1;
+
+  function next() {
+    var i, j, k, t;
+    i = n - 2;
+    while (i >= 0 && a[i] > a[i + 1])
+      --i;
+    if (i < 0)
+      return false;
+    j = i + 1;
+    while (j < n - 1 && a[j + 1] > a[i])
+      ++j;
+    t = a[i]; a[i] = a[j]; a[j] = t;
+    k = n - 1;
+    for (j = i + 1; j < k; ++j, --k) {
+      t = a[j]; a[j] = a[k]; a[k] = t;
+    }
+    return true;
+  }
+
+  console.log(a.join(','));
+  while (next())
+    console.log(a.join(','));
+}
+
+permutation(5);
