@@ -1,78 +1,85 @@
-function* operationsGen() {
-  const ops = ['+', '-', '*', '/'];
-  for (let i0 = 0; i0 < 4; ++i0)
-    for (let i1 = 0; i1 < 4; ++i1)
-      for (let i2 = 0; i2 < 4; ++i2)
-        yield [ops[i0], ops[i1], ops[i2]];
-}
+const operations = [];
 
-function* permutationsGen(a, b, c, d) {
-  yield [a, b, c, d];
-  yield [a, b, d, c];
-  yield [a, c, b, d];
-  yield [a, c, d, b];
-  yield [a, d, b, c];
-  yield [a, d, c, b];
+(function fillOperations() {
+  var ops = ['+', '-', '*', '/'];
+  for (var i0 = 0; i0 < 4; ++i0)
+    for (var i1 = 0; i1 < 4; ++i1)
+      for (var i2 = 0; i2 < 4; ++i2)
+        operations.push([ops[i0], ops[i1], ops[i2]]);
+})();
 
-  yield [b, a, c, d];
-  yield [b, a, d, c];
-  yield [b, c, a, d];
-  yield [b, c, d, a];
-  yield [b, d, a, c];
-  yield [b, d, c, a];
+function getPermutations(a, b, c, d) {
+  return [
+    [a, b, c, d],
+    [a, b, d, c],
+    [a, c, b, d],
+    [a, c, d, b],
+    [a, d, b, c],
+    [a, d, c, b],
 
-  yield [c, a, b, d];
-  yield [c, a, d, b];
-  yield [c, b, a, d];
-  yield [c, b, d, a];
-  yield [c, d, a, b];
-  yield [c, d, b, a];
+    [b, a, c, d],
+    [b, a, d, c],
+    [b, c, a, d],
+    [b, c, d, a],
+    [b, d, a, c],
+    [b, d, c, a],
 
-  yield [d, a, b, c];
-  yield [d, a, c, b];
-  yield [d, b, a, c];
-  yield [d, b, c, a];
-  yield [d, c, a, b];
-  yield [d, c, b, a];
+    [c, a, b, d],
+    [c, a, d, b],
+    [c, b, a, d],
+    [c, b, d, a],
+    [c, d, a, b],
+    [c, d, b, a],
+
+    [d, a, b, c],
+    [d, a, c, b],
+    [d, b, a, c],
+    [d, b, c, a],
+    [d, c, a, b],
+    [d, c, b, a],
+  ];
 }
 
 
 function equalTo24(a, b, c, d){
-  for (const ops of operationsGen()) {
-    for (const p of permutationsGen(a, b, c, d)) {
+  const permutations = getPermutations(a, b, c, d);
+  for (var i = operations.length - 1; i > -1; --i) {
+    var ops = operations[i];
+    for (var j = permutations.length - 1; j > -1; --j) {
+      var p = permutations[j];
 
-      let expr = `${p[0]}${ops[0]}${p[1]}${ops[1]}${p[2]}${ops[2]}${p[3]}`;
-      if (eval(expr) === 24) return expr;
+      var expr = `${p[0]}${ops[0]}${p[1]}${ops[1]}${p[2]}${ops[2]}${p[3]}`;
+      if (new Function(`return ${expr}`)() === 24) return expr;
 
       expr = `(${p[0]}${ops[0]}${p[1]})${ops[1]}${p[2]}${ops[2]}${p[3]}`;
-      if (eval(expr) === 24) return expr;
+      if (new Function(`return ${expr}`)() === 24) return expr;
 
       expr = `${p[0]}${ops[0]}(${p[1]}${ops[1]}${p[2]})${ops[2]}${p[3]}`;
-      if (eval(expr) === 24) return expr;
+      if (new Function(`return ${expr}`)() === 24) return expr;
 
       expr = `${p[0]}${ops[0]}${p[1]}${ops[1]}(${p[2]}${ops[2]}${p[3]})`;
-      if (eval(expr) === 24) return expr;
+      if (new Function(`return ${expr}`)() === 24) return expr;
 
       expr = `(${p[0]}${ops[0]}${p[1]}${ops[1]}${p[2]})${ops[2]}${p[3]}`;
-      if (eval(expr) === 24) return expr;
+      if (new Function(`return ${expr}`)() === 24) return expr;
 
       expr = `${p[0]}${ops[0]}(${p[1]}${ops[1]}${p[2]}${ops[2]}${p[3]})`;
-      if (eval(expr) === 24) return expr;
+      if (new Function(`return ${expr}`)() === 24) return expr;
 
       expr = `(${p[0]}${ops[0]}${p[1]})${ops[1]}(${p[2]}${ops[2]}${p[3]})`;
-      if (eval(expr) === 24) return expr;
+      if (new Function(`return ${expr}`)() === 24) return expr;
 
       expr = `((${p[0]}${ops[0]}${p[1]})${ops[1]}${p[2]})${ops[2]}${p[3]}`;
-      if (eval(expr) === 24) return expr;
+      if (new Function(`return ${expr}`)() === 24) return expr;
 
       expr = `(${p[0]}${ops[0]}(${p[1]}${ops[1]}${p[2]}))${ops[2]}${p[3]}`;
-      if (eval(expr) === 24) return expr;
+      if (new Function(`return ${expr}`)() === 24) return expr;
 
       expr = `${p[0]}${ops[0]}((${p[1]}${ops[1]}${p[2]})${ops[2]}${p[3]})`;
-      if (eval(expr) === 24) return expr;
+      if (new Function(`return ${expr}`)() === 24) return expr;
 
       expr = `${p[0]}${ops[0]}(${p[1]}${ops[1]}(${p[2]}${ops[2]}${p[3]}))`;
-      if (eval(expr) === 24) return expr;
+      if (new Function(`return ${expr}`)() === 24) return expr;
     }
   }
 
