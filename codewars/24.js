@@ -76,43 +76,62 @@ function operation(a, b, op) {
   }
 }
 
-var k = 3;  // operations number
-var result = "It's not possible!";
 
+function equalTo24(a, b, c, d) {
+  var result = "It's not possible!";
+  var opsN = arguments.length - 1;  // operations number
 
-function equalTo24(a, b, c, d){
   // find all permutations of a, b, c, d
   var valPermutations = [];
   permutationsWithEquals([a, b, c, d], (perm) => {
-    valPermutations.push(perm);
+    valPermutations.push(perm.slice());
+    return true;
+  });
+
+  var orderPermutations = [];
+  permutationsWithEquals([0, 1, 2], (order) => {
+    orderPermutations.push(order.slice());
     return true;
   });
 
   var r = []; // stores intermediate results
 
-  sampleWithRepetition(['+', '-', '*', '/'], k, (ops) => {
-    var i, j, n = valPermutations.length;
-    for (j = 0; j < n; ++j) {
-      vals = valPermutations[j];
-      r[0] = vals[0];
-      for (i = 1; i <= k; ++i) {
-        r[i] = operation(r[i - 1], vals[i], ops[i - 1]);
-      }
-      if (r[k] === 24) {
-        var priority = priorities[ops[0]];
-        var str = '' + vals[0] + ops[0] + vals[1];
-        for (i = 1; i < k; ++i) {
-          if (priorities[ops[i]] < priority) {
-            str = '(' + str + ')';
-            priority = priorities[ops[i]];
-          }
-          str += ops[i] + vals[i + 1];
+  sampleWithRepetition(['+', '-', '*', '/'], opsN, (ops) => {
+    var i, j, k,
+        valN = valPermutations.length;
+        orderN = orderPermutations.length;
+    for (j = 0; j < valN; ++j) {
+      for (k = 0; k < orderN; ++k) {
+        var vals = valPermutations[j];
+        var order = orderPermutations[k];
+        // debugger;
+        r[0] = vals[0];
+        for (i = 1; i <= opsN; ++i) {
+          r[i] = operation(r[i - 1], vals[i], ops[order[i - 1]]);
         }
-        result = str;
-        return false;
+
+        var str = '' + vals[0] + ops[order[0]] + vals[1];
+        for (i = 1; i < opsN; ++i) {
+          str += ops[order[i]] + vals[i + 1];
+        }
+        console.log(`${str}=${r[opsN]}`)
+
+        if (r[opsN] === 24) {
+          var priority = priorities[ops[0]];
+          var str = '' + vals[0] + ops[0] + vals[1];
+          for (i = 1; i < opsN; ++i) {
+            if (priorities[ops[i]] < priority) {
+              str = '(' + str + ')';
+              priority = priorities[ops[i]];
+            }
+            str += ops[i] + vals[i + 1];
+          }
+          result = str;
+          return false;
+        }
       }
-      return true;
     }
+    return true;
   });
 
   return result;
