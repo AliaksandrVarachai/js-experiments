@@ -1,4 +1,34 @@
-function sampleWithRepetition(a, k, cb) { // k < n
+// if a = [1123] returns [1123], [1132], [1213], [1231], ..., [3211]
+// stops when cb returns false
+function permutationsWithEquals(a, cb) {
+  var n = a.length;
+  var s = a.slice();
+  s.sort((x, y) => x - y);
+
+  function next() {
+    var i = n - 2;
+    while (i >= 0 && s[i] >= s[i + 1])
+      --i;
+    if (i < 0)
+      return false;
+    var j = i + 1;
+    while (j < n - 1 && s[j + 1] > s[i])
+      ++j;
+    [s[j], s[i]] = [s[i], s[j]];
+    for(i = i + 1, j = n - 1; i < j; ++i, --j)
+      [s[j], s[i]] = [s[i], s[j]];
+    return true;
+  }
+
+  do {
+    if (!cb(s)) return;
+  } while (next());
+}
+
+// generates [+++], [++-], [++*], [++/], ..., [///]
+// k - sample size (k <= a.length)
+// stops when cb returns false
+function sampleWithRepetition(a, k, cb) {
   var n = a.length;
   var s = [];
   for (var i = 0; i < k; ++i)
@@ -24,11 +54,9 @@ function sampleWithRepetition(a, k, cb) { // k < n
     return true;
   }
 
-  if (!cb(s.map(i => a[i])))
-    return;
-  while(next())
-    if (!cb(s.map(i => a[i])))
-      return;
+  do {
+    if (!cb(s.map(i => a[i]))) return;
+  } while (next());
 }
 
 var priorities = {
@@ -48,33 +76,51 @@ function operation(a, b, op) {
   }
 }
 
-var k = 3;
-var vals = [1, 2, 3, 4];
-var r = [];
-var result = 'Not possible!';
+var k = 3;  // operations number
+var result = "It's not possible!";
 
-sampleWithRepetition(['+', '-', '*', '/'], k, (ops) => {
-  r[0] = vals[0];
-  for (var i = 1; i <= k; ++i) {
-    r[i] = operation(r[i - 1], vals[i], ops[i - 1]);
-  }
-  if (r[k] === 24) {
-    var priority = priorities[ops[0]];
-    var str = '' + vals[0] + ops[0] + vals[1];
-    for (var i = 1; i < k; ++i) {
-      if (priorities[ops[i]] < priority) {
-        str = '(' + str + ')';
-        priority = priorities[ops[i]];
+
+function equalTo24(a, b, c, d){
+  // find all permutations of a, b, c, d
+  var valPermutations = [];
+  permutationsWithEquals([a, b, c, d], (perm) => {
+    valPermutations.push(perm);
+    return true;
+  });
+
+  var r = []; // stores intermediate results
+
+  sampleWithRepetition(['+', '-', '*', '/'], k, (ops) => {
+    var i, j, n = valPermutations.length;
+    for (j = 0; j < n; ++j) {
+      vals = valPermutations[j];
+      r[0] = vals[0];
+      for (i = 1; i <= k; ++i) {
+        r[i] = operation(r[i - 1], vals[i], ops[i - 1]);
       }
-      str += ops[i] + vals[i + 1];
+      if (r[k] === 24) {
+        var priority = priorities[ops[0]];
+        var str = '' + vals[0] + ops[0] + vals[1];
+        for (i = 1; i < k; ++i) {
+          if (priorities[ops[i]] < priority) {
+            str = '(' + str + ')';
+            priority = priorities[ops[i]];
+          }
+          str += ops[i] + vals[i + 1];
+        }
+        result = str;
+        return false;
+      }
+      return true;
     }
-    result = str;
-    return false;
-  }
-  return true;
-});
+  });
 
-console.log('result: ' + result);
+  return result;
+}
+
+
+
+console.log(equalTo24(1,1,1,13));
 
 
 
