@@ -27,7 +27,17 @@ function equalTo24(a, b, c, d) {
           continue;
         for (var k = 0; k < operations.length; ++k) {
           var result = operation(args[i], args[j], operations[k]);
-          newStr = str + '(' + args[i] + operations[k] + args[j] + ')';
+          // TODO: compare with history length????
+          var lastInx = history.length - 1;
+          if (i === history.len) {
+            history[lastInx] = `(${history[lastInx]}${operations[k]}${args[j]})`;
+          } else if (j === 0) {
+            history[lastInx] = `(${args[i]}${operations[k]}${history[lastInx]})`;
+          } else {
+            history.push(`(${args[i]}${operations[k]}${args[j]})`)
+          }
+
+          // newStr = str + '(' + args[i] + operations[k] + args[j] + ')';
           if (args.length === 2) {
             if (result === 24) {
               result24 = newStr;
