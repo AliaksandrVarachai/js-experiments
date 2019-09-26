@@ -1,87 +1,87 @@
-const operations = [];
+function sampleWithRepetition(a, k, cb) { // k < n
+  var n = a.length;
+  var s = [];
+  for (var i = 0; i < k; ++i)
+    s.push(0);
+  var inx = k - 1;
 
-(function fillOperations() {
-  var ops = ['+', '-', '*', '/'];
-  for (var i0 = 0; i0 < 4; ++i0)
-    for (var i1 = 0; i1 < 4; ++i1)
-      for (var i2 = 0; i2 < 4; ++i2)
-        operations.push([ops[i0], ops[i1], ops[i2]]);
-})();
-
-function getPermutations(a, b, c, d) {
-  return [
-    [a, b, c, d],
-    [a, b, d, c],
-    [a, c, b, d],
-    [a, c, d, b],
-    [a, d, b, c],
-    [a, d, c, b],
-
-    [b, a, c, d],
-    [b, a, d, c],
-    [b, c, a, d],
-    [b, c, d, a],
-    [b, d, a, c],
-    [b, d, c, a],
-
-    [c, a, b, d],
-    [c, a, d, b],
-    [c, b, a, d],
-    [c, b, d, a],
-    [c, d, a, b],
-    [c, d, b, a],
-
-    [d, a, b, c],
-    [d, a, c, b],
-    [d, b, a, c],
-    [d, b, c, a],
-    [d, c, a, b],
-    [d, c, b, a],
-  ];
-}
-
-
-function equalTo24(a, b, c, d){
-  const permutations = getPermutations(a, b, c, d);
-  for (var i = operations.length - 1; i > -1; --i) {
-    var ops = operations[i];
-    for (var j = permutations.length - 1; j > -1; --j) {
-      var p = permutations[j];
-
-      var expr = `${p[0]}${ops[0]}${p[1]}${ops[1]}${p[2]}${ops[2]}${p[3]}`;
-      if (new Function(`return ${expr}`)() === 24) return expr;
-
-      expr = `(${p[0]}${ops[0]}${p[1]})${ops[1]}${p[2]}${ops[2]}${p[3]}`;
-      if (new Function(`return ${expr}`)() === 24) return expr;
-
-      expr = `${p[0]}${ops[0]}(${p[1]}${ops[1]}${p[2]})${ops[2]}${p[3]}`;
-      if (new Function(`return ${expr}`)() === 24) return expr;
-
-      expr = `${p[0]}${ops[0]}${p[1]}${ops[1]}(${p[2]}${ops[2]}${p[3]})`;
-      if (new Function(`return ${expr}`)() === 24) return expr;
-
-      expr = `(${p[0]}${ops[0]}${p[1]}${ops[1]}${p[2]})${ops[2]}${p[3]}`;
-      if (new Function(`return ${expr}`)() === 24) return expr;
-
-      expr = `${p[0]}${ops[0]}(${p[1]}${ops[1]}${p[2]}${ops[2]}${p[3]})`;
-      if (new Function(`return ${expr}`)() === 24) return expr;
-
-      expr = `(${p[0]}${ops[0]}${p[1]})${ops[1]}(${p[2]}${ops[2]}${p[3]})`;
-      if (new Function(`return ${expr}`)() === 24) return expr;
-
-      expr = `((${p[0]}${ops[0]}${p[1]})${ops[1]}${p[2]})${ops[2]}${p[3]}`;
-      if (new Function(`return ${expr}`)() === 24) return expr;
-
-      expr = `(${p[0]}${ops[0]}(${p[1]}${ops[1]}${p[2]}))${ops[2]}${p[3]}`;
-      if (new Function(`return ${expr}`)() === 24) return expr;
-
-      expr = `${p[0]}${ops[0]}((${p[1]}${ops[1]}${p[2]})${ops[2]}${p[3]})`;
-      if (new Function(`return ${expr}`)() === 24) return expr;
-
-      expr = `${p[0]}${ops[0]}(${p[1]}${ops[1]}(${p[2]}${ops[2]}${p[3]}))`;
-      if (new Function(`return ${expr}`)() === 24) return expr;
+  function next() {
+    if (s[inx] < n - 1) {
+      ++s[inx];
+    } else {
+      for (var i = k - 1; i >= inx; --i)
+        s[i] = 0;
+      --inx;
+      while (inx >= 0 && s[inx] === n - 1) {
+        s[inx] = 0;
+        --inx;
+      }
+      if (inx < 0)
+        return false;
+      ++s[inx];
+      inx = k - 1;
     }
+    return true;
   }
 
-  return "It's not possible!";
+  if (!cb(s.map(i => a[i])))
+    return;
+  while(next())
+    if (!cb(s.map(i => a[i])))
+      return;
 }
+
+var priorities = {
+  '*': 0,
+  '/': 0,
+  '+': 1,
+  '-': 1
+};
+
+function operation(a, b, op) {
+  switch(op) {
+    case '+': return a + b;
+    case '-': return a - b;
+    case '*': return a * b;
+    case '/': return a / b;
+    default: throw('Unknown operator');
+  }
+}
+
+var k = 3;
+var vals = [1, 2, 3, 4];
+var r = [];
+var result = 'Not possible!';
+
+sampleWithRepetition(['+', '-', '*', '/'], k, (ops) => {
+  r[0] = vals[0];
+  for (var i = 1; i <= k; ++i) {
+    r[i] = operation(r[i - 1], vals[i], ops[i - 1]);
+  }
+  if (r[k] === 24) {
+    var priority = priorities[ops[0]];
+    var str = '' + vals[0] + ops[0] + vals[1];
+    for (var i = 1; i < k; ++i) {
+      if (priorities[ops[i]] < priority) {
+        str = '(' + str + ')';
+        priority = priorities[ops[i]];
+      }
+      str += ops[i] + vals[i + 1];
+    }
+    result = str;
+    return false;
+  }
+  return true;
+});
+
+console.log('result: ' + result);
+
+
+
+
+
+
+
+
+
+

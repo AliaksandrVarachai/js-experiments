@@ -36,7 +36,7 @@ function permutation(n) {
 // "21112"
 function permutationsWithEquals(a, compare = undefined) {
   var n = a.length;
-  var s = a.slice()
+  var s = a.slice();
   s.sort(compare);
 
   function next() {
@@ -107,7 +107,7 @@ function permutationsRepetition(a) {
 // "020"
 // "021"
 // "022"
-function sampleWithRepeatition(a, k) { // k elements form a[] (k < a.length)
+function orderedSampleWithRepetition(a, k) { // k elements form a[] (k < a.length)
   var n = a.length;
   var s = [];
   for (var i = 0; i < k; ++i)
@@ -142,4 +142,4 @@ function sampleWithRepeatition(a, k) { // k elements form a[] (k < a.length)
 permutation(5);
 permutationsWithEquals([1, 1, 2, 1, 2], (a, b) => a - b);
 permutationsRepetition([7, 8, 9]);
-sampleWithRepeatition([0, 1, 2], 3)
+orderedSampleWithRepetition([0, 1, 2], 3)
