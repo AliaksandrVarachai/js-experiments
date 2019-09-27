@@ -1,4 +1,6 @@
 var operations = ['+', '-', '*', '/'];
+var lowerLimit = 24 - 1e-9;
+var upperLimit = 24 + 1e-9;
 
 function operation(a, op, b) {
   switch(op) {
@@ -9,46 +11,6 @@ function operation(a, op, b) {
     default: throw('Unknown operator');
   }
 }
-
-/**
- * Callback with a found permutation.
- *
- * @callback permutationCallback
- * @param {number[]} perm - found permutation.
- * @returns {boolean} - true to continue or false to stop searching through.
- */
-
-/**
- * Searches through all permutation of an array and calls the callback with every permutation.
- *
- * @param {number[]} a - the origin array.
- * @param {permutationCallback} cb - callback which can stop searching through.
- */
-function permutationsWithEquals(a, cb) {
-  var n = a.length;
-  var s = a.slice();
-  s.sort((x, y) => x - y);
-
-  function next() {
-    var i = n - 2;
-    while (i >= 0 && s[i] >= s[i + 1])
-      --i;
-    if (i < 0)
-      return false;
-    var j = i + 1;
-    while (j < n - 1 && s[j + 1] > s[i])
-      ++j;
-    [s[j], s[i]] = [s[i], s[j]];
-    for(i = i + 1, j = n - 1; i < j; ++i, --j)
-      [s[j], s[i]] = [s[i], s[j]];
-    return true;
-  }
-
-  do {
-    if (!cb(s)) return;
-  } while (next());
-}
-
 
 function equalTo24(...args) {
   var result24 = "It's not possible!";
@@ -74,7 +36,7 @@ function equalTo24(...args) {
           var newHistory = history.filter((_, inx) => inx !== i && inx !== j);
           newHistory.unshift('(' + history[i] + operations[k] + history[j] + ')');
           if (newVals.length === 1) {
-            if (result === 24) {
+            if (lowerLimit < result && result < upperLimit) {
               result24 = newHistory[0].substring(1, newHistory[0].length - 1);
               is24Found = true;
             }
@@ -86,15 +48,12 @@ function equalTo24(...args) {
     }
   }
 
-  permutationsWithEquals(args, perm => {
-    f(perm, perm);
-    return !is24Found;
-  });
+  f(args, args);
 
   return result24;
 }
 
 
 console.log(equalTo24(1,1,1,1,1,13));
-console.log(equalTo24(4,4,2,2));
+console.log(equalTo24(60,2,96,60));
 
