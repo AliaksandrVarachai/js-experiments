@@ -65,7 +65,7 @@ Node.prototype.remove = function(v) {
   if (node.isEmpty())
     return this;
   if (node.v === v) {
-    // will be processed by while cicle (right branch)
+    // will be processed by while loop (right branch)
     node = new Node(node.v - 1, new EmptyNode(), node);
   }
   while (true) {
@@ -131,7 +131,7 @@ var t1 = insertArray(new EmptyNode(), [8,4,12,14,10,15,13,11,9,2,1,3,6,5,7,0]);
 var arr = [];
 t1.inorder(v => arr.push(v));
 console.log(arr);
-t1.remove(13) ;
+t1.remove(8) ;
 // console.log(t1);
 arr = [];
 t1.inorder(v => arr.push(v));
