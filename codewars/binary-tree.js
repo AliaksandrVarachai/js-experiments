@@ -18,55 +18,38 @@ BinaryTreeNode.prototype.preorder = function(fn) { fn(this.value); this.left.pre
 BinaryTreeNode.prototype.postorder = function(fn) { this.left.postorder(fn); this.right.postorder(fn); fn(this.value); };
 
 BinaryTreeNode.prototype.contains = function(x) { return this.value === x || this.left.contains(x) || this.right.contains(x); };
+
 BinaryTreeNode.prototype.insert = function(x) {
-  var stack = [{back: null, node: this}];
-  var inx = 0;
-  var ptr = stack[inx];
-  var node = ptr.node;
-  while (!(node instanceof EmptyBinaryTree)) {
-    stack.push({back: ptr, node: node.left, child: 0}, {back: ptr, node: node.right, child: 1});
-    ptr = stack[++inx];
-    node = ptr.node;
-  }
-  var newTree = new BinaryTreeNode(x, node, new EmptyBinaryTree());
-  var addedChild = ptr.child;
-  ptr = ptr.back;
-  while (ptr) {
-    node = ptr.node;
-    if (addedChild === 0)
-      newTree = new BinaryTreeNode(node.value, newTree, node.right);
-    else
-      newTree = new BinaryTreeNode(node.value, node.left, newTree);
-    addedChild = ptr.child;
-    ptr = ptr.back;
-  }
-  return newTree;
+  if (x < this.value)
+    return new BinaryTreeNode(this.value, this.left.insert(x), this.right);
+  return new BinaryTreeNode(this.value, this.left, this.right.insert(x));
 };
+
 BinaryTreeNode.prototype.remove = function(x) {
-  var stack = [{back: null, node: this}];
-  var inx = 0;
-  var ptr = stack[inx];
-  var node = ptr.node;
-  while (node && node.value !== x) {
-    stack.push({back: ptr, node: node.left, child: 0}, {back: ptr, node: node.right, child: 1});
-    ptr = stack[++inx];
-    node = ptr.node;
-  }
-  if (!node)
-    return this;
-  var removedChild = ptr.child;
-  var newTree = null;
-  ptr = ptr.back;
-  while (ptr) {
-    node = ptr.node;
-    if (removedChild === 0)
-      newTree = new BinaryTreeNode(node.value, newTree || new EmptyBinaryTree(), node.right);
+  if (x < this.value)
+    return new BinaryTreeNode(this.value, this.left.remove(x), this.right);
+  if (x > this.value)
+    return new BinaryTreeNode(this.value, this.left, this.left.remove(x));
+  // x === this.value
+  if (this.left.isEmpty()) {
+    if (this.right.isEmpty())
+      return new EmptyBinaryTree();
     else
-      newTree = new BinaryTreeNode(node.value, node.left, newTree || new EmptyBinaryTree());
-    removedChild = ptr.child;
-    ptr = ptr.back;
+      return this.right;
+  } else {
+    if (this.right.isEmpty())
+      return this.left;
+    else {
+      var parent = this;
+      var successor = this.right;
+      while (!successor.left.isEmpty()) {
+        parent = successor;
+        successor = successor.left;
+      }
+      // TODO: remove the rest between this and successor
+      return new BinaryTreeNode(successor.value, this.left, this.right.remove(successor.value))
+    }
   }
-  return newTree || new EmptyBinaryTree();
 };
 
 ////////////////////////////////////////////////////////////////////////
@@ -83,18 +66,7 @@ EmptyBinaryTree.prototype.preorder = function(fn) {};
 EmptyBinaryTree.prototype.postorder = function(fn) {};
 
 EmptyBinaryTree.prototype.contains = function(x) { return false; };
-EmptyBinaryTree.prototype.insert = function(x) { return new BinaryTreeNode(x, this, new EmptyBinaryTree()); };
-EmptyBinaryTree.prototype.remove = function(x) {};
-
-// tests
-
-var mt = new EmptyBinaryTree;
-// var t1 = mt.insert('b').insert('a').insert('c');
-// var t2 = t1.remove('a');
-// var t3 = t1.remove('z');
-function insertArray(srcTree, arr) {
-  return arr.reduce((tree, val) => tree.insert(val), srcTree);
-}
-var t1 = insertArray(mt, [8,4,12,14,10,15,13,11,9,2,1,3,6,5,7,0]);
-debugger;
-t1.count()
+EmptyBinaryTree.prototype.insert = function(x) {
+  return new BinaryTreeNode(x, new EmptyBinaryTree(), new EmptyBinaryTree());
+};
+EmptyBinaryTree.prototype.remove = function(x) { return this; };
