@@ -1,4 +1,4 @@
-function BinaryTree() {};
+function BinaryTree() {}
 
 function BinaryTreeNode(value, left, right) {
   this.value = value;
@@ -25,11 +25,19 @@ BinaryTreeNode.prototype.insert = function(x) {
   return new BinaryTreeNode(this.value, this.left, this.right.insert(x));
 };
 
+BinaryTreeNode.prototype.copyTreeUntilSuccessor = function() {
+  if (this.left.isEmpty())
+    return {tree: new EmptyBinaryTree(), successor: this.value};
+  var { tree, successor } = this.left.copyTreeUntilSuccessor();
+  return {tree: new BinaryTreeNode(this.value, tree, this.right), successor};
+};
+
+
 BinaryTreeNode.prototype.remove = function(x) {
   if (x < this.value)
     return new BinaryTreeNode(this.value, this.left.remove(x), this.right);
   if (x > this.value)
-    return new BinaryTreeNode(this.value, this.left, this.left.remove(x));
+    return new BinaryTreeNode(this.value, this.left, this.right.remove(x));
   // x === this.value
   if (this.left.isEmpty()) {
     if (this.right.isEmpty())
@@ -40,14 +48,9 @@ BinaryTreeNode.prototype.remove = function(x) {
     if (this.right.isEmpty())
       return this.left;
     else {
-      var parent = this;
-      var successor = this.right;
-      while (!successor.left.isEmpty()) {
-        parent = successor;
-        successor = successor.left;
-      }
-      // TODO: remove the rest between this and successor
-      return new BinaryTreeNode(successor.value, this.left, this.right.remove(successor.value))
+      // removes the rest between this and successor
+      var { tree, successor } = this.right.copyTreeUntilSuccessor();
+      return new BinaryTreeNode(successor, this.left, tree);
     }
   }
 };
@@ -70,3 +73,21 @@ EmptyBinaryTree.prototype.insert = function(x) {
   return new BinaryTreeNode(x, new EmptyBinaryTree(), new EmptyBinaryTree());
 };
 EmptyBinaryTree.prototype.remove = function(x) { return this; };
+
+// tests
+
+function insertArray(srcTree, arr) {
+  return arr.reduce((tree, val) => tree.insert(val), srcTree);
+}
+var t1 = insertArray(new EmptyBinaryTree(), [8,4,12 /*,14,10,15,13,11,9,2,1,3,6,5,7,0*/]);
+// var t1 = insertArray(new EmptyNode(), [4,3,5,1]);
+// var t2 = t1.remove(4);
+// console.log(t2)
+var arr = [];
+t1.inorder(v => arr.push(v));
+console.log(arr);
+var t2 = t1.remove(12);
+// console.log(t1);
+arr = [];
+t2.inorder(v => arr.push(v));
+console.log(arr);
