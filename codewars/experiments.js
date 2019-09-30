@@ -59,6 +59,7 @@ Node.prototype.getSuccessorParent = function() {
 };
 
 Node.prototype.remove = function(v) {
+  debugger;
   var node = this;
   var successorParent;
   if (node.isEmpty())
@@ -71,20 +72,24 @@ Node.prototype.remove = function(v) {
     if (v < node.v) {
       if (node.l.isEmpty())
         break; // nothing to remove
-      var l = node.l;
-      if (l.v === v) {
-        if (l.l.isEmpty())
-          l = l.r;
-        else if (l.r.isEmpty())
-          l = l.l;
-        else {
-          successorParent = l.getSuccessorParent(); // cannot be empty!!!
-          if (successorParent === l) { // the nearest right element is successor
-            l.v = l.r.v;
-            l.r = l.r.r;
-          } else {
-            l.v = successorParent.l.v;
-            successorParent.l = empty;
+      if (node.l.v === v) {
+        if (node.l.l.isEmpty()) {
+          if (node.l.r.isEmpty())
+            node.l = empty;
+          else
+            node.l = node.l.r;
+        } else {
+          if (node.l.r.isEmpty())
+            node.l = node.l.l;
+          else {
+            successorParent = node.l.getSuccessorParent(); // cannot be empty!!!
+            if (successorParent === node.l) { // the nearest right element is successor
+              node.l.v = node.l.r.v;
+              node.l.r = node.l.r.r;
+            } else {
+              node.l.v = successorParent.l.v;
+              successorParent.l = empty;
+            }
           }
         }
         break;
@@ -93,24 +98,24 @@ Node.prototype.remove = function(v) {
     } else {
       if (node.r.isEmpty())
         break; // nothing to remove
-      var r = node.r;
-      if (r.v === v) {
-        if (r.l.isEmpty())
-          r = r.r;
-        else if (r.r.isEmpty())
-          r = r.l;
+      if (node.r.v === v) {
+        if (node.r.l.isEmpty())
+          node.r = node.r.r;
+        else if (node.r.r.isEmpty())
+          node.r = node.r.l;
         else {
-          successorParent = r.getSuccessorParent(); // cannot be empty!!!
-          if (successorParent === r) { // the nearest left element is successor
-            r.v = r.r.v;
-            r.l = r.r.l;
+          successorParent = node.r.getSuccessorParent(); // cannot be empty!!!
+          if (successorParent === node.r) { // the nearest left element is successor
+            node.r.v = node.r.r.v;
+            node.r.l = node.r.r.l;
           } else {
-            r.v = successorParent.l.v;
+            node.r.v = successorParent.l.v;
             successorParent.l = empty;
           }
         }
         break;
       }
+      node = node.r;
     }
   }
   return this;
@@ -120,13 +125,15 @@ function insertArray(srcTree, arr) {
   return arr.reduce((tree, val) => tree.insert(val), srcTree);
 }
 var t1 = insertArray(new EmptyNode(), [8,4,12,14,10,15,13,11,9,2,1,3,6,5,7,0]);
+// var t1 = insertArray(new EmptyNode(), [4,3,5,1]);
 // var t2 = t1.remove(4);
 // console.log(t2)
 var arr = [];
 t1.inorder(v => arr.push(v));
 console.log(arr);
-t1.remove(1);
-console.log(t1);
+t1.remove(13) ;
+// console.log(t1);
+arr = [];
 t1.inorder(v => arr.push(v));
 console.log(arr);
 
