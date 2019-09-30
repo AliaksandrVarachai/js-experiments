@@ -37,6 +37,7 @@ BinaryTreeNode.prototype.insert = function(x) {
       newTree = new BinaryTreeNode(node.value, newTree, node.right);
     else
       newTree = new BinaryTreeNode(node.value, node.left, newTree);
+    addedChild = ptr.child;
     ptr = ptr.back;
   }
   return newTree;
@@ -62,6 +63,7 @@ BinaryTreeNode.prototype.remove = function(x) {
       newTree = new BinaryTreeNode(node.value, newTree || new EmptyBinaryTree(), node.right);
     else
       newTree = new BinaryTreeNode(node.value, node.left, newTree || new EmptyBinaryTree());
+    removedChild = ptr.child;
     ptr = ptr.back;
   }
   return newTree || new EmptyBinaryTree();
@@ -87,8 +89,12 @@ EmptyBinaryTree.prototype.remove = function(x) {};
 // tests
 
 var mt = new EmptyBinaryTree;
-var t1 = mt.insert('b').insert('a').insert('c');
-var t2 = t1.remove('a');
-var t3 = t1.remove('z');
+// var t1 = mt.insert('b').insert('a').insert('c');
+// var t2 = t1.remove('a');
+// var t3 = t1.remove('z');
+function insertArray(srcTree, arr) {
+  return arr.reduce((tree, val) => tree.insert(val), srcTree);
+}
+var t1 = insertArray(mt, [8,4,12,14,10,15,13,11,9,2,1,3,6,5,7,0]);
 debugger;
 t1.count()
