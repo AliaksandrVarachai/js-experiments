@@ -32,12 +32,11 @@ BinaryTreeNode.prototype.copyTreeUntilSuccessor = function() {
   return {tree: new BinaryTreeNode(this.value, tree, this.right), successor};
 };
 
-
-BinaryTreeNode.prototype.remove = function(x) {
+BinaryTreeNode.prototype.removeExistent = function(x) {
   if (x < this.value)
-    return new BinaryTreeNode(this.value, this.left.remove(x), this.right);
+    return new BinaryTreeNode(this.value, this.left.removeExistent(x), this.right);
   if (x > this.value)
-    return new BinaryTreeNode(this.value, this.left, this.right.remove(x));
+    return new BinaryTreeNode(this.value, this.left, this.right.removeExistent(x));
   // x === this.value
   if (this.left.isEmpty()) {
     if (this.right.isEmpty())
@@ -53,6 +52,12 @@ BinaryTreeNode.prototype.remove = function(x) {
       return new BinaryTreeNode(successor, this.left, tree);
     }
   }
+};
+
+BinaryTreeNode.prototype.remove = function(x) {
+  if (this.contains(x))
+    return this.removeExistent(x);
+  return this;
 };
 
 ////////////////////////////////////////////////////////////////////////
