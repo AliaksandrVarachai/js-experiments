@@ -11,6 +11,10 @@
   position: absolute;
 }
 
+.page-content {
+  min-height: 60px;
+}
+
 .hidden {
-  visibility: hidden;
+  display: none;
 }
