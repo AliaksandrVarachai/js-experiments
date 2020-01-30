@@ -19,12 +19,29 @@ function execute(code) {
     } else {
       lexems.push(code[i]);
       if (code[i] === ')' && isNaN(+code[i + 1]))
-        lexems.push(1);
+        lexems.push(1); // add 1 when number is absent
     }
   }
-  console.log(lexems.join(''));
 
-  function _addPos() {
+  // remove zeros
+  const parentheses = [];
+  for (let i = 0; i < lexems.length; ++i) {
+    if (lexems[i] === '(')
+      parentheses.push(i);
+    else if (lexems[i] === ')') {
+      const start = parentheses.pop();
+      if (lexems[i + 1] === 0) {
+        const d = i + 2 - start;
+        lexems.splice(start, d);
+        i -= d;
+      }
+    } else if (lexems[i] === 0) {
+      lexems.splice(i - 1, 2);
+      i -= 2;
+    }
+  }
+
+  function addPosToPath() {
     switch (lexems[pos]) {
       case 'L':
         dirInx = (dirInx + 1) % 4;
@@ -42,40 +59,36 @@ function execute(code) {
 
   let pos = 0;
 
-  function callN(isFirst = true) {
+  function callMultiple(isFirst = true) {
     const start = pos;
-    console.log('start=', start, 'isFirst=', isFirst)
 
     while (pos < lexems.length && lexems[pos] !== ')') {
       if (typeof lexems[pos] === 'number') {
         const num = lexems[pos--];
         for (let k = 1; k < num; ++k)
-          _addPos();
+          addPosToPath();
         pos += 2;
       } else if (lexems[pos] === '(') {
         ++pos;
-        callN();
+        callMultiple();
       } else {
-        _addPos();
+        addPosToPath();
         ++pos;
       }
     }
 
-    console.log('pos=', pos, ' isFirst=', isFirst, ' start=', start)
     if (isFirst) {
       const num = lexems[pos + 1];
       for (let k = 1; k < num; ++k) {
         pos = start;
-        callN(false);
+        callMultiple(false);
       }
-    }
-
-    if (isFirst)
       pos += 2;
+    }
   }
 
   while (pos < lexems.length) {
-    callN();
+    callMultiple();
   }
 
 
