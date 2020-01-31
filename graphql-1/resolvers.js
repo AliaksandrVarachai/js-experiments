@@ -19,4 +19,26 @@ const Student = {
   college: async (root) => db.colleges.get(root.collegeId),
 };
 
-module.exports = { Query, Student };
+const Mutation = {
+  createStudent: (root, args, context, info) =>
+    db.students.create({
+      collegeId: args.collegeId,
+      firstName: args.firstName,
+      lastName: args.lastName
+    }),
+  createStudentObject: (...args) => {
+    const id = Mutation.createStudent(...args);
+    return db.students.get(id);
+  },
+  deleteStudent: async (root, args) => {
+    try {
+      db.students.delete(args.id);
+      return 1;
+    } catch (err) {
+      return 0;
+    }
+  }
+
+};
+
+module.exports = { Query, Student, Mutation };

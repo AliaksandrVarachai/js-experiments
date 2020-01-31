@@ -29,6 +29,12 @@ type Query {
     setFavouriteColor(color: ColorType): String
 }
 
+type Mutation {
+    createStudent(collegeId: ID, firstName: String, lastName: String): String
+    createStudentObject(collegeId: ID, firstName: String, lastName: String) : Student
+    deleteStudent(id: ID!): Int
+}
+
 enum ColorType {
     RED
     BLUE
