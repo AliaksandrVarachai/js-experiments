@@ -1,0 +1,9 @@
+{
+  "realm": "master",
+  "realm-public-key": "XAbsImCYrnTzOoD3KDaFn26fZFfbiC3ttoPgHYa7HiA",
+  "auth-server-url": "http://10.6.193.4:8080/auth",
+  "ssl-required": "external",
+  "resource": "test-client",
+  "public-client": true,
+  "confidential-port__": 0
+}
