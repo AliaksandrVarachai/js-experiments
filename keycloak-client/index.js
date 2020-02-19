@@ -7,7 +7,7 @@ var memoryStore = new session.MemoryStore();
 var keycloak = new Keycloak({ store: memoryStore });
 // session
 app.use(session({
-  secret: 'MySecret',
+  // secret: 'MySecret',
   resave: false,
   saveUnitialized: true,
   store: memoryStore,
