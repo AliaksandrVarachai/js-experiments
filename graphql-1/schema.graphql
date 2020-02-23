@@ -1,0 +1,42 @@
+type Student {
+    id: ID!
+    firstName: String
+    lastName: String
+    email: String
+    password: String
+    collegeId: String
+    fullName: String
+    college: College
+}
+
+type College {
+    id: ID!
+    name: String
+    location: String
+    rating: Float
+}
+
+
+type Query {
+    test: String
+    students: [Student]
+    colleges: [College]
+    studentById(id: ID!): Student
+    collegeById(id: ID!): College
+    # vairables
+    sayHello(name: String!): String
+    # Enum
+    setFavouriteColor(color: ColorType): String
+}
+
+type Mutation {
+    createStudent(collegeId: ID, firstName: String, lastName: String): String
+    createStudentObject(collegeId: ID, firstName: String, lastName: String) : Student
+    deleteStudent(id: ID!): Int
+}
+
+enum ColorType {
+    RED
+    BLUE
+    GREEN
+}

@@ -1,22 +1,23 @@
 const navigationToolbar = document.getElementsByClassName('navigation-toolbar')[0];
-const navigationItems = document.getElementsByClassName('navigation-item');
+// const navigationItems = document.getElementsByClassName('navigation-item');
+const navigationItems = document.querySelectorAll('input[name="pages"]');
 const contentPages = document.getElementsByClassName('page-content');
 
 function showPage(contentPage) {
   for (let i = 0; i < contentPages.length; i++) {
     const cp = contentPages[i];
     if (cp === contentPage) {
-      cp.classList.add('visible');
+      cp.classList.remove('hidden');
     } else {
-      cp.classList.remove('visible');
+      cp.classList.add('hidden');
     }
   }
 }
 
 navigationToolbar.addEventListener('click', function(event) {
   const target = event.target;
+  console.log('target=', target)
   if (target.type !== 'radio') {
-    console.log('adfsf=', target);
     return;
   }
   let pageId;
@@ -27,6 +28,6 @@ navigationToolbar.addEventListener('click', function(event) {
       break;
     }
   }
-  console.log('pageId=', pageId);
+  history.pushState({pageId: 1}, 'Page 1', pageId);
   showPage(document.getElementById(pageId));
 }, false);

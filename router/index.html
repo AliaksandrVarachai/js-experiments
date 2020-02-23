@@ -8,12 +8,12 @@
 </head>
 <body>
 <div class="navigation-toolbar">
-  <span class="navigation-item">
+  <label class="navigation-item">
     <input type="radio" name="pages" checked="true" page-id="page-1">
     <span>Page 1</span>
-  </span>
+  </label>
   <label class="navigation-item">
-    <input type="radio" name="pages">
+    <input type="radio" name="pages" page-id="page-2">
     <span>Page 2</span>
   </label>
   <label class="navigation-item">
@@ -23,8 +23,15 @@
 </div>
 <div class="navigation-content">
   <div id="page-1" class="page-content">Content page #1</div>
-  <div id="page-2" class="page-content hidden">Content page #1</div>
-  <div id="page-3" class="page-content hidden">Content page #1</div>
+  <div id="page-2" class="page-content hidden">
+    Content page #2 <br>
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+  </div>
+  <div id="page-3" class="page-content hidden">
+    Content page #3 <br>
+    Ab accusantium aliquid aut dolorem dolorum ea eum explicabo illum, nesciunt officia quam
+    reiciendis reprehenderit repudiandae saepe similique tempora, tempore veritatis voluptate.
+  </div>
 </div>
 </body>
 </html>
