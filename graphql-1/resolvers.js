@@ -37,6 +37,9 @@ const Mutation = {
     } catch (err) {
       return 0;
     }
+  },
+  checkLicense: async (_, { license }) => {
+    return license.match(/good/ig);
   }
 
 };
