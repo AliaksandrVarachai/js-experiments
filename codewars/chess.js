@@ -116,6 +116,7 @@ function Board(pieces, player) {
 
   // init/update block
   this.updateAll = function() {
+    this.prevPieces = this.pieces;
     this.prevOccupiedSquares = this.occupiedSquares;
     this.prevAttackedSquares = this.attackedSquares;
     this.prevAattackingSquares = this.attackingSquares;
@@ -212,7 +213,7 @@ function Board(pieces, player) {
 
   // x, y must be valid for the piece
   this.movePiece = function(pieceInx, {x, y}) {
-    this.prevPieces = this.pieces;
+    this.updateAll();
     // beats opponent's piece if possible
     this.pieces = this.pieces.filter(({x: targetX, y: targetY, owner}) =>
       x !== targetX || y !== targetY || owner === player
@@ -333,3 +334,14 @@ pieces = [ { piece: 'pawn', owner: 0, x: 6, y: 4 },
   { piece: 'queen', owner: 1, x: 7, y: 4, prevX: 3, prevY: 0 },
   { piece: 'king', owner: 1, x: 4, y: 0 } ];
 assert.strictEqual(isMate(pieces, 0), true, '??? #2');
+
+pieces = [ { piece: 'king', owner: 1, x: 4, y: 0 },
+  { piece: 'bishop', owner: 1, x: 1, y: 4, prevX: 3, prevY: 2 },
+  { piece: 'queen', owner: 1, x: 0, y: 7 },
+  { piece: 'pawn', owner: 0, x: 4, y: 6 },
+  { piece: 'pawn', owner: 0, x: 5, y: 6 },
+  { piece: 'rook', owner: 0, x: 1, y: 7 },
+  { piece: 'bishop', owner: 0, x: 3, y: 7 },
+  { piece: 'king', owner: 0, x: 4, y: 7 },
+  { piece: 'rook', owner: 0, x: 5, y: 7 } ];
+assert.strictEqual(isMate(pieces, 0), true, '??? #3');
