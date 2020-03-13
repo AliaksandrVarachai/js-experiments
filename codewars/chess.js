@@ -199,6 +199,30 @@ function Board(pieces, player) {
       return true;
 
 
+    // returns owner or -1 if the square is free (i,j must be inside the board)
+    const isPossiblePawnMove = (i, j, piece) => {
+      const result = []; // array of {x, y, isBeats}
+      if ( i < -1 || i > 7 || j < -1 || j > 7) return false;
+      const targetPieceInx = this.occupiedSquares[i][j];
+      const targetOccupiedOwner = targetPieceInx < 0 ? targetPieceInx : this.pieces[targetPieceInx].owner;
+
+      if (player === 0 && targetOccupiedOwner === 1) {
+        targetX = piece.x + 1;
+        targetY = piece.y + 1;
+      }
+
+      if (targetOccupiedOwner !== player) {
+        // beat diagonal, but WE DO NOT NEED IT
+      }
+
+
+      return this.attackedSquares[i][j].length === 0 && (targetPieceInx < 0 || this.pieces[targetPieceInx].owner !== player);
+    };
+
+    // const getOccupyingOwner = (i, j) => {
+    //   const pieceInx = this.occupiedSquares[i][j];
+    //   return pieceInx < 0 ? pieceInx : this.pieces[pieceInx].owner;
+    // };
     const targetSquares = [];
     this.attackedSquares.forEach((row, rowInx) => row.forEach((attackerIndexes, colInx) => {
       if (attackerIndexes.length > 0 && attackerIndexes.includes(checkerInx))
