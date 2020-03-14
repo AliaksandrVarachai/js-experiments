@@ -33,10 +33,16 @@ type Mutation {
     createStudent(collegeId: ID, firstName: String, lastName: String): String
     createStudentObject(collegeId: ID, firstName: String, lastName: String) : Student
     deleteStudent(id: ID!): Int
+    checkLicense(license: Licenses!): Boolean
 }
 
 enum ColorType {
     RED
     BLUE
     GREEN
+}
+
+enum Licenses {
+    l_good
+    l_bad
 }

@@ -1,171 +1,397 @@
-function getOccupiedPlayerPositions(pieces, player) {
-  const occupiedPlayerPositions = [];
-  for (let i = 0; i < 8; ++i)
-    occupiedPlayerPositions.push([false,false, false,false, false,false, false,false]);
-  pieces.forEach(piece => {
-    if (piece.owner !== player)
-      return;
-    occupiedPlayerPositions[piece.x][piece.y] = true;
-  });
-  return occupiedPlayerPositions;
-}
+const assert = require('assert');
 
-function getOccupiedPositions(pieces) {
-  const occupiedPositions = [];
-  for (let i = 0; i < 8; ++i)
-    occupiedPositions.push([false,false, false,false, false,false, false,false]);
-  pieces.forEach(piece => {
-    occupiedPositions[piece.x][piece.y] = true;
-  });
-  return occupiedPositions;
-}
+// we need state to avoid recalculation of positions
+function Board(pieces, player) {
+  this.pieces = pieces.map(piece => ({ ...piece }));
+  this.occupiedSquares; // getter;
+  this.attackedSquares;   // getter;
+  this.attackingSquares;  // getter;
 
-function getAttackedPieces(pieces, player) {
-  const occupiedPositions = getOccupiedPositions(pieces);
+  // updates this.occupiedPositions;
+  this.updateOccupiedPositions = function() {
+    this.occupiedSquares = [];
+    for (let i = 0; i < 8; ++i)
+      this.occupiedSquares.push([-1, -1, -1, -1,   -1, -1, -1, -1]);
+    this.pieces.forEach((piece, inx) => this.occupiedSquares[piece.x][piece.y] = inx);
+  };
 
-  const attackedPieces = [];
-  for (let i = 0; i < 8; ++i)
-    attackedPieces.push([[],[], [],[], [],[], [],[]]);
-  const attackingPieces = pieces.map(_ => []);
 
-  pieces.forEach(({ piece, owner, x, y }, inx) => {
-    if (owner === player)
-      return;
-
-    const addAttackIfPossible = (i, j) => {
-      if (i < 0 || i > 7 || j < 0 || j > 7)
-        return false;
-      attackedPieces[i][j].push(inx);
-      attackingPieces[inx].push({x: i, y: j});
-      return !occupiedPositions[i][j];
+  // updates this.attackedSquares & this.attackingSquares
+  this.updateAttacks = function() {
+    this.attackedSquares = [];
+    this.attackingSquares = [];
+    for (let i = 0; i < 8; ++i) {
+      this.attackedSquares.push([[],[], [],[], [],[], [],[]]);
+      this.attackingSquares.push([[],[], [],[], [],[], [],[]]);
     }
 
-    const rookAttacks = () => {
-      for (let i = x - 1; ; --i)
-        if (!addAttackIfPossible(i, y))
-          break;
-      for (let i = x + 1; ; ++i)
-        if (!addAttackIfPossible(i, y))
-          break;
-      for (let j = y - 1; ; --j)
-        if (!addAttackIfPossible(x, j))
-          break;
-      for (let j = y + 1; ; ++j)
-        if (!addAttackIfPossible(x, j))
-          break;
-    }
-
-    const bishopAttacks = () => {
-      for (let i = x - 1, j = y - 1; ; --i, --j)
-        if (!addAttackIfPossible(i, j))
-          break;
-      for (let i = x - 1, j = y + 1; ; --i, ++j)
-        if (!addAttackIfPossible(i, j))
-          break;
-      for (let i = x + 1, j = y - 1; ; ++i, --j)
-        if (!addAttackIfPossible(i, j))
-          break;
-      for (let i = x + 1, j = y + 1; ; ++i, ++j)
-        if (!addAttackIfPossible(i, j))
-          break;
-    }
-
-    switch (piece) {
-      case 'pawn':
-        if (owner === 0) {
-          addAttackIfPossible(x + 1, y - 1);
-          addAttackIfPossible(x - 1, y - 1);
+    this.pieces.forEach(({ piece, owner, x, y }, inx) => {
+      // returns true if a square is free, false otherwise
+      const addAttackIfPossible = (i, j) => {
+        if (i < 0 || i > 7 || j < 0 || j > 7)
+          return false;
+        if (owner === player) {
+          this.attackingSquares[i][j].push(inx);
         } else {
-          addAttackIfPossible(x + 1, y + 1);
-          addAttackIfPossible(x - 1, y + 1);
+          this.attackedSquares[i][j].push(inx);
         }
-        break;
-      case 'rook':
-        rookAttacks();
-        break;
-      case 'knight':
-        addAttackIfPossible(x - 2, y - 1);
-        addAttackIfPossible(x - 2, y + 1);
-        addAttackIfPossible(x + 2, y - 1);
-        addAttackIfPossible(x + 2, y + 1);
-        addAttackIfPossible(x - 1, y - 2);
-        addAttackIfPossible(x - 1, y + 2);
-        addAttackIfPossible(x + 1, y - 2);
-        addAttackIfPossible(x + 1, y + 2);
-        break;
-      case 'bishop':
-        bishopAttacks();
-        break;
-      case 'queen':
-        rookAttacks();
-        bishopAttacks();
-        break;
-      case 'king':
-        addAttackIfPossible(x - 1, y - 1);
-        addAttackIfPossible(x - 1, y    );
-        addAttackIfPossible(x - 1, y + 1);
-        addAttackIfPossible(x    , y - 1);
-        addAttackIfPossible(x    , y + 1);
-        addAttackIfPossible(x + 1, y - 1);
-        addAttackIfPossible(x + 1, y    );
-        addAttackIfPossible(x + 1, y + 1);
-        break;
-      default:
-        throw Error(`Wrong piece name "${piece}"`);
+        return this.occupiedSquares[i][j] < 0;
+      };
+
+      const rookAttacks = () => {
+        for (let i = x - 1; ; --i)
+          if (!addAttackIfPossible(i, y))
+            break;
+        for (let i = x + 1; ; ++i)
+          if (!addAttackIfPossible(i, y))
+            break;
+        for (let j = y - 1; ; --j)
+          if (!addAttackIfPossible(x, j))
+            break;
+        for (let j = y + 1; ; ++j)
+          if (!addAttackIfPossible(x, j))
+            break;
+      };
+
+      const bishopAttacks = () => {
+        for (let i = x - 1, j = y - 1; ; --i, --j)
+          if (!addAttackIfPossible(i, j))
+            break;
+        for (let i = x - 1, j = y + 1; ; --i, ++j)
+          if (!addAttackIfPossible(i, j))
+            break;
+        for (let i = x + 1, j = y - 1; ; ++i, --j)
+          if (!addAttackIfPossible(i, j))
+            break;
+        for (let i = x + 1, j = y + 1; ; ++i, ++j)
+          if (!addAttackIfPossible(i, j))
+            break;
+      };
+
+      switch (piece) {
+        case 'pawn':
+          if (owner === 0) {
+            addAttackIfPossible(x + 1, y - 1);
+            addAttackIfPossible(x - 1, y - 1);
+          } else {
+            addAttackIfPossible(x + 1, y + 1);
+            addAttackIfPossible(x - 1, y + 1);
+          }
+          break;
+        case 'rook':
+          rookAttacks();
+          break;
+        case 'knight':
+          addAttackIfPossible(x - 2, y - 1);
+          addAttackIfPossible(x - 2, y + 1);
+          addAttackIfPossible(x + 2, y - 1);
+          addAttackIfPossible(x + 2, y + 1);
+          addAttackIfPossible(x - 1, y - 2);
+          addAttackIfPossible(x - 1, y + 2);
+          addAttackIfPossible(x + 1, y - 2);
+          addAttackIfPossible(x + 1, y + 2);
+          break;
+        case 'bishop':
+          bishopAttacks();
+          break;
+        case 'queen':
+          rookAttacks();
+          bishopAttacks();
+          break;
+        case 'king':
+          addAttackIfPossible(x - 1, y - 1);
+          addAttackIfPossible(x - 1, y    );
+          addAttackIfPossible(x - 1, y + 1);
+          addAttackIfPossible(x    , y - 1);
+          addAttackIfPossible(x    , y + 1);
+          addAttackIfPossible(x + 1, y - 1);
+          addAttackIfPossible(x + 1, y    );
+          addAttackIfPossible(x + 1, y + 1);
+          break;
+        default:
+          throw Error(`Wrong piece name "${piece}"`);
+      }
+    });
+  };
+
+  this.doSnapshot = function() {
+    this.prevPieces = this.pieces;
+    this.prevOccupiedSquares = this.occupiedSquares;
+    this.prevAttackedSquares = this.attackedSquares;
+    this.prevAattackingSquares = this.attackingSquares;
+  };
+
+  this.applySnapshot = function() {
+    this.pieces = this.prevPieces;
+    this.occupiedSquares = this.prevOccupiedSquares;
+    this.attackedSquares = this.prevAttackedSquares;
+    this.attackingSquares = this.prevAattackingSquares;
+  };
+
+  // init/update block
+  this.updateCalculatedFields = function() {
+    this.updateOccupiedPositions();
+    this.updateAttacks();
+    let inx = 0;
+    while ('king' !== this.pieces[inx].piece || player !== this.pieces[inx].owner) ++inx;
+    this.kingPosition = {x: this.pieces[inx].x, y: this.pieces[inx].y};
+  };
+
+  this.updateCalculatedFields();
+
+  this.setKingPosition = function(x, y) {
+    this.kingPosition.x = x;
+    this.kingPosition.y = y;
+  };
+
+  // Returns an array of threats if the arrangement of
+  // the pieces is a check, otherwise false
+  this.isCheck = function() {
+    const { x, y } = this.kingPosition;
+    return this.attackedSquares[x][y].length ? this.attackedSquares[x][y].map(inx => this.pieces[inx]) : false;
+  };
+
+  // Returns true if the arrangement of the
+  // pieces is a check mate, otherwise false
+  this.isMate = function() {
+    if (!this.isCheck()) return false;
+
+    // King moves or beats a next piece
+    const isPossibleKingMove = (i, j) => {
+      if ( i < -1 || i > 7 || j < -1 || j > 7) return false;
+      const pieceInx = this.occupiedSquares[i][j];
+      return this.attackedSquares[i][j].length === 0 && (pieceInx < 0 || this.pieces[pieceInx].owner !== player);
+    };
+
+    const { x, y } = this.kingPosition;
+
+    if (
+      isPossibleKingMove(x - 1, y - 1) ||
+      isPossibleKingMove(x - 1, y    ) ||
+      isPossibleKingMove(x - 1, y + 1) ||
+      isPossibleKingMove(x    , y - 1) ||
+      isPossibleKingMove(x    , y + 1) ||
+      isPossibleKingMove(x + 1, y - 1) ||
+      isPossibleKingMove(x + 1, y    ) ||
+      isPossibleKingMove(x + 1, y + 1)
+    ) return false;
+
+    // Player's piece beats a checker
+    const checkingPieces = this.attackedSquares[x][y];
+
+    if (checkingPieces.length > 1)
+      return true; // double check
+
+    const checkerInx = checkingPieces[0];
+
+    const { x: checkerX, y: checkerY } = this.pieces[checkerInx];
+    for (let defenderInx of this.attackingSquares[checkerX][checkerY]) {
+      this.movePiece(defenderInx, { x: checkerX, y: checkerY });
+      if (!this.isCheck()) {
+        this.revertMovePiece();
+        return false;
+      }
+      this.revertMovePiece();
     }
-  });
 
-  return { attackedPieces, attackingPieces };
+    // Player's piece hides a king
+    if (this.pieces[checkerInx].piece === 'knight' || this.pieces[checkerInx].piece === 'pawn')
+      return true;
+
+
+    // returns owner or -1 if the square is free (i,j must be inside the board)
+    const isPossiblePawnMove = (i, j, piece) => {
+      const result = []; // array of {x, y, isBeats}
+      if ( i < -1 || i > 7 || j < -1 || j > 7) return false;
+      const targetPieceInx = this.occupiedSquares[i][j];
+      const targetOccupiedOwner = targetPieceInx < 0 ? targetPieceInx : this.pieces[targetPieceInx].owner;
+
+      if (player === 0 && targetOccupiedOwner === 1) {
+        targetX = piece.x + 1;
+        targetY = piece.y + 1;
+      }
+
+      if (targetOccupiedOwner !== player) {
+        // beat diagonal, but WE DO NOT NEED IT
+      }
+
+
+      return this.attackedSquares[i][j].length === 0 && (targetPieceInx < 0 || this.pieces[targetPieceInx].owner !== player);
+    };
+
+    // const getOccupyingOwner = (i, j) => {
+    //   const pieceInx = this.occupiedSquares[i][j];
+    //   return pieceInx < 0 ? pieceInx : this.pieces[pieceInx].owner;
+    // };
+    const targetSquares = [];
+    this.attackedSquares.forEach((row, rowInx) => row.forEach((attackerIndexes, colInx) => {
+      if (attackerIndexes.length > 0 && attackerIndexes.includes(checkerInx))
+        targetSquares.push({ x: rowInx, y: colInx });
+    }));
+    // console.log('attacker:', this.pieces[checkerInx])
+    // console.log('targetSquares:', targetSquares)
+    for (let { x: targetX, y: targetY } of targetSquares) {
+      // console.log(this.attackingSquares[targetX][targetY]);
+      if (this.attackingSquares[targetX][targetY].length < 1)
+        continue;
+      for (let defenderInx of this.attackingSquares[targetX][targetY]) {
+        console.log('defender before:', this.pieces[defenderInx])
+        this.movePiece(defenderInx, {x: targetX, y: targetY});
+        console.log('defender after :', this.pieces[defenderInx])
+        if (!this.isCheck()) {
+          console.log('DEFENDED!')
+          this.revertMovePiece();
+          return false;
+        }
+        this.revertMovePiece();
+      }
+    }
+
+    return true;
+  };
+
+
+  // x, y must be valid for the piece
+  this.movePiece = function(pieceInx, {x, y}) {
+    this.doSnapshot();
+    // beats opponent's piece if possible
+    this.pieces = this.pieces.filter(({x: targetX, y: targetY, owner}) =>
+      x !== targetX || y !== targetY || owner === player
+    );
+    this.pieces[pieceInx].x = x;
+    this.pieces[pieceInx].y = y;
+    this.updateCalculatedFields();
+  };
+
+  this.revertMovePiece = function() {
+    this.applySnapshot();
+  }
 }
 
-function getKingPosition(pieces, player) {
-  let inx = 0;
-  while ('king' !== pieces[inx].piece || player !== pieces[inx].owner)
-    ++inx;
-  return {x: pieces[inx].x, y: pieces[inx].y};
-}
 
 
-// Returns an array of threats if the arrangement of 
+// Returns an array of threats if the arrangement of
 // the pieces is a check, otherwise false
 function isCheck(pieces, player) {
-  const { attackedPieces } = getAttackedPieces(pieces, player);
-  const { x, y } = getKingPosition(pieces, player);
-  return attackedPieces[x][y].length ? attackedPieces[x][y].map(inx => pieces[inx]) : false;
+  const board = new Board(pieces, player);
+  return board.isCheck();
 }
 
 // Returns true if the arrangement of the
 // pieces is a check mate, otherwise false
 function isMate(pieces, player) {
-  const { attackedPieces, attackingPieaces } = getAttackedPieces(pieces, player);
-  const occupiedPlayerPositions = getOccupiedPlayerPositions(pieces, player);
-  const { x, y } = getKingPosition(pieces, player);
-
-  const isForbiddenMove = (i, j) => {
-    if ( i < -1 || i > 7 || j < -1 || j > 7)
-      return true;
-    return attackedPieces[i][j].length || occupiedPlayerPositions[i][j];
-  };
-
-  // TODO: complete
-//   let isBeatenChecker = false;
-//   for (let inx = 0; inx < pieces.length; ++inx) {
-//   }
-
-//   let isHiddenChecker = false;
-//   let isEscapedChecker = false;
-
-  const res = attackedPieces[x][y].length &&
-    isForbiddenMove(x - 1, y - 1) &&
-    isForbiddenMove(x - 1, y    ) &&
-    isForbiddenMove(x - 1, y + 1) &&
-    isForbiddenMove(x    , y - 1) &&
-    isForbiddenMove(x    , y + 1) &&
-    isForbiddenMove(x + 1, y - 1) &&
-    isForbiddenMove(x + 1, y    ) &&
-    isForbiddenMove(x + 1, y + 1);
-
-
-  console.log(res)
-  return res;
+  const board = new Board(pieces, player);
+  return board.isMate();
 }
+
+
+var pieces = [
+  {piece: "king", owner: 1, x: 4, y: 0},
+  {piece: "king", owner: 0, x: 4, y: 7},
+  {piece: "pawn", owner: 1, x: 5, y: 6}
+];
+
+assert.deepStrictEqual(isCheck(pieces, 0), [pieces[2]], "Pawn threatens king");
+
+pieces = [
+  {piece: "king", owner: 1, x: 4, y: 0},
+  {piece: "king", owner: 0, x: 4, y: 7},
+  {piece: "rook", owner: 1, x: 4, y: 1}
+];
+assert.deepStrictEqual(isCheck(pieces, 0), [pieces[2]], "Rook threatens king");
+
+pieces = [
+  {piece: "king", owner: 1, x: 4, y: 0},
+  {piece: "king", owner: 0, x: 4, y: 7},
+  {piece: "knight", owner: 1, x: 2, y: 6}
+];
+assert.deepStrictEqual(isCheck(pieces, 0), [pieces[2]], "Knight threatens king");
+
+pieces = [
+  {piece: "king", owner: 1, x: 4, y: 0},
+  {piece: "king", owner: 0, x: 4, y: 7},
+  {piece: "bishop", owner: 1, x: 0, y: 3}
+];
+assert.deepStrictEqual(isCheck(pieces, 0), [pieces[2]], "Bishop threatens king");
+
+pieces = [
+  {piece: "king", owner: 1, x: 4, y: 0},
+  {piece: "king", owner: 0, x: 4, y: 7},
+  {piece: "queen", owner: 1, x: 4, y: 1}
+];
+assert.deepStrictEqual(isCheck(pieces, 0), [pieces[2]], "Queen threatens king");
+
+pieces = [
+  {piece: "king", owner: 1, x: 4, y: 0},
+  {piece: "king", owner: 0, x: 4, y: 7},
+  {piece: "queen", owner: 1, x: 7, y: 4}
+];
+assert.deepStrictEqual(isCheck(pieces, 0), [pieces[2]], "Queen threatens king");
+
+pieces = [
+  {piece: "king", owner: 1, x: 4, y: 0},
+  {piece: "pawn", owner: 0, x: 4, y: 6},
+  {piece: "pawn", owner: 0, x: 5, y: 6},
+  {piece: "king", owner: 0, x: 4, y: 7},
+  {piece: "bishop", owner: 0, x: 5, y: 7},
+  {piece: "bishop", owner: 1, x: 1, y: 4},
+  {piece: "rook", owner: 1, x: 2, y: 7, prevX: 2, prevY: 5}
+];
+sortFunc = function(a, b) {
+  if(a.y == b.y) return a.x - b.x;
+  return a.y - b.y;
+};
+assert.deepStrictEqual(isCheck(pieces, 0).sort(sortFunc), [pieces[5], pieces[6]], "Double threat");
+
+// ********************************
+
+pieces = [ { piece: 'pawn', owner: 0, x: 6, y: 4 },
+  { piece: 'pawn', owner: 0, x: 5, y: 5 },
+  { piece: 'pawn', owner: 0, x: 3, y: 6 },
+  { piece: 'pawn', owner: 0, x: 4, y: 6 },
+  { piece: 'pawn', owner: 0, x: 7, y: 6 },
+  { piece: 'king', owner: 0, x: 4, y: 7 },
+  { piece: 'bishop', owner: 0, x: 5, y: 7 },
+  { piece: 'knight', owner: 0, x: 6, y: 7 },
+  { piece: 'rook', owner: 0, x: 7, y: 7 },
+  { piece: 'queen', owner: 1, x: 7, y: 4, prevX: 3, prevY: 0 },
+  { piece: 'king', owner: 1, x: 4, y: 0 } ];
+assert.strictEqual(isMate(pieces, 0), false, '??? #1');
+
+
+// pieces = [ { piece: 'pawn', owner: 0, x: 6, y: 4 },
+//   { piece: 'pawn', owner: 0, x: 5, y: 5 },
+//   { piece: 'pawn', owner: 0, x: 3, y: 6 },
+//   { piece: 'pawn', owner: 0, x: 4, y: 6 },
+//   { piece: 'pawn', owner: 0, x: 7, y: 6 },
+//   { piece: 'queen', owner: 0, x: 3, y: 7 },
+//   { piece: 'king', owner: 0, x: 4, y: 7 },
+//   { piece: 'bishop', owner: 0, x: 5, y: 7 },
+//   { piece: 'knight', owner: 0, x: 6, y: 7 },
+//   { piece: 'rook', owner: 0, x: 7, y: 7 },
+//   { piece: 'queen', owner: 1, x: 7, y: 4, prevX: 3, prevY: 0 },
+//   { piece: 'king', owner: 1, x: 4, y: 0 } ];
+// assert.strictEqual(isMate(pieces, 0), true, '#2: Should be a mate for player 0');
+
+pieces = [ { piece: 'king', owner: 1, x: 4, y: 0 },
+  { piece: 'bishop', owner: 1, x: 1, y: 4, prevX: 3, prevY: 2 },
+  { piece: 'queen', owner: 1, x: 0, y: 7 },
+  { piece: 'pawn', owner: 0, x: 4, y: 6 },
+  { piece: 'pawn', owner: 0, x: 5, y: 6 },
+  { piece: 'knight', owner: 0, x: 1, y: 7 },
+  { piece: 'bishop', owner: 0, x: 3, y: 7 },
+  { piece: 'king', owner: 0, x: 4, y: 7 },
+  { piece: 'rook', owner: 0, x: 5, y: 7 } ];
+assert.strictEqual(isMate(pieces, 0), false, '#3: Should not be a mate for player 0');
+
+pieces = [ { piece: 'king', owner: 1, x: 4, y: 0 },
+  { piece: 'bishop', owner: 1, x: 1, y: 4, prevX: 3, prevY: 2 },
+  { piece: 'queen', owner: 1, x: 0, y: 7 },
+  { piece: 'pawn', owner: 0, x: 4, y: 6 },
+  { piece: 'pawn', owner: 0, x: 5, y: 6 },
+  { piece: 'rook', owner: 0, x: 1, y: 7 },
+  { piece: 'bishop', owner: 0, x: 3, y: 7 },
+  { piece: 'king', owner: 0, x: 4, y: 7 },
+  { piece: 'rook', owner: 0, x: 5, y: 7 } ]
+
+assert.strictEqual(isMate(pieces, 0), false, '#4: Should not be a mate for player 0');
