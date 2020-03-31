@@ -1,0 +1,3170 @@
+{
+  "dates_facet": [
+    {
+      "documents_count": 1,
+      "date": "2020-03-12T00:00:00Z"
+    },
+    {
+      "documents_count": 1,
+      "date": "2020-03-13T00:00:00Z"
+    },
+    {
+      "documents_count": 0,
+      "date": "2020-03-14T00:00:00Z"
+    },
+    {
+      "documents_count": 0,
+      "date": "2020-03-15T00:00:00Z"
+    },
+    {
+      "documents_count": 3,
+      "date": "2020-03-16T00:00:00Z"
+    },
+    {
+      "documents_count": 1,
+      "date": "2020-03-17T00:00:00Z"
+    },
+    {
+      "documents_count": 0,
+      "date": "2020-03-18T00:00:00Z"
+    },
+    {
+      "documents_count": 0,
+      "date": "2020-03-19T00:00:00Z"
+    },
+    {
+      "documents_count": 1,
+      "date": "2020-03-20T00:00:00Z"
+    },
+    {
+      "documents_count": 0,
+      "date": "2020-03-21T00:00:00Z"
+    },
+    {
+      "documents_count": 0,
+      "date": "2020-03-22T00:00:00Z"
+    },
+    {
+      "documents_count": 1,
+      "date": "2020-03-23T00:00:00Z"
+    },
+    {
+      "documents_count": 1,
+      "date": "2020-03-24T00:00:00Z"
+    },
+    {
+      "documents_count": 0,
+      "date": "2020-03-25T00:00:00Z"
+    },
+    {
+      "documents_count": 0,
+      "date": "2020-03-26T00:00:00Z"
+    }
+  ],
+  "documents": [
+    {
+      "category": "Academic/Scientific Research",
+      "contributor": "Nature Publishing Group (NPG)",
+      "headline": "COVID-19: protect great apes during human pandemics",
+      "id": "41349042355",
+      "published_at": "2020-03-24T16:28:23.687Z",
+      "source": "Nature Publishing Group | Earth and Environment channel",
+      "summary": "Emory University, Atlanta, Georgia, USA. On behalf of the Great Ape Health Consortium (see Supplementary Information) Robert Koch Institute, Berlin, Germany. On behalf of the Great Ape Health Consortium (see Supplementary Information) SARS-CoV-2, the coronavirus responsible for the current COVID-19 pandemic, is also a threat to our closest living relatives, the great apes. ",
+      "tags": [
+        {
+          "display_name": "Finance",
+          "group_display_name": "Investment Topics",
+          "name": "traderdemo",
+          "values": [
+            {
+              "display_value": "Macro",
+              "relevancy": "High",
+              "value": "macro"
+            },
+            {
+              "display_value": "Coronavirus",
+              "relevancy": "High",
+              "value": "Coronavirus"
+            }
+          ]
+        },
+        {
+          "display_name": "Country",
+          "group_display_name": "Countries",
+          "name": "country",
+          "values": [
+            {
+              "display_value": "United States of America",
+              "relevancy": "High",
+              "value": "US"
+            },
+            {
+              "display_value": "Germany",
+              "relevancy": "High",
+              "value": "DE"
+            }
+          ]
+        },
+        {
+          "display_name": "Condition",
+          "group_display_name": "Medical Conditions",
+          "name": "infongendiseases",
+          "values": [
+            {
+              "display_value": "Virus Diseases",
+              "relevancy": "High",
+              "value": "infectiousdiseases"
+            },
+            {
+              "display_value": "SARS",
+              "relevancy": "High",
+              "value": "sars1"
+            }
+          ]
+        },
+        {
+          "display_name": "NegativeTopic",
+          "group_display_name": "Negative News Topics",
+          "name": "antimoneylaundering",
+          "values": [
+            {
+              "display_value": "Other Risk Factors",
+              "relevancy": "Medium",
+              "value": "OtherRiskFactors"
+            },
+            {
+              "display_value": "Assault",
+              "relevancy": "Medium",
+              "value": "Assault"
+            },
+            {
+              "display_value": "Legal Action/Issue",
+              "value": "LegalAction"
+            },
+            {
+              "display_value": "Serious and Organized Crime",
+              "relevancy": "Medium",
+              "value": "OrganizedCrime"
+            },
+            {
+              "display_value": "Environmental Issues & Crimes",
+              "value": "EnvironmentalCrimes"
+            },
+            {
+              "display_value": "Fraud and Regulatory Breaches",
+              "value": "Fraud"
+            },
+            {
+              "display_value": "Social Accountability",
+              "value": "SocialAccountability"
+            }
+          ]
+        },
+        {
+          "display_name": "State",
+          "group_display_name": "States",
+          "name": "state",
+          "values": [
+            {
+              "display_value": "Georgia",
+              "relevancy": "High",
+              "value": "GA"
+            }
+          ]
+        }
+      ],
+      "fields": [],
+      "uri": "https://www.nature.com/articles/d41586-020-00859-y",
+      "sharing_allowed": true
+    },
+    {
+      "category": "Academic/Scientific Research",
+      "contributor": "Nature Publishing Group (NPG)",
+      "headline": "Insights from nanomedicine into chloroquine efficacy against COVID-19",
+      "id": "41330921004",
+      "published_at": "2020-03-23T19:02:58.47Z",
+      "source": "Nature Publishing Group | Biotechnology channel",
+      "summary": "Chloroquine — an approved malaria drug — is known in nanomedicine research for the investigation of nanoparticle uptake in cells, and may have potential for the treatment of COVID-19. Subscribe to Journal. Get full journal access for 1 year. All prices are NET prices. VAT will be added later in the checkout. ",
+      "tags": [
+        {
+          "display_name": "Finance",
+          "group_display_name": "Investment Topics",
+          "name": "traderdemo",
+          "values": [
+            {
+              "display_value": "Macro",
+              "relevancy": "High",
+              "value": "macro"
+            },
+            {
+              "display_value": "Coronavirus",
+              "relevancy": "High",
+              "value": "Coronavirus"
+            },
+            {
+              "display_value": "US Companies",
+              "relevancy": "Medium",
+              "value": "USCos"
+            },
+            {
+              "display_value": "Private Companies",
+              "relevancy": "Medium",
+              "value": "private_co"
+            }
+          ]
+        },
+        {
+          "display_name": "Country",
+          "group_display_name": "Countries",
+          "name": "country",
+          "values": [
+            {
+              "display_value": "United States of America",
+              "relevancy": "Medium",
+              "value": "US"
+            },
+            {
+              "display_value": "Spain",
+              "value": "ES"
+            }
+          ]
+        },
+        {
+          "display_name": "Industry",
+          "group_display_name": "Industries",
+          "name": "gics",
+          "values": [
+            {
+              "display_value": "Pharmaceuticals",
+              "relevancy": "High",
+              "value": "352020"
+            },
+            {
+              "display_value": "Health Care Providers & Services",
+              "relevancy": "Medium",
+              "value": "351020"
+            },
+            {
+              "display_value": "Healthcare",
+              "relevancy": "High",
+              "value": "35"
+            }
+          ]
+        },
+        {
+          "display_name": "City",
+          "group_display_name": "Cities",
+          "name": "city",
+          "values": [
+            {
+              "display_value": "Houston",
+              "value": "Houston"
+            }
+          ]
+        },
+        {
+          "display_name": "Organization",
+          "group_display_name": "Universities & Educational Institutions",
+          "name": "university",
+          "values": [
+            {
+              "display_value": "University of Maryland",
+              "value": "UniversityofMaryland"
+            }
+          ]
+        },
+        {
+          "display_name": "NegativeTopic",
+          "group_display_name": "Negative News Topics",
+          "name": "antimoneylaundering",
+          "values": [
+            {
+              "display_value": "Fraud and Regulatory Breaches",
+              "relevancy": "High",
+              "value": "Fraud"
+            },
+            {
+              "display_value": "Company Investigation",
+              "relevancy": "High",
+              "value": "CompanyInvestigation"
+            }
+          ]
+        },
+        {
+          "display_name": "Organization",
+          "group_display_name": "Companies",
+          "name": "company",
+          "values": [
+            {
+              "display_value": "Mayo Clinic",
+              "value": "100365075"
+            }
+          ]
+        },
+        {
+          "display_name": "Topic",
+          "group_display_name": "IT News",
+          "name": "epamportaltopics",
+          "values": [
+            {
+              "display_value": "Industries",
+              "relevancy": "High",
+              "value": "Industries"
+            },
+            {
+              "display_value": "ISV",
+              "relevancy": "High",
+              "value": "id_ISV_s_SaaS"
+            },
+            {
+              "display_value": "Life Sciences",
+              "relevancy": "High",
+              "value": "LifeSciences"
+            },
+            {
+              "display_value": "Health Care",
+              "relevancy": "Medium",
+              "value": "HealthCare"
+            }
+          ]
+        },
+        {
+          "display_name": "Topics",
+          "group_display_name": "Diagnostics & Treatments",
+          "name": "pharmatopic",
+          "values": [
+            {
+              "display_value": "Molecular Diagnostics",
+              "value": "genzmolecdiagnostics"
+            }
+          ]
+        }
+      ],
+      "fields": [],
+      "uri": "https://www.nature.com/articles/s41565-020-0674-9",
+      "sharing_allowed": true
+    },
+    {
+      "category": "Academic/Scientific Research",
+      "contributor": "Nature Publishing Group (NPG)",
+      "headline": "Scientists exposed to coronavirus wonder: why weren’t we notified?",
+      "id": "41289883891",
+      "published_at": "2020-03-20T18:59:44.644Z",
+      "source": "Nature Publishing Group | Biotechnology channel",
+      "summary": "Health departments around the world are struggling to test for coronavirus and notify people who might have been exposed to the disease.Credit: Jeff Pachoud/AFP via Getty “I’ve been in the ICU fighting … wait for it … Coronavirus!” tweeted a 38-year-old geneticist on Sunday. Clement Chow, from the University of Utah in Salt Lake City, was in a hospital intensive care unit (ICU) in Utah. ",
+      "tags": [
+        {
+          "display_name": "Finance",
+          "group_display_name": "Investment Topics",
+          "name": "traderdemo",
+          "values": [
+            {
+              "display_value": "Macro",
+              "relevancy": "High",
+              "value": "macro"
+            },
+            {
+              "display_value": "Coronavirus",
+              "relevancy": "High",
+              "value": "Coronavirus"
+            },
+            {
+              "display_value": "US Companies",
+              "relevancy": "Medium",
+              "value": "USCos"
+            },
+            {
+              "display_value": "Private Companies",
+              "relevancy": "Medium",
+              "value": "private_co"
+            },
+            {
+              "display_value": "Public Companies",
+              "value": "public_co"
+            }
+          ]
+        },
+        {
+          "display_name": "Country",
+          "group_display_name": "Countries",
+          "name": "country",
+          "values": [
+            {
+              "display_value": "United States of America",
+              "relevancy": "High",
+              "value": "US"
+            },
+            {
+              "display_value": "China",
+              "relevancy": "Medium",
+              "value": "CN"
+            },
+            {
+              "display_value": "Singapore",
+              "relevancy": "Medium",
+              "value": "SG"
+            },
+            {
+              "display_value": "Hong Kong",
+              "relevancy": "Medium",
+              "value": "HK"
+            },
+            {
+              "display_value": "United Kingdom",
+              "relevancy": "Medium",
+              "value": "GB"
+            },
+            {
+              "display_value": "South Korea",
+              "relevancy": "Medium",
+              "value": "KR"
+            }
+          ]
+        },
+        {
+          "display_name": "Industry",
+          "group_display_name": "Industries",
+          "name": "gics",
+          "values": [
+            {
+              "display_value": "Health Care Providers & Services",
+              "relevancy": "High",
+              "value": "351020"
+            },
+            {
+              "display_value": "Healthcare",
+              "relevancy": "High",
+              "value": "35"
+            }
+          ]
+        },
+        {
+          "display_name": "Topic",
+          "group_display_name": "Nutrition & Biosciences",
+          "name": "solaealltopics",
+          "values": [
+            {
+              "display_value": "Product Categories",
+              "value": "prodcategories"
+            },
+            {
+              "display_value": "Non Food & Beverage",
+              "value": "nonf_and_b"
+            },
+            {
+              "display_value": "Non-Food",
+              "value": "ch_nonfood"
+            },
+            {
+              "display_value": "Paper & Packaging",
+              "value": "ch1_paperpack"
+            }
+          ]
+        },
+        {
+          "display_name": "Condition",
+          "group_display_name": "Medical Conditions",
+          "name": "infongendiseases",
+          "values": [
+            {
+              "display_value": "Virus Diseases",
+              "relevancy": "Medium",
+              "value": "infectiousdiseases"
+            }
+          ]
+        },
+        {
+          "display_name": "City",
+          "group_display_name": "Cities",
+          "name": "city",
+          "values": [
+            {
+              "display_value": "Boston",
+              "value": "Boston"
+            }
+          ]
+        },
+        {
+          "display_name": "Representative",
+          "group_display_name": "Politicians",
+          "name": "congress",
+          "values": [
+            {
+              "display_value": "World Organizations",
+              "relevancy": "Medium",
+              "value": "WorldOrganizations"
+            },
+            {
+              "display_value": "Tedros Adhanom (WHO)",
+              "relevancy": "Medium",
+              "value": "WHO"
+            }
+          ]
+        },
+        {
+          "display_name": "IntergovAgency",
+          "group_display_name": "Intergovernmental Agencies",
+          "name": "intergovagency",
+          "values": [
+            {
+              "display_value": "World Health Organization",
+              "relevancy": "Medium",
+              "value": "WorldHealthOrganization"
+            }
+          ]
+        },
+        {
+          "display_name": "Organization",
+          "group_display_name": "Companies",
+          "name": "company",
+          "values": [
+            {
+              "display_value": "Massachusetts General Hospital",
+              "relevancy": "Medium",
+              "value": "100681953"
+            },
+            {
+              "display_value": "The Sacramento Bee",
+              "value": "100356032"
+            },
+            {
+              "display_value": "The Mcclatchy Company",
+              "display_value_short": "MNI:NYX",
+              "value": "100012533"
+            }
+          ]
+        },
+        {
+          "display_name": "NegativeTopic",
+          "group_display_name": "Negative News Topics",
+          "name": "antimoneylaundering",
+          "values": [
+            {
+              "display_value": "Fraud and Regulatory Breaches",
+              "relevancy": "High",
+              "value": "Fraud"
+            },
+            {
+              "display_value": "Legal Action/Issue",
+              "relevancy": "High",
+              "value": "LegalAction"
+            },
+            {
+              "display_value": "Company Investigation",
+              "relevancy": "Medium",
+              "value": "CompanyInvestigation"
+            },
+            {
+              "display_value": "Other Risk Factors",
+              "relevancy": "High",
+              "value": "OtherRiskFactors"
+            },
+            {
+              "display_value": "Health & Hygiene-Related Infringements",
+              "value": "workplacesanitation"
+            },
+            {
+              "display_value": "Assault",
+              "relevancy": "High",
+              "value": "Assault"
+            },
+            {
+              "display_value": "Litigation",
+              "relevancy": "Medium",
+              "value": "Litigation"
+            },
+            {
+              "display_value": "Company Scandal",
+              "relevancy": "Medium",
+              "value": "CompanyScandal"
+            },
+            {
+              "display_value": "Ban|Prohibit|Unauthorized",
+              "relevancy": "Medium",
+              "value": "BanProhibit"
+            },
+            {
+              "display_value": "Family Court Proceeding",
+              "relevancy": "Medium",
+              "value": "FamilyCourtProceeding"
+            },
+            {
+              "display_value": "Serious and Organized Crime",
+              "relevancy": "High",
+              "value": "OrganizedCrime"
+            },
+            {
+              "display_value": "Sanctions",
+              "relevancy": "Medium",
+              "value": "Sanctions"
+            },
+            {
+              "display_value": "Social Accountability",
+              "value": "SocialAccountability"
+            }
+          ]
+        },
+        {
+          "display_name": "State",
+          "group_display_name": "States",
+          "name": "state",
+          "values": [
+            {
+              "display_value": "Utah",
+              "relevancy": "High",
+              "value": "UT"
+            },
+            {
+              "display_value": "Colorado",
+              "relevancy": "Medium",
+              "value": "CO"
+            },
+            {
+              "display_value": "California",
+              "value": "CA"
+            },
+            {
+              "display_value": "Washington",
+              "value": "WA"
+            },
+            {
+              "display_value": "Massachusetts",
+              "value": "MA"
+            }
+          ]
+        },
+        {
+          "display_name": "Topic",
+          "group_display_name": "IT News",
+          "name": "epamportaltopics",
+          "values": [
+            {
+              "display_value": "Industries",
+              "relevancy": "High",
+              "value": "Industries"
+            },
+            {
+              "display_value": "ISV",
+              "value": "id_ISV_s_SaaS"
+            },
+            {
+              "display_value": "Health Care",
+              "relevancy": "High",
+              "value": "HealthCare"
+            }
+          ]
+        }
+      ],
+      "fields": [],
+      "uri": "https://www.nature.com/articles/d41586-020-00823-w",
+      "sharing_allowed": true
+    },
+    {
+      "category": "Academic/Scientific Research",
+      "contributor": "Nature Publishing Group (NPG)",
+      "headline": "Coronavirus: three things all governments and their science advisers must do now",
+      "id": "41224974317",
+      "published_at": "2020-03-17T18:57:11.562Z",
+      "source": "Nature Publishing Group | Biotechnology channel",
+      "summary": "“Some of the most important choices about a nation’s physical health are made, or not made, by a handful of men, in secret.” Sixty-odd years ago, the chemist, writer and civil servant Charles Percy Snow revealed in his book Science and Government the shocking extent to which science advice to governments during the Second World War had lacked evidence. ",
+      "tags": [
+        {
+          "display_name": "Finance",
+          "group_display_name": "Investment Topics",
+          "name": "traderdemo",
+          "values": [
+            {
+              "display_value": "Macro",
+              "relevancy": "High",
+              "value": "macro"
+            },
+            {
+              "display_value": "Coronavirus",
+              "relevancy": "High",
+              "value": "Coronavirus"
+            },
+            {
+              "display_value": "Politics",
+              "relevancy": "High",
+              "value": "Politics"
+            },
+            {
+              "display_value": "Government News",
+              "relevancy": "High",
+              "value": "gov"
+            },
+            {
+              "display_value": "Government Foreign Relations",
+              "relevancy": "High",
+              "value": "GovForeignRelat"
+            }
+          ]
+        },
+        {
+          "display_name": "Country",
+          "group_display_name": "Countries",
+          "name": "country",
+          "values": [
+            {
+              "display_value": "United States of America",
+              "relevancy": "High",
+              "value": "US"
+            },
+            {
+              "display_value": "United Kingdom",
+              "relevancy": "High",
+              "value": "GB"
+            },
+            {
+              "display_value": "China",
+              "relevancy": "Medium",
+              "value": "CN"
+            },
+            {
+              "display_value": "South Korea",
+              "relevancy": "Medium",
+              "value": "KR"
+            }
+          ]
+        },
+        {
+          "display_name": "Industry",
+          "group_display_name": "Industries",
+          "name": "gics",
+          "values": [
+            {
+              "display_value": "Media",
+              "relevancy": "High",
+              "value": "254010"
+            },
+            {
+              "display_value": "Consumer Discretionary",
+              "relevancy": "High",
+              "value": "25"
+            },
+            {
+              "display_value": "Healthcare",
+              "relevancy": "Medium",
+              "value": "35"
+            },
+            {
+              "display_value": "Health Care Providers & Services",
+              "relevancy": "Medium",
+              "value": "351020"
+            }
+          ]
+        },
+        {
+          "display_name": "Condition",
+          "group_display_name": "Medical Conditions",
+          "name": "infongendiseases",
+          "values": [
+            {
+              "display_value": "SARS",
+              "relevancy": "High",
+              "value": "sars1"
+            },
+            {
+              "display_value": "Bacterial Infections and Mycoses",
+              "relevancy": "High",
+              "value": "BacterialandFungalDiseases"
+            },
+            {
+              "display_value": "Infection",
+              "relevancy": "High",
+              "value": "Infection"
+            }
+          ]
+        },
+        {
+          "display_name": "Executives",
+          "group_display_name": "Executives",
+          "name": "execs",
+          "values": [
+            {
+              "display_value": "Patrick Vallance",
+              "value": "PatrickVallance"
+            }
+          ]
+        },
+        {
+          "display_name": "Representative",
+          "group_display_name": "Politicians",
+          "name": "congress",
+          "values": [
+            {
+              "display_value": "World Organizations",
+              "relevancy": "Medium",
+              "value": "WorldOrganizations"
+            },
+            {
+              "display_value": "Tedros Adhanom (WHO)",
+              "relevancy": "Medium",
+              "value": "WHO"
+            },
+            {
+              "display_value": "Republican Party",
+              "value": "RepublicanParty"
+            },
+            {
+              "display_value": "Donald Trump (US)",
+              "value": "DonaldTrump1"
+            },
+            {
+              "display_value": "Presidents & World Leaders",
+              "value": "presidents"
+            }
+          ]
+        },
+        {
+          "display_name": "IntergovAgency",
+          "group_display_name": "Intergovernmental Agencies",
+          "name": "intergovagency",
+          "values": [
+            {
+              "display_value": "World Health Organization",
+              "relevancy": "Medium",
+              "value": "WorldHealthOrganization"
+            }
+          ]
+        },
+        {
+          "display_name": "NegativeTopic",
+          "group_display_name": "Negative News Topics",
+          "name": "antimoneylaundering",
+          "values": [
+            {
+              "display_value": "Political Connections",
+              "relevancy": "Medium",
+              "value": "PoliticalConnections"
+            },
+            {
+              "display_value": "Other Risk Factors",
+              "relevancy": "Medium",
+              "value": "OtherRiskFactors"
+            },
+            {
+              "display_value": "Company Scandal",
+              "relevancy": "Medium",
+              "value": "CompanyScandal"
+            },
+            {
+              "display_value": "Assault",
+              "relevancy": "Medium",
+              "value": "Assault"
+            },
+            {
+              "display_value": "Legal Action/Issue",
+              "value": "LegalAction"
+            },
+            {
+              "display_value": "Ban|Prohibit|Unauthorized",
+              "value": "BanProhibit"
+            },
+            {
+              "display_value": "Serious and Organized Crime",
+              "relevancy": "Medium",
+              "value": "OrganizedCrime"
+            },
+            {
+              "display_value": "Fraud and Regulatory Breaches",
+              "value": "Fraud"
+            }
+          ]
+        },
+        {
+          "display_name": "Topic",
+          "group_display_name": "IT News",
+          "name": "epamportaltopics",
+          "values": [
+            {
+              "display_value": "Industries",
+              "relevancy": "Medium",
+              "value": "Industries"
+            },
+            {
+              "display_value": "Health Care",
+              "relevancy": "Medium",
+              "value": "HealthCare"
+            }
+          ]
+        }
+      ],
+      "fields": [],
+      "uri": "https://www.nature.com/articles/d41586-020-00772-4",
+      "sharing_allowed": true
+    },
+    {
+      "category": "Academic/Scientific Research",
+      "contributor": "Nature Publishing Group (NPG)",
+      "headline": "Network-based drug repurposing for novel coronavirus 2019-nCoV/SARS-CoV-2",
+      "id": "41202974506",
+      "published_at": "2020-03-16T18:55:51.225Z",
+      "source": "Nature Publishing Group | Biotechnology channel",
+      "summary": "Human coronaviruses (HCoVs), including severe acute respiratory syndrome coronavirus (SARS-CoV) and 2019 novel coronavirus (2019-nCoV, also known as SARS-CoV-2), lead global epidemics with high morbidity and mortality. However, there are currently no effective drugs targeting 2019-nCoV/SARS-CoV-2. Drug repurposing, representing as an effective drug discovery strategy from existing drugs, could shorten the time and reduce the cost compared to de novo drug discovery. ",
+      "tags": [
+        {
+          "display_name": "Finance",
+          "group_display_name": "Investment Topics",
+          "name": "traderdemo",
+          "values": [
+            {
+              "display_value": "Macro",
+              "relevancy": "High",
+              "value": "macro"
+            },
+            {
+              "display_value": "Coronavirus",
+              "relevancy": "High",
+              "value": "Coronavirus"
+            },
+            {
+              "display_value": "US Companies",
+              "relevancy": "High",
+              "value": "USCos"
+            },
+            {
+              "display_value": "Public Companies",
+              "relevancy": "High",
+              "value": "public_co"
+            },
+            {
+              "display_value": "Private Companies",
+              "relevancy": "Medium",
+              "value": "private_co"
+            }
+          ]
+        },
+        {
+          "display_name": "Country",
+          "group_display_name": "Countries",
+          "name": "country",
+          "values": [
+            {
+              "display_value": "United States of America",
+              "relevancy": "High",
+              "value": "US"
+            },
+            {
+              "display_value": "France",
+              "relevancy": "High",
+              "value": "FR"
+            },
+            {
+              "display_value": "China",
+              "relevancy": "High",
+              "value": "CN"
+            },
+            {
+              "display_value": "United Kingdom",
+              "relevancy": "High",
+              "value": "GB"
+            },
+            {
+              "display_value": "Jersey",
+              "relevancy": "High",
+              "value": "JE"
+            },
+            {
+              "display_value": "Zaire",
+              "value": "ZR"
+            },
+            {
+              "display_value": "Congo, Democratic Republic of the",
+              "value": "CD"
+            }
+          ]
+        },
+        {
+          "display_name": "Industry",
+          "group_display_name": "Industries",
+          "name": "gics",
+          "values": [
+            {
+              "display_value": "Healthcare",
+              "relevancy": "High",
+              "value": "35"
+            },
+            {
+              "display_value": "Pharmaceuticals",
+              "relevancy": "High",
+              "value": "352020"
+            },
+            {
+              "display_value": "Health Care Providers & Services",
+              "relevancy": "High",
+              "value": "351020"
+            },
+            {
+              "display_value": "Biotechnology",
+              "relevancy": "High",
+              "value": "352010"
+            },
+            {
+              "display_value": "Consumer Staples",
+              "relevancy": "High",
+              "value": "30"
+            },
+            {
+              "display_value": "Food Products",
+              "relevancy": "High",
+              "value": "302020"
+            }
+          ]
+        },
+        {
+          "display_name": "Topic",
+          "group_display_name": "Nutrition & Biosciences",
+          "name": "solaealltopics",
+          "values": [
+            {
+              "display_value": "Proteins",
+              "relevancy": "High",
+              "value": "Proteins"
+            },
+            {
+              "display_value": "Better For You",
+              "relevancy": "Medium",
+              "value": "BetterForYou"
+            },
+            {
+              "display_value": "Fortified",
+              "relevancy": "Medium",
+              "value": "fortified"
+            },
+            {
+              "display_value": "Added Protein",
+              "relevancy": "Medium",
+              "value": "ch_AddedProtein"
+            },
+            {
+              "display_value": "Product Categories",
+              "relevancy": "Medium",
+              "value": "prodcategories"
+            },
+            {
+              "display_value": "Non Food & Beverage",
+              "relevancy": "Medium",
+              "value": "nonf_and_b"
+            },
+            {
+              "display_value": "Non-Food",
+              "relevancy": "Medium",
+              "value": "ch_nonfood"
+            },
+            {
+              "display_value": "Paper & Packaging",
+              "relevancy": "Medium",
+              "value": "ch1_paperpack"
+            }
+          ]
+        },
+        {
+          "display_name": "Condition",
+          "group_display_name": "Medical Conditions",
+          "name": "infongendiseases",
+          "values": [
+            {
+              "display_value": "Virus Diseases",
+              "relevancy": "High",
+              "value": "infectiousdiseases"
+            },
+            {
+              "display_value": "Orthomyxoviridae Infections",
+              "relevancy": "Medium",
+              "value": "Orthomyxovirus"
+            },
+            {
+              "display_value": "Human Influenza",
+              "relevancy": "Medium",
+              "value": "influenza"
+            },
+            {
+              "display_value": "RNA Virus Infections",
+              "relevancy": "Medium",
+              "value": "rnavirus"
+            },
+            {
+              "display_value": "Gastrointestinal Diseases",
+              "relevancy": "High",
+              "value": "GastrointestinalDiseases"
+            },
+            {
+              "display_value": "Gastroenteritis",
+              "relevancy": "High",
+              "value": "Gastroent"
+            },
+            {
+              "display_value": "Inflammatory Bowel Diseases",
+              "relevancy": "High",
+              "value": "inflambowel"
+            },
+            {
+              "display_value": "Intestinal Diseases",
+              "relevancy": "High",
+              "value": "IntestinalDiseases"
+            },
+            {
+              "display_value": "Bacterial Infections and Mycoses",
+              "relevancy": "Medium",
+              "value": "BacterialandFungalDiseases"
+            },
+            {
+              "display_value": "Infection",
+              "relevancy": "Medium",
+              "value": "Infection"
+            },
+            {
+              "display_value": "Hemic and Lymphatic Diseases",
+              "relevancy": "Medium",
+              "value": "BloodLymphConditions"
+            },
+            {
+              "display_value": "Lymphatic Diseases",
+              "relevancy": "Medium",
+              "value": "LymphaticDiseases"
+            },
+            {
+              "display_value": "Lymphoproliferative Disorders",
+              "relevancy": "Medium",
+              "value": "LymphoproliferativeDisorders"
+            },
+            {
+              "display_value": "Immune System Disorders",
+              "relevancy": "Medium",
+              "value": "ImmuneSystemDiseases"
+            },
+            {
+              "display_value": "Immunoproliferative Disorders",
+              "relevancy": "Medium",
+              "value": "Immproldis"
+            },
+            {
+              "display_value": "Respiratory Tract Disorders",
+              "relevancy": "Medium",
+              "value": "RespiratorytractDiseases"
+            },
+            {
+              "display_value": "Pneumonia",
+              "value": "Pneumonia"
+            },
+            {
+              "display_value": "Respiratory Tract Infections",
+              "relevancy": "Medium",
+              "value": "RespirInfect"
+            },
+            {
+              "display_value": "Behaviors & Mental Disorders",
+              "relevancy": "Medium",
+              "value": "BehaviorsMentalDisorders"
+            },
+            {
+              "display_value": "Sleep Disorders",
+              "relevancy": "Medium",
+              "value": "SleepDisorders"
+            },
+            {
+              "display_value": "Circadian Rhythm",
+              "value": "CircadianRhythm"
+            },
+            {
+              "display_value": "Endocrine System Diseases",
+              "value": "GlandHormoneRelatedDiseases"
+            },
+            {
+              "display_value": "Endocrine Diabetes Mellitus",
+              "value": "endocrinediabetesmellitus"
+            },
+            {
+              "display_value": "Diabetes Complications",
+              "value": "diabetescomplications"
+            },
+            {
+              "display_value": "Diabetic Nephropathies",
+              "value": "DiabeticNephropathies"
+            },
+            {
+              "display_value": "Skin and Connective Tissue Diseases",
+              "value": "skincond"
+            },
+            {
+              "display_value": "Connective Tissue Diseases",
+              "value": "ConnectiveTissueDiseases"
+            }
+          ]
+        },
+        {
+          "display_name": "IntergovAgency",
+          "group_display_name": "Intergovernmental Agencies",
+          "name": "intergovagency",
+          "values": [
+            {
+              "display_value": "World Health Organization",
+              "relevancy": "Medium",
+              "value": "WorldHealthOrganization"
+            }
+          ]
+        },
+        {
+          "display_name": "Topic",
+          "group_display_name": "IT News",
+          "name": "epamportaltopics",
+          "values": [
+            {
+              "display_value": "Industries",
+              "relevancy": "High",
+              "value": "Industries"
+            },
+            {
+              "display_value": "ISV",
+              "relevancy": "Medium",
+              "value": "id_ISV_s_SaaS"
+            },
+            {
+              "display_value": "Life Sciences",
+              "relevancy": "High",
+              "value": "LifeSciences"
+            },
+            {
+              "display_value": "Health Care",
+              "relevancy": "High",
+              "value": "HealthCare"
+            },
+            {
+              "display_value": "Retail & CPG",
+              "relevancy": "High",
+              "value": "cpg"
+            }
+          ]
+        },
+        {
+          "display_name": "Topics",
+          "group_display_name": "Diagnostics & Treatments",
+          "name": "pharmatopic",
+          "values": [
+            {
+              "display_value": "Molecular Diagnostics",
+              "relevancy": "High",
+              "value": "genzmolecdiagnostics"
+            }
+          ]
+        },
+        {
+          "display_name": "Topic",
+          "group_display_name": "Healthcare Industry",
+          "name": "healthcareindustry",
+          "values": [
+            {
+              "display_value": "Health Care Cost Containment",
+              "relevancy": "High",
+              "value": "HealthCareCostContainmenthn"
+            },
+            {
+              "display_value": "Drug Pricing",
+              "relevancy": "High",
+              "value": "DrugPricing"
+            },
+            {
+              "display_value": "Clinical Trials",
+              "relevancy": "Medium",
+              "value": "trials"
+            },
+            {
+              "display_value": "Adverse Drug Reactions",
+              "relevancy": "Medium",
+              "value": "ADR"
+            }
+          ]
+        },
+        {
+          "display_name": "NegativeTopic",
+          "group_display_name": "Negative News Topics",
+          "name": "antimoneylaundering",
+          "values": [
+            {
+              "display_value": "Other Risk Factors",
+              "value": "OtherRiskFactors"
+            },
+            {
+              "display_value": "Bankruptcy News",
+              "value": "BankruptcyNews"
+            },
+            {
+              "display_value": "Tax Issues",
+              "value": "TaxIssues"
+            }
+          ]
+        },
+        {
+          "display_name": "Organization",
+          "group_display_name": "Companies",
+          "name": "company",
+          "values": [
+            {
+              "display_value": "Shire PLC",
+              "relevancy": "Medium",
+              "display_value_short": "SHP:LSS",
+              "value": "100046258"
+            },
+            {
+              "display_value": "GlaxoSmithKline PLC",
+              "relevancy": "Medium",
+              "display_value_short": "GSK:LSS",
+              "value": "100004096"
+            },
+            {
+              "display_value": "Sanofi SA",
+              "relevancy": "Medium",
+              "display_value_short": "SAN:ENX",
+              "value": "100129462"
+            },
+            {
+              "display_value": "Shionogi & Co Ltd",
+              "relevancy": "Medium",
+              "display_value_short": "4507:TYO",
+              "value": "100212510"
+            },
+            {
+              "display_value": "Endo Health Solutions Inc",
+              "relevancy": "Medium",
+              "value": "100022470"
+            },
+            {
+              "display_value": "Indevus Pharmaceuticals Inc",
+              "relevancy": "Medium",
+              "value": "100363841"
+            },
+            {
+              "display_value": "Oncternal Therapeutics Inc",
+              "relevancy": "High",
+              "display_value_short": "ONCT:NMS",
+              "value": "100033883"
+            }
+          ]
+        },
+        {
+          "display_name": "Topic",
+          "group_display_name": "Corporate Topics",
+          "name": "corptopics",
+          "values": [
+            {
+              "display_value": "Market Forces",
+              "relevancy": "High",
+              "value": "marketforces"
+            },
+            {
+              "display_value": "Pricing",
+              "relevancy": "High",
+              "value": "pricingchanges"
+            },
+            {
+              "display_value": "Price Decrease",
+              "relevancy": "High",
+              "value": "pricing"
+            }
+          ]
+        },
+        {
+          "display_name": "Topic",
+          "group_display_name": "Technology Topics",
+          "name": "techtopics",
+          "values": [
+            {
+              "display_value": "Software",
+              "relevancy": "Medium",
+              "value": "software"
+            },
+            {
+              "display_value": "Application Software",
+              "relevancy": "Medium",
+              "value": "Applicationsoftware"
+            },
+            {
+              "display_value": "Business Software",
+              "relevancy": "Medium",
+              "value": "businesssoft"
+            },
+            {
+              "display_value": "Infrastructure Management",
+              "relevancy": "Medium",
+              "value": "dellinfrastructure"
+            }
+          ]
+        }
+      ],
+      "fields": [],
+      "uri": "https://www.nature.com/articles/s41421-020-0153-3",
+      "sharing_allowed": true
+    },
+    {
+      "category": "Academic/Scientific Research",
+      "contributor": "Nature Publishing Group (NPG)",
+      "headline": "Don’t rush to deploy COVID-19 vaccines and drugs without sufficient safety guarantees",
+      "id": "41202974646",
+      "published_at": "2020-03-16T18:55:44.069Z",
+      "source": "Nature Publishing Group | Biotechnology channel",
+      "summary": "We must urgently develop measures to tackle the new coronavirus — but safety always comes first, says Shibo Jiang. Shibo Jiang is a professor of virology at the School of Basic Medical Sciences, Fudan University, Shanghai, China, and at the New York Blood Center, New York, USA. Around the world, I am seeing efforts to support ‘quick-fix’ programmes aimed at developing vaccines and therapeutics against COVID-19. ",
+      "tags": [
+        {
+          "display_name": "Topic",
+          "group_display_name": "Healthcare Industry",
+          "name": "healthcareindustry",
+          "values": [
+            {
+              "display_value": "Clinical Trials",
+              "value": "trials"
+            }
+          ]
+        },
+        {
+          "display_name": "Finance",
+          "group_display_name": "Investment Topics",
+          "name": "traderdemo",
+          "values": [
+            {
+              "display_value": "Macro",
+              "relevancy": "High",
+              "value": "macro"
+            },
+            {
+              "display_value": "Coronavirus",
+              "relevancy": "High",
+              "value": "Coronavirus"
+            },
+            {
+              "display_value": "Private Companies",
+              "relevancy": "High",
+              "value": "private_co"
+            },
+            {
+              "display_value": "US Companies",
+              "relevancy": "High",
+              "value": "USCos"
+            }
+          ]
+        },
+        {
+          "display_name": "Country",
+          "group_display_name": "Countries",
+          "name": "country",
+          "values": [
+            {
+              "display_value": "United States of America",
+              "relevancy": "High",
+              "value": "US"
+            },
+            {
+              "display_value": "China",
+              "relevancy": "High",
+              "value": "CN"
+            },
+            {
+              "display_value": "United Kingdom",
+              "value": "GB"
+            },
+            {
+              "display_value": "Wales",
+              "value": "Wales"
+            }
+          ]
+        },
+        {
+          "display_name": "Industry",
+          "group_display_name": "Industries",
+          "name": "gics",
+          "values": [
+            {
+              "display_value": "Healthcare",
+              "relevancy": "High",
+              "value": "35"
+            },
+            {
+              "display_value": "Pharmaceuticals",
+              "relevancy": "High",
+              "value": "352020"
+            },
+            {
+              "display_value": "Health Care Providers & Services",
+              "relevancy": "High",
+              "value": "351020"
+            },
+            {
+              "display_value": "Biotechnology",
+              "value": "352010"
+            }
+          ]
+        },
+        {
+          "display_name": "Condition",
+          "group_display_name": "Medical Conditions",
+          "name": "infongendiseases",
+          "values": [
+            {
+              "display_value": "Virus Diseases",
+              "relevancy": "High",
+              "value": "infectiousdiseases"
+            },
+            {
+              "display_value": "SARS",
+              "relevancy": "High",
+              "value": "sars1"
+            },
+            {
+              "display_value": "Bacterial Infections and Mycoses",
+              "relevancy": "Medium",
+              "value": "BacterialandFungalDiseases"
+            },
+            {
+              "display_value": "Infection",
+              "relevancy": "Medium",
+              "value": "Infection"
+            }
+          ]
+        },
+        {
+          "display_name": "IntergovAgency",
+          "group_display_name": "Intergovernmental Agencies",
+          "name": "intergovagency",
+          "values": [
+            {
+              "display_value": "World Health Organization",
+              "relevancy": "Medium",
+              "value": "WorldHealthOrganization"
+            }
+          ]
+        },
+        {
+          "display_name": "NegativeTopic",
+          "group_display_name": "Negative News Topics",
+          "name": "antimoneylaundering",
+          "values": [
+            {
+              "display_value": "Political Connections",
+              "value": "PoliticalConnections"
+            }
+          ]
+        },
+        {
+          "display_name": "Organization",
+          "group_display_name": "Companies",
+          "name": "company",
+          "values": [
+            {
+              "display_value": "New York Blood Center Inc",
+              "relevancy": "High",
+              "value": "100714632"
+            }
+          ]
+        },
+        {
+          "display_name": "State",
+          "group_display_name": "States",
+          "name": "state",
+          "values": [
+            {
+              "display_value": "Massachusetts",
+              "value": "MA"
+            },
+            {
+              "display_value": "Maryland",
+              "value": "MD"
+            }
+          ]
+        },
+        {
+          "display_name": "Topic",
+          "group_display_name": "IT News",
+          "name": "epamportaltopics",
+          "values": [
+            {
+              "display_value": "Industries",
+              "relevancy": "High",
+              "value": "Industries"
+            },
+            {
+              "display_value": "Life Sciences",
+              "relevancy": "High",
+              "value": "LifeSciences"
+            },
+            {
+              "display_value": "Oil and Gas",
+              "relevancy": "High",
+              "value": "wc_oilgas"
+            },
+            {
+              "display_value": "Health Care",
+              "relevancy": "High",
+              "value": "HealthCare"
+            }
+          ]
+        },
+        {
+          "display_name": "Topics",
+          "group_display_name": "Diagnostics & Treatments",
+          "name": "pharmatopic",
+          "values": [
+            {
+              "display_value": "Vaccines",
+              "relevancy": "Medium",
+              "value": "Vaccines"
+            }
+          ]
+        }
+      ],
+      "fields": [],
+      "uri": "https://www.nature.com/articles/d41586-020-00751-9",
+      "sharing_allowed": true
+    },
+    {
+      "category": "Academic/Scientific Research",
+      "contributor": "Nature Publishing Group (NPG)",
+      "headline": "Exposed: cells’ sugary secrets",
+      "id": "41202974266",
+      "published_at": "2020-03-16T18:55:40.147Z",
+      "source": "Nature Publishing Group | Biotechnology channel",
+      "summary": "A 3D structure of a glycoprotein spike that helps coronaviruses attach to cells. The spike is decorated with glycans that stop antibodies binding.Credit: X. Xiong et al./J. Virol. Just 22 amino acids are all that’s needed to make all the world’s proteins. Four nucleotide bases encode biology’s blueprints in DNA. ",
+      "tags": [
+        {
+          "display_name": "Finance",
+          "group_display_name": "Investment Topics",
+          "name": "traderdemo",
+          "values": [
+            {
+              "display_value": "Macro",
+              "relevancy": "High",
+              "value": "macro"
+            },
+            {
+              "display_value": "Coronavirus",
+              "relevancy": "High",
+              "value": "Coronavirus"
+            }
+          ]
+        },
+        {
+          "display_name": "Country",
+          "group_display_name": "Countries",
+          "name": "country",
+          "values": [
+            {
+              "display_value": "India",
+              "relevancy": "High",
+              "value": "IN"
+            },
+            {
+              "display_value": "United States of America",
+              "relevancy": "High",
+              "value": "US"
+            },
+            {
+              "display_value": "Canada",
+              "relevancy": "Medium",
+              "value": "CA"
+            }
+          ]
+        },
+        {
+          "display_name": "Industry",
+          "group_display_name": "Industries",
+          "name": "gics",
+          "values": [
+            {
+              "display_value": "Biotechnology",
+              "relevancy": "High",
+              "value": "352010"
+            },
+            {
+              "display_value": "Healthcare",
+              "relevancy": "High",
+              "value": "35"
+            },
+            {
+              "display_value": "Materials",
+              "relevancy": "High",
+              "value": "15"
+            },
+            {
+              "display_value": "Chemicals",
+              "relevancy": "High",
+              "value": "151010"
+            }
+          ]
+        },
+        {
+          "display_name": "Topic",
+          "group_display_name": "Nutrition & Biosciences",
+          "name": "solaealltopics",
+          "values": [
+            {
+              "display_value": "Proteins",
+              "relevancy": "High",
+              "value": "Proteins"
+            }
+          ]
+        },
+        {
+          "display_name": "Condition",
+          "group_display_name": "Medical Conditions",
+          "name": "infongendiseases",
+          "values": [
+            {
+              "display_value": "Cancers & Other Neoplasms",
+              "relevancy": "Medium",
+              "value": "CancersOtherNeoplasms"
+            },
+            {
+              "display_value": "Cancer",
+              "relevancy": "Medium",
+              "value": "barclayscancer"
+            },
+            {
+              "display_value": "Neoplasms by Site",
+              "relevancy": "Medium",
+              "value": "NeoplasmsbySite"
+            },
+            {
+              "display_value": "Breast Neoplasms",
+              "relevancy": "Medium",
+              "value": "breastneoplasms"
+            },
+            {
+              "display_value": "Skin and Connective Tissue Diseases",
+              "relevancy": "Medium",
+              "value": "skincond"
+            },
+            {
+              "display_value": "Skin Diseases",
+              "relevancy": "Medium",
+              "value": "SkinDiseases"
+            },
+            {
+              "display_value": "Breast Diseases",
+              "relevancy": "Medium",
+              "value": "BreastDiseases"
+            }
+          ]
+        },
+        {
+          "display_name": "City",
+          "group_display_name": "Cities",
+          "name": "city",
+          "values": [
+            {
+              "display_value": "Mumbai",
+              "relevancy": "High",
+              "value": "Mumbai"
+            }
+          ]
+        },
+        {
+          "display_name": "Organization",
+          "group_display_name": "Universities & Educational Institutions",
+          "name": "university",
+          "values": [
+            {
+              "display_value": "Stanford University",
+              "relevancy": "Medium",
+              "value": "StanfordUniversity"
+            },
+            {
+              "display_value": "Scripps Research Institute",
+              "relevancy": "Medium",
+              "value": "ScrippsResearchInstitute"
+            },
+            {
+              "display_value": "University of Alberta",
+              "value": "UniversityofAlberta"
+            }
+          ]
+        },
+        {
+          "display_name": "NegativeTopic",
+          "group_display_name": "Negative News Topics",
+          "name": "antimoneylaundering",
+          "values": [
+            {
+              "display_value": "Other Risk Factors",
+              "relevancy": "High",
+              "value": "OtherRiskFactors"
+            },
+            {
+              "display_value": "Legal Action/Issue",
+              "relevancy": "High",
+              "value": "LegalAction"
+            },
+            {
+              "display_value": "Fraud and Regulatory Breaches",
+              "relevancy": "High",
+              "value": "Fraud"
+            }
+          ]
+        },
+        {
+          "display_name": "State",
+          "group_display_name": "States",
+          "name": "state",
+          "values": [
+            {
+              "display_value": "California",
+              "relevancy": "High",
+              "value": "CA"
+            },
+            {
+              "display_value": "South Carolina",
+              "value": "SC"
+            },
+            {
+              "display_value": "Maryland",
+              "value": "MD"
+            }
+          ]
+        },
+        {
+          "display_name": "Topic",
+          "group_display_name": "IT News",
+          "name": "epamportaltopics",
+          "values": [
+            {
+              "display_value": "Industries",
+              "relevancy": "High",
+              "value": "Industries"
+            },
+            {
+              "display_value": "ISV",
+              "relevancy": "High",
+              "value": "id_ISV_s_SaaS"
+            },
+            {
+              "display_value": "Life Sciences",
+              "relevancy": "High",
+              "value": "LifeSciences"
+            }
+          ]
+        },
+        {
+          "display_name": "Topics",
+          "group_display_name": "Diagnostics & Treatments",
+          "name": "pharmatopic",
+          "values": [
+            {
+              "display_value": "Molecular Diagnostics",
+              "relevancy": "Medium",
+              "value": "genzmolecdiagnostics"
+            }
+          ]
+        }
+      ],
+      "fields": [],
+      "uri": "https://www.nature.com/articles/d41586-020-00769-z",
+      "sharing_allowed": true
+    },
+    {
+      "category": "Academic/Scientific Research",
+      "contributor": "Nature Publishing Group (NPG)",
+      "headline": "How China is planning to go to Mars amid the coronavirus outbreak",
+      "id": "41156884883",
+      "published_at": "2020-03-13T16:16:21.678Z",
+      "source": "Nature Publishing Group | Earth and Environment channel",
+      "summary": "The launch is on track for July, as Europe and Russia announce a two-year delay in their journey to the red planet. China's Long March 5 rocket will carry its Mars probe into space.Credit: AFP/Getty China’s first journey to Mars is one of the most anticipated space missions of the year. But with parts of the country in some form of lockdown because of the coronavirus, the mission teams have had to find creative ways to continue their work. ",
+      "tags": [
+        {
+          "display_name": "Finance",
+          "group_display_name": "Investment Topics",
+          "name": "traderdemo",
+          "values": [
+            {
+              "display_value": "Macro",
+              "relevancy": "High",
+              "value": "macro"
+            },
+            {
+              "display_value": "Coronavirus",
+              "relevancy": "High",
+              "value": "Coronavirus"
+            }
+          ]
+        },
+        {
+          "display_name": "Country",
+          "group_display_name": "Countries",
+          "name": "country",
+          "values": [
+            {
+              "display_value": "China",
+              "relevancy": "High",
+              "value": "CN"
+            },
+            {
+              "display_value": "United States of America",
+              "relevancy": "Medium",
+              "value": "US"
+            },
+            {
+              "display_value": "Russia",
+              "relevancy": "High",
+              "value": "RU"
+            },
+            {
+              "display_value": "United Arab Emirates",
+              "relevancy": "Medium",
+              "value": "AE"
+            }
+          ]
+        },
+        {
+          "display_name": "City",
+          "group_display_name": "Cities",
+          "name": "city",
+          "values": [
+            {
+              "display_value": "Beijing",
+              "value": "Beijing"
+            }
+          ]
+        },
+        {
+          "display_name": "Organization",
+          "group_display_name": "Universities & Educational Institutions",
+          "name": "university",
+          "values": [
+            {
+              "display_value": "Washington University",
+              "relevancy": "Medium",
+              "value": "WashingtonUniversity"
+            }
+          ]
+        },
+        {
+          "display_name": "NegativeTopic",
+          "group_display_name": "Negative News Topics",
+          "name": "antimoneylaundering",
+          "values": [
+            {
+              "display_value": "Fraud and Regulatory Breaches",
+              "relevancy": "High",
+              "value": "Fraud"
+            },
+            {
+              "display_value": "Company Investigation",
+              "relevancy": "High",
+              "value": "CompanyInvestigation"
+            },
+            {
+              "display_value": "Political Connections",
+              "value": "PoliticalConnections"
+            }
+          ]
+        },
+        {
+          "display_name": "State",
+          "group_display_name": "States",
+          "name": "state",
+          "values": [
+            {
+              "display_value": "Missouri",
+              "relevancy": "Medium",
+              "value": "MO"
+            }
+          ]
+        }
+      ],
+      "fields": [],
+      "uri": "https://www.nature.com/articles/d41586-020-00739-5",
+      "sharing_allowed": true
+    },
+    {
+      "category": "Academic/Scientific Research",
+      "contributor": "Nature Publishing Group (NPG)",
+      "headline": "Coronavirus and children, deep-sea microbes and a bold new climate law",
+      "id": "41136121412",
+      "published_at": "2020-03-12T16:16:59.74Z",
+      "source": "Nature Publishing Group | Earth and Environment channel",
+      "summary": "A fire engine surrounded by bush-fire smoke in February near the town of Bumbalong, south of Canberra, Australia.Credit: Peter Parks/AFP/Getty Climate change contributed to Australia’s extreme bush-fire weather. Global warming increased by at least 30% the risk of the weather conditions that drove the recent catastrophic bush fires in Australia, says a group of climate scientists who analysed the disaster. ",
+      "tags": [
+        {
+          "display_name": "Finance",
+          "group_display_name": "Investment Topics",
+          "name": "traderdemo",
+          "values": [
+            {
+              "display_value": "Macro",
+              "relevancy": "High",
+              "value": "macro"
+            },
+            {
+              "display_value": "Coronavirus",
+              "relevancy": "High",
+              "value": "Coronavirus"
+            },
+            {
+              "display_value": "Private Companies",
+              "relevancy": "High",
+              "value": "private_co"
+            }
+          ]
+        },
+        {
+          "display_name": "Country",
+          "group_display_name": "Countries",
+          "name": "country",
+          "values": [
+            {
+              "display_value": "Netherlands",
+              "relevancy": "Medium",
+              "value": "NL"
+            },
+            {
+              "display_value": "United Kingdom",
+              "relevancy": "Medium",
+              "value": "GB"
+            },
+            {
+              "display_value": "Wales",
+              "relevancy": "Medium",
+              "value": "Wales"
+            },
+            {
+              "display_value": "Belgium",
+              "relevancy": "Medium",
+              "value": "BE"
+            },
+            {
+              "display_value": "China",
+              "value": "CN"
+            },
+            {
+              "display_value": "United States of America",
+              "value": "US"
+            }
+          ]
+        },
+        {
+          "display_name": "Industry",
+          "group_display_name": "Industries",
+          "name": "gics",
+          "values": [
+            {
+              "display_value": "Industrials",
+              "relevancy": "High",
+              "value": "20"
+            },
+            {
+              "display_value": "Professional Services",
+              "relevancy": "High",
+              "value": "202020"
+            },
+            {
+              "display_value": "Healthcare",
+              "value": "35"
+            },
+            {
+              "display_value": "Health Care Providers & Services",
+              "value": "351020"
+            }
+          ]
+        },
+        {
+          "display_name": "City",
+          "group_display_name": "Cities",
+          "name": "city",
+          "values": [
+            {
+              "display_value": "Brussels",
+              "relevancy": "Medium",
+              "value": "Brussels"
+            }
+          ]
+        },
+        {
+          "display_name": "IntergovAgency",
+          "group_display_name": "Intergovernmental Agencies",
+          "name": "intergovagency",
+          "values": [
+            {
+              "display_value": "European Union",
+              "relevancy": "Medium",
+              "value": "EU"
+            },
+            {
+              "display_value": "European Commission",
+              "relevancy": "Medium",
+              "value": "EuropeanCommission"
+            }
+          ]
+        },
+        {
+          "display_name": "NegativeTopic",
+          "group_display_name": "Negative News Topics",
+          "name": "antimoneylaundering",
+          "values": [
+            {
+              "display_value": "Serious and Organized Crime",
+              "relevancy": "High",
+              "value": "OrganizedCrime"
+            },
+            {
+              "display_value": "Environmental Issues & Crimes",
+              "relevancy": "High",
+              "value": "EnvironmentalCrimes"
+            },
+            {
+              "display_value": "Murder",
+              "relevancy": "Medium",
+              "value": "Murder"
+            },
+            {
+              "display_value": "Assault",
+              "value": "Assault"
+            },
+            {
+              "display_value": "Social Accountability",
+              "relevancy": "High",
+              "value": "SocialAccountability"
+            },
+            {
+              "display_value": "Political Connections",
+              "relevancy": "Medium",
+              "value": "PoliticalConnections"
+            },
+            {
+              "display_value": "Other Risk Factors",
+              "value": "OtherRiskFactors"
+            },
+            {
+              "display_value": "Legal Action/Issue",
+              "value": "LegalAction"
+            },
+            {
+              "display_value": "Fraud and Regulatory Breaches",
+              "value": "Fraud"
+            }
+          ]
+        },
+        {
+          "display_name": "Organization",
+          "group_display_name": "Companies",
+          "name": "company",
+          "values": [
+            {
+              "display_value": "CSIRO",
+              "relevancy": "High",
+              "value": "100667236"
+            }
+          ]
+        },
+        {
+          "display_name": "State",
+          "group_display_name": "States",
+          "name": "state",
+          "values": [
+            {
+              "display_value": "Maryland",
+              "value": "MD"
+            },
+            {
+              "display_value": "Virginia",
+              "value": "VA"
+            },
+            {
+              "display_value": "Massachusetts",
+              "value": "MA"
+            }
+          ]
+        },
+        {
+          "display_name": "Topic",
+          "group_display_name": "Corporate Topics",
+          "name": "corptopics",
+          "values": [
+            {
+              "display_value": "Management",
+              "relevancy": "High",
+              "value": "Management"
+            },
+            {
+              "display_value": "ESG",
+              "relevancy": "High",
+              "value": "CorporateSocialResponsibility"
+            },
+            {
+              "display_value": "Carbon Emissions",
+              "relevancy": "High",
+              "value": "CarbonEmissions"
+            },
+            {
+              "display_value": "Legal & Regulatory",
+              "relevancy": "Medium",
+              "value": "legalandregulatory"
+            },
+            {
+              "display_value": "Environmental Law",
+              "relevancy": "Medium",
+              "value": "envirlaw"
+            },
+            {
+              "display_value": "Major Corporate News",
+              "relevancy": "Medium",
+              "value": "majornewstopics"
+            }
+          ]
+        },
+        {
+          "display_name": "Topic",
+          "group_display_name": "IT News",
+          "name": "epamportaltopics",
+          "values": [
+            {
+              "display_value": "Industries",
+              "value": "Industries"
+            },
+            {
+              "display_value": "Business Information",
+              "value": "businfo"
+            }
+          ]
+        },
+        {
+          "display_name": "Topics",
+          "group_display_name": "Energy Topics",
+          "name": "energy",
+          "values": [
+            {
+              "display_value": "Climate Change",
+              "relevancy": "High",
+              "value": "climchan"
+            },
+            {
+              "display_value": "Emissions",
+              "relevancy": "Medium",
+              "value": "emission"
+            }
+          ]
+        }
+      ],
+      "fields": [],
+      "uri": "https://www.nature.com/articles/d41586-020-00670-9",
+      "sharing_allowed": true
+    }
+  ],
+  "tags_facet": [
+    {
+      "name": "volumes",
+      "values": []
+    },
+    {
+      "name": "words",
+      "values": []
+    },
+    {
+      "display_name": "Publisher",
+      "name": "feed.provider",
+      "values": [
+        {
+          "documents_count": 9,
+          "display_value": "Nature Publishing Group (NPG)",
+          "value": "55856"
+        }
+      ]
+    },
+    {
+      "display_name": "Organization",
+      "name": "company",
+      "values": [
+        {
+          "documents_count": 1,
+          "display_value": "GlaxoSmithKline PLC",
+          "display_value_short": "GSK:LSS",
+          "value": "100004096"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "The Mcclatchy Company",
+          "display_value_short": "MNI:NYX",
+          "value": "100012533"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Endo Health Solutions Inc",
+          "value": "100022470"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Oncternal Therapeutics Inc",
+          "display_value_short": "ONCT:NMS",
+          "value": "100033883"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Shire PLC",
+          "display_value_short": "SHP:LSS",
+          "value": "100046258"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Sanofi SA",
+          "display_value_short": "SAN:ENX",
+          "value": "100129462"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Shionogi & Co Ltd",
+          "display_value_short": "4507:TYO",
+          "value": "100212510"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "The Sacramento Bee",
+          "value": "100356032"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Indevus Pharmaceuticals Inc",
+          "value": "100363841"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Mayo Clinic",
+          "value": "100365075"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "CSIRO",
+          "value": "100667236"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Massachusetts General Hospital",
+          "value": "100681953"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "New York Blood Center Inc",
+          "value": "100714632"
+        }
+      ]
+    },
+    {
+      "name": "associations",
+      "values": []
+    },
+    {
+      "name": "finexchanges",
+      "values": []
+    },
+    {
+      "name": "govagency",
+      "values": []
+    },
+    {
+      "display_name": "IntergovAgency",
+      "name": "intergovagency",
+      "values": [
+        {
+          "documents_count": 4,
+          "display_value": "World Health Organization",
+          "value": "WorldHealthOrganization"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "European Union",
+          "value": "EU"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "European Commission",
+          "value": "EuropeanCommission"
+        }
+      ]
+    },
+    {
+      "name": "centralbanks",
+      "values": []
+    },
+    {
+      "display_name": "Industry",
+      "name": "gics",
+      "values": [
+        {
+          "documents_count": 7,
+          "display_value": "Healthcare",
+          "value": "35"
+        },
+        {
+          "documents_count": 6,
+          "display_value": "Health Care Providers & Services",
+          "value": "351020"
+        },
+        {
+          "documents_count": 3,
+          "display_value": "Biotechnology",
+          "value": "352010"
+        },
+        {
+          "documents_count": 3,
+          "display_value": "Pharmaceuticals",
+          "value": "352020"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Materials",
+          "value": "15"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Chemicals",
+          "value": "151010"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Industrials",
+          "value": "20"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Professional Services",
+          "value": "202020"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Consumer Discretionary",
+          "value": "25"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Media",
+          "value": "254010"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Consumer Staples",
+          "value": "30"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Food Products",
+          "value": "302020"
+        }
+      ]
+    },
+    {
+      "display_name": "Topic",
+      "name": "techtopics",
+      "values": [
+        {
+          "documents_count": 1,
+          "display_value": "Application Software",
+          "value": "Applicationsoftware"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Business Software",
+          "value": "businesssoft"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Infrastructure Management",
+          "value": "dellinfrastructure"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Software",
+          "value": "software"
+        }
+      ]
+    },
+    {
+      "display_name": "Topic",
+      "name": "epamportaltopics",
+      "values": [
+        {
+          "documents_count": 7,
+          "display_value": "Industries",
+          "value": "Industries"
+        },
+        {
+          "documents_count": 5,
+          "display_value": "Health Care",
+          "value": "HealthCare"
+        },
+        {
+          "documents_count": 4,
+          "display_value": "Life Sciences",
+          "value": "LifeSciences"
+        },
+        {
+          "documents_count": 4,
+          "display_value": "ISV",
+          "value": "id_ISV_s_SaaS"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Business Information",
+          "value": "businfo"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Retail & CPG",
+          "value": "cpg"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Oil and Gas",
+          "value": "wc_oilgas"
+        }
+      ]
+    },
+    {
+      "name": "epamuxd",
+      "values": []
+    },
+    {
+      "name": "cartopic",
+      "values": []
+    },
+    {
+      "name": "infongendefense",
+      "values": []
+    },
+    {
+      "display_name": "Topic",
+      "name": "techtopics",
+      "values": [
+        {
+          "documents_count": 1,
+          "display_value": "Application Software",
+          "value": "Applicationsoftware"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Business Software",
+          "value": "businesssoft"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Infrastructure Management",
+          "value": "dellinfrastructure"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Software",
+          "value": "software"
+        }
+      ]
+    },
+    {
+      "display_name": "Condition",
+      "name": "infongendiseases",
+      "values": [
+        {
+          "documents_count": 4,
+          "display_value": "Virus Diseases",
+          "value": "infectiousdiseases"
+        },
+        {
+          "documents_count": 3,
+          "display_value": "Bacterial Infections and Mycoses",
+          "value": "BacterialandFungalDiseases"
+        },
+        {
+          "documents_count": 3,
+          "display_value": "Infection",
+          "value": "Infection"
+        },
+        {
+          "documents_count": 3,
+          "display_value": "SARS",
+          "value": "sars1"
+        },
+        {
+          "documents_count": 2,
+          "display_value": "Skin and Connective Tissue Diseases",
+          "value": "skincond"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Behaviors & Mental Disorders",
+          "value": "BehaviorsMentalDisorders"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Hemic and Lymphatic Diseases",
+          "value": "BloodLymphConditions"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Breast Diseases",
+          "value": "BreastDiseases"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Cancers & Other Neoplasms",
+          "value": "CancersOtherNeoplasms"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Circadian Rhythm",
+          "value": "CircadianRhythm"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Connective Tissue Diseases",
+          "value": "ConnectiveTissueDiseases"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Diabetic Nephropathies",
+          "value": "DiabeticNephropathies"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Gastroenteritis",
+          "value": "Gastroent"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Gastrointestinal Diseases",
+          "value": "GastrointestinalDiseases"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Endocrine System Diseases",
+          "value": "GlandHormoneRelatedDiseases"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Immunoproliferative Disorders",
+          "value": "Immproldis"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Immune System Disorders",
+          "value": "ImmuneSystemDiseases"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Intestinal Diseases",
+          "value": "IntestinalDiseases"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Lymphatic Diseases",
+          "value": "LymphaticDiseases"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Lymphoproliferative Disorders",
+          "value": "LymphoproliferativeDisorders"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Neoplasms by Site",
+          "value": "NeoplasmsbySite"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Orthomyxoviridae Infections",
+          "value": "Orthomyxovirus"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Pneumonia",
+          "value": "Pneumonia"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Respiratory Tract Infections",
+          "value": "RespirInfect"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Respiratory Tract Disorders",
+          "value": "RespiratorytractDiseases"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Skin Diseases",
+          "value": "SkinDiseases"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Sleep Disorders",
+          "value": "SleepDisorders"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Cancer",
+          "value": "barclayscancer"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Breast Neoplasms",
+          "value": "breastneoplasms"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Diabetes Complications",
+          "value": "diabetescomplications"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Endocrine Diabetes Mellitus",
+          "value": "endocrinediabetesmellitus"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Inflammatory Bowel Diseases",
+          "value": "inflambowel"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Human Influenza",
+          "value": "influenza"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "RNA Virus Infections",
+          "value": "rnavirus"
+        }
+      ]
+    },
+    {
+      "display_name": "NegativeTopic",
+      "name": "antimoneylaundering",
+      "values": [
+        {
+          "documents_count": 7,
+          "display_value": "Fraud and Regulatory Breaches",
+          "value": "Fraud"
+        },
+        {
+          "documents_count": 6,
+          "display_value": "Other Risk Factors",
+          "value": "OtherRiskFactors"
+        },
+        {
+          "documents_count": 5,
+          "display_value": "Legal Action/Issue",
+          "value": "LegalAction"
+        },
+        {
+          "documents_count": 4,
+          "display_value": "Assault",
+          "value": "Assault"
+        },
+        {
+          "documents_count": 4,
+          "display_value": "Serious and Organized Crime",
+          "value": "OrganizedCrime"
+        },
+        {
+          "documents_count": 4,
+          "display_value": "Political Connections",
+          "value": "PoliticalConnections"
+        },
+        {
+          "documents_count": 3,
+          "display_value": "Company Investigation",
+          "value": "CompanyInvestigation"
+        },
+        {
+          "documents_count": 3,
+          "display_value": "Social Accountability",
+          "value": "SocialAccountability"
+        },
+        {
+          "documents_count": 2,
+          "display_value": "Ban|Prohibit|Unauthorized",
+          "value": "BanProhibit"
+        },
+        {
+          "documents_count": 2,
+          "display_value": "Company Scandal",
+          "value": "CompanyScandal"
+        },
+        {
+          "documents_count": 2,
+          "display_value": "Environmental Issues & Crimes",
+          "value": "EnvironmentalCrimes"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Bankruptcy News",
+          "value": "BankruptcyNews"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Family Court Proceeding",
+          "value": "FamilyCourtProceeding"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Litigation",
+          "value": "Litigation"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Murder",
+          "value": "Murder"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Sanctions",
+          "value": "Sanctions"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Tax Issues",
+          "value": "TaxIssues"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Health & Hygiene-Related Infringements",
+          "value": "workplacesanitation"
+        }
+      ]
+    },
+    {
+      "display_name": "Topics",
+      "name": "pharmatopic",
+      "values": [
+        {
+          "documents_count": 3,
+          "display_value": "Molecular Diagnostics",
+          "value": "genzmolecdiagnostics"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Vaccines",
+          "value": "Vaccines"
+        }
+      ]
+    },
+    {
+      "display_name": "Topic",
+      "name": "corptopics",
+      "values": [
+        {
+          "documents_count": 1,
+          "display_value": "Carbon Emissions",
+          "value": "CarbonEmissions"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "ESG",
+          "value": "CorporateSocialResponsibility"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Management",
+          "value": "Management"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Environmental Law",
+          "value": "envirlaw"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Legal & Regulatory",
+          "value": "legalandregulatory"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Major Corporate News",
+          "value": "majornewstopics"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Market Forces",
+          "value": "marketforces"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Price Decrease",
+          "value": "pricing"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Pricing",
+          "value": "pricingchanges"
+        }
+      ]
+    },
+    {
+      "display_name": "Finance",
+      "name": "traderdemo",
+      "values": [
+        {
+          "documents_count": 9,
+          "display_value": "Coronavirus",
+          "value": "Coronavirus"
+        },
+        {
+          "documents_count": 9,
+          "display_value": "Macro",
+          "value": "macro"
+        },
+        {
+          "documents_count": 5,
+          "display_value": "Private Companies",
+          "value": "private_co"
+        },
+        {
+          "documents_count": 4,
+          "display_value": "US Companies",
+          "value": "USCos"
+        },
+        {
+          "documents_count": 2,
+          "display_value": "Public Companies",
+          "value": "public_co"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Government Foreign Relations",
+          "value": "GovForeignRelat"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Politics",
+          "value": "Politics"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Government News",
+          "value": "gov"
+        }
+      ]
+    },
+    {
+      "name": "financialservices",
+      "values": []
+    },
+    {
+      "display_name": "Executives",
+      "name": "execs",
+      "values": [
+        {
+          "documents_count": 1,
+          "display_value": "Patrick Vallance",
+          "value": "PatrickVallance"
+        }
+      ]
+    },
+    {
+      "name": "judges",
+      "values": []
+    },
+    {
+      "display_name": "Representative",
+      "name": "congress",
+      "values": [
+        {
+          "documents_count": 2,
+          "display_value": "Tedros Adhanom (WHO)",
+          "value": "WHO"
+        },
+        {
+          "documents_count": 2,
+          "display_value": "World Organizations",
+          "value": "WorldOrganizations"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Donald Trump (US)",
+          "value": "DonaldTrump1"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Republican Party",
+          "value": "RepublicanParty"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Presidents & World Leaders",
+          "value": "presidents"
+        }
+      ]
+    },
+    {
+      "display_name": "Country",
+      "name": "country",
+      "values": [
+        {
+          "documents_count": 9,
+          "display_value": "United States of America",
+          "value": "US"
+        },
+        {
+          "documents_count": 6,
+          "display_value": "China",
+          "value": "CN"
+        },
+        {
+          "documents_count": 5,
+          "display_value": "United Kingdom",
+          "value": "GB"
+        },
+        {
+          "documents_count": 2,
+          "display_value": "South Korea",
+          "value": "KR"
+        },
+        {
+          "documents_count": 2,
+          "display_value": "Wales",
+          "value": "Wales"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "United Arab Emirates",
+          "value": "AE"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Belgium",
+          "value": "BE"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Canada",
+          "value": "CA"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Congo, Democratic Republic of the",
+          "value": "CD"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Germany",
+          "value": "DE"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Spain",
+          "value": "ES"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "France",
+          "value": "FR"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Hong Kong",
+          "value": "HK"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "India",
+          "value": "IN"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Jersey",
+          "value": "JE"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Netherlands",
+          "value": "NL"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Russia",
+          "value": "RU"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Singapore",
+          "value": "SG"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Zaire",
+          "value": "ZR"
+        }
+      ]
+    },
+    {
+      "display_name": "State",
+      "name": "state",
+      "values": [
+        {
+          "documents_count": 3,
+          "display_value": "Massachusetts",
+          "value": "MA"
+        },
+        {
+          "documents_count": 3,
+          "display_value": "Maryland",
+          "value": "MD"
+        },
+        {
+          "documents_count": 2,
+          "display_value": "California",
+          "value": "CA"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Colorado",
+          "value": "CO"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Georgia",
+          "value": "GA"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Missouri",
+          "value": "MO"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "South Carolina",
+          "value": "SC"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Utah",
+          "value": "UT"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Virginia",
+          "value": "VA"
+        },
+        {
+          "documents_count": 1,
+          "display_value": "Washington",
+          "value": "WA"
+        }
+      ]
+    },
+    {
+      "name": "sentiment",
+      "values": []
+    },
+    {
+      "name": "typicallyexcludedtopics",
+      "values": []
+    }
+  ],
+  "documents_total": 9,
+  "search_info": {
+    "uid": "dd0b0934-4130-4f0c-9050-5d204d1824b7",
+    "name": "COVID 19",
+    "visibility": {
+      "scope": "users",
+      "users": [
+        "868d55d26df80640dbabb566573e4cf0",
+        "cdf594aac0368d9c2773695da01235b8"
+      ]
+    },
+    "created_at": "2020-03-23T16:20:00.066Z",
+    "updated_at": "2020-03-26T11:14:44.786Z",
+    "creator": "c8373cb5d062074c957ff5da94480a80"
+  }
+}
