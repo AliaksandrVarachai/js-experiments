@@ -6,6 +6,7 @@ function Board(pieces, player) {
   this.occupiedSquares; // getter;
   this.attackedSquares;   // getter;
   this.attackingSquares;  // getter;
+  this.isAnPassen =
 
   // updates this.occupiedPositions;
   this.updateOccupiedPositions = function() {
