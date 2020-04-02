@@ -2,6 +2,8 @@ import React, { createContext, useState, useContext, cloneElement, isValidElemen
 import classnames from 'classnames';
 import PropTypes  from 'prop-types';
 
+import './MenuDropdown.pcss';
+
 const Context = createContext();
 
 function ContextProvider({ children }) {
@@ -28,48 +30,48 @@ function Container({ children }) {
 function ItemsContainer({ children }) {
   const { isOpened } = useContext(Context);
 
-  const className = classnames('items-container', {'items-container--opened': isOpened});
+  const styleName = classnames('items-container', {'items-container--opened': isOpened});
 
   return isValidElement(children)
-    ? (<>{cloneElement(children, { className })}</>)
-    : (<div className={className}>{children}</div>);
+    ? (<>{cloneElement(children, { styleName })}</>)
+    : (<div className={styleName}>{children}</div>);
 }
 
 function Header({ children }) {
   const { isOpened, setIsOpened } = useContext(Context);
   const clickHandler = () => { setIsOpened(!isOpened); };
 
-  const className = classnames('header', {'header--opened': isOpened});
+  const styleName = classnames('header', {'header--opened': isOpened});
 
   return isValidElement(children)
     ? (
       <>
         {cloneElement(children, {
           onClick: clickHandler,
-          className
+          styleName
         })}
       </>
     )
-    : <div className={className}>{children}</div>
+    : <div className={styleName}>{children}</div>
 }
 
 function Item({ children, value }) {
   const { chosenValue, setChosenValue } = useContext(Context);
   const clickHandler = () => { setChosenValue(value); };
 
-  const className = classnames('item', {'item--chosen': chosenValue === value});
+  const styleName = classnames('item', {'item--chosen': chosenValue === value});
 
   return isValidElement(children)
     ? (
       <>
         {cloneElement(children, {
           onClick: clickHandler,
-          className
+          styleName
         })}
       </>
     )
     : (
-      <div className={className}>
+      <div styleName={styleName}>
         {children}
       </div>
     );

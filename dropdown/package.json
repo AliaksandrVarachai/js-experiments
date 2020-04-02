@@ -1,19 +1,23 @@
 {
   "name": "dropdown",
   "version": "1.0.0",
-  "description": "",
+  "description": "Costumizable React menu dropdown",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --mode=development",
-    "build": "webpack --mode=production"
+    "start": "NODE_ENV=developement webpack-dev-server --mode=development",
+    "build": "NODE_ENV=production webpack --mode=production"
   },
   "keywords": [],
-  "author": "",
+  "author": "Alexandr Vorochai",
   "license": "ISC",
+  "browserslist": [
+    "defaults"
+  ],
   "dependencies": {
     "@babel/core": "^7.9.0",
     "@babel/preset-env": "^7.9.0",
     "@babel/preset-react": "^7.9.4",
+    "autoprefixer": "^9.7.5",
     "babel-loader": "^8.1.0",
     "babel-plugin-react-css-modules": "^5.2.6",
     "classnames": "^2.2.6",
@@ -21,6 +25,7 @@
     "css-loader": "^3.4.2",
     "html-loader": "^1.0.0",
     "html-webpack-plugin": "^4.0.3",
+    "postcss-scss": "^2.0.0",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -29,6 +34,7 @@
     "webpack-cli": "^3.3.11"
   },
   "devDependencies": {
+    "postcss-loader": "^3.0.0",
     "webpack-dev-server": "^3.10.3"
   }
 }
