@@ -22,6 +22,20 @@ module.exports = (env, argv) => ({
         test: /\.html$/,
         include: path.resolve(__dirname, 'src'),
         loader: 'html-loader'
+      }, {
+        test: /\.css$/,
+        include: path.resolve(__dirname, 'src'),
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              modules: {
+                localIndentName: '[name]__[local]__[hash:base64:5]'
+              }
+            }
+          }
+        ]
       }
     ]
   },
