@@ -2,7 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
-module.exports = {
+module.exports = (env, argv) => ({
   entry: {
     index: './src/index.js'
   },
@@ -35,9 +35,12 @@ module.exports = {
 
   optimization: {},
 
-  devtool: 'inline-source-map',
+  devtool: argv.mode === 'production' ? 'source-map' : 'eval',
 
   devServer: {
-    contentBase: './dist'
+    contentBase: './dist',
+    overlay: true,
+    // lazy: true,
+    open: true,
   }
-};
+});
