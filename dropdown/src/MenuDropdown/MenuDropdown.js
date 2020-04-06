@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect, Children } from 'react';
 import classnames from 'classnames';
 import PropTypes  from 'prop-types';
 
@@ -6,23 +6,38 @@ import './MenuDropdown.pcss';
 
 const Context = createContext();
 
+// onChange, defaultValue, theme: default, black, null
 class Container extends React.PureComponent {
+  static propTypes = {
+    onChange: PropTypes.func.isRequired,
+    defaultValue: PropTypes.any,
+    theme: PropTypes.oneOf(['default', 'dark', 'none']),
+    children: function(props, propName, componentName) {
+      let headerCounter = 0;
+      let itemsContainerCounter = 0;
+      Children.toArray(props.children).forEach(child => {
+        if (child.type === Header) ++headerCounter;
+        if (child.type === ItemsContainer) ++itemsContainerCounter;
+      });
+      if (headerCounter * itemsContainerCounter !== 1)
+        throw Error(`Header and ItemsContainer are obligatory children for ${componentName}`);
+    }
+  };
+
   constructor(props) {
     super(props);
     this.state = {
       isOpened: false,
-      chosenValue: null
+      chosenValue: props.defaultValue,
     };
     this.isClickInsideDropdown = false;
   }
 
   documentCaptureClickListener = event => {
     this.isClickInsideDropdown = false;
-    console.log('documentCaptureClickListener set to ', this.isClickInsideDropdown);
   };
 
   documentBubbleClickListener = event => {
-    console.log('documentBubbleClickListener read: ', this.isClickInsideDropdown)
     if (this.isClickInsideDropdown) return;
     this.setState({ isOpened: false });
   };
@@ -39,25 +54,42 @@ class Container extends React.PureComponent {
   }
 
   componentWillUnmount() {
-    document.removeEventListener('click', this.documentCaptureClickListener);
+    document.removeEventListener('click', this.documentCaptureClickListener, {
+      capture: true
+    });
     document.removeEventListener('click', this.documentBubbleClickListener);
   }
 
-  clickHandler = event => {
+  clickHandler = () => {
     this.isClickInsideDropdown = true;
-    console.log('clicked inside dropdown', this.isClickInsideDropdown);
   };
 
-  setIsOpened = isOpened => this.setState({ isOpened });
+  setIsOpened = isOpened => {
+    this.setState({ isOpened });
+  };
 
-  setChosenValue = chosenValue => this.setState({ chosenValue });
+  setChosenValue = chosenValue => {
+    this.setState({
+      chosenValue,
+      isOpened: false
+    });
+  };
+
+  setChosenTitle = chosenTitle => {
+    this.setState({ chosenTitle });
+  };
 
   render() {
+    const { isOpened, chosenValue, chosenTitle } = this.state;
     const contextValue = {
-      isOpened: this.state.isOpened,
+      isOpened,
+      chosenValue,
+      chosenTitle,
       setIsOpened: this.setIsOpened,
-      chosenValue: this.state.chosenValue,
       setChosenValue: this.setChosenValue,
+      setChosenTitle: this.setChosenTitle,
+      onChange: this.props.onChange,
+      defaultValue: this.props.defaultValue,
     };
     return (
       <div styleName="container" onClick={this.clickHandler}>
@@ -80,10 +112,9 @@ function ItemsContainer({ children }) {
 }
 
 function Header({ children }) {
-  const { isOpened, setIsOpened, chosenValue } = useContext(Context);
+  const { isOpened, setIsOpened, chosenValue, chosenTitle } = useContext(Context);
 
   const clickHandler = () => {
-    console.log('Header', isOpened)
     setIsOpened(!isOpened);
   };
 
@@ -92,15 +123,26 @@ function Header({ children }) {
       styleName={classnames('header', {'header--opened': isOpened})}
       onClick={clickHandler}
     >
-      {children}
+      {chosenValue ? chosenTitle : children}
     </div>
   );
 }
 
 function Item({ children, value }) {
-  const { chosenValue, setChosenValue } = useContext(Context);
+  const { chosenValue, setChosenValue, onChange, defaultValue, setChosenTitle } = useContext(Context);
 
-  const clickHandler = () => { setChosenValue(value); };
+  useEffect(() => {
+    if (value === defaultValue) {
+      setChosenValue(value);
+      setChosenTitle(children);
+    }
+  }, []);
+
+  const clickHandler = () => {
+    setChosenValue(value);
+    setChosenTitle(children);
+    onChange(value);
+  };
 
   return (
     <div
