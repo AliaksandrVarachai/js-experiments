@@ -1,10 +1,12 @@
-import React, { createContext, useState, useContext, useEffect, Children } from 'react';
-import classnames from 'classnames';
+import React, { Children } from 'react';
 import PropTypes  from 'prop-types';
+import Header from '../Header/Header';
+import ItemsContainer from '../ItemsContainer/ItemsContainer';
+import Item from '../Item/Item';
+import Context from '../Context/Context';
 
 import './MenuDropdown.pcss';
 
-const Context = createContext();
 
 // onChange, defaultValue, theme: default, black, null
 class Container extends React.PureComponent {
@@ -100,60 +102,6 @@ class Container extends React.PureComponent {
     );
   }
 }
-
-function ItemsContainer({ children }) {
-  const { isOpened } = useContext(Context);
-
-  return (
-    <div styleName={classnames('items-container', {'items-container--opened': isOpened})}>
-      {children}
-    </div>
-  );
-}
-
-function Header({ children }) {
-  const { isOpened, setIsOpened, chosenValue, chosenTitle } = useContext(Context);
-
-  const clickHandler = () => {
-    setIsOpened(!isOpened);
-  };
-
-  return (
-    <div
-      styleName={classnames('header', {'header--opened': isOpened})}
-      onClick={clickHandler}
-    >
-      {chosenValue ? chosenTitle : children}
-    </div>
-  );
-}
-
-function Item({ children, value }) {
-  const { chosenValue, setChosenValue, onChange, defaultValue, setChosenTitle } = useContext(Context);
-
-  useEffect(() => {
-    if (value === defaultValue) {
-      setChosenValue(value);
-      setChosenTitle(children);
-    }
-  }, []);
-
-  const clickHandler = () => {
-    setChosenValue(value);
-    setChosenTitle(children);
-    onChange(value);
-  };
-
-  return (
-    <div
-      styleName={classnames('item', {'item--chosen': chosenValue === value})}
-      onClick={clickHandler}
-    >
-      {children}
-    </div>
-  );
-}
-
 
 export default {
   Container,
