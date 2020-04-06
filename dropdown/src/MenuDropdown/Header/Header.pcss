@@ -1,15 +1,12 @@
-.header {
-  border: 1px solid black;
-  padding: 5px 10px;
+@import '../themes/default.pcss';
 
+.header {
   &:hover {
     cursor: pointer;
   }
 }
 
-.header--opened {
-  max-width: var(--max-menu-width);
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+.default-theme {
+  border: 1px solid var(--color);
+  padding: 5px 10px;
 }

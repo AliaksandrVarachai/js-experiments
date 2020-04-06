@@ -28,11 +28,23 @@ class Container extends React.PureComponent {
 
   constructor(props) {
     super(props);
+    this.isClickInsideDropdown = false;
+
+    this.themeClass = '';
+    switch(props.theme) {
+      case 'none':
+        this.themeClass = null;
+        break;
+      case undefined:
+        this.themeClass = 'default-theme';
+        break;
+      default: this.themeClass = `${props.theme}-theme`;
+    }
+
     this.state = {
       isOpened: false,
       chosenValue: props.defaultValue,
     };
-    this.isClickInsideDropdown = false;
   }
 
   documentCaptureClickListener = event => {
@@ -92,6 +104,7 @@ class Container extends React.PureComponent {
       setChosenTitle: this.setChosenTitle,
       onChange: this.props.onChange,
       defaultValue: this.props.defaultValue,
+      themeClass: this.themeClass,
     };
     return (
       <div styleName="container" onClick={this.clickHandler}>

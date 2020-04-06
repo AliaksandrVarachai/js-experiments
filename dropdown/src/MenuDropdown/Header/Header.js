@@ -1,11 +1,17 @@
 import React, { useContext } from 'react';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import Context from '../Context/Context';
 
 import './Header.pcss';
 
-export default function Header({ children }) {
-  const { isOpened, setIsOpened, chosenValue, chosenTitle } = useContext(Context);
+Header.propTypes = {
+  className: PropTypes.string,
+  children: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
+};
+
+export default function Header({ children, className }) {
+  const { isOpened, setIsOpened, chosenValue, chosenTitle, themeClass } = useContext(Context);
 
   const clickHandler = () => {
     setIsOpened(!isOpened);
@@ -13,7 +19,8 @@ export default function Header({ children }) {
 
   return (
     <div
-      styleName={classnames('header', {'header--opened': isOpened})}
+      className={className}
+      styleName={classnames('header', themeClass)}
       onClick={clickHandler}
     >
       {chosenValue ? chosenTitle : children}

@@ -23,7 +23,10 @@ function App() {
     <div>
       {isMenuShown ? (
         <div>
-          <MenuDropdown.Container onChange={value => console.log(value)}>
+          <MenuDropdown.Container
+            onChange={value => console.log(value)}
+            theme="none"
+          >
             <MenuDropdown.Header>
               Placeholder 1
             </MenuDropdown.Header>
@@ -34,9 +37,12 @@ function App() {
             </MenuDropdown.ItemsContainer>
           </MenuDropdown.Container>
 
-          <MenuDropdown.Container onChange={value => console.log(value)} defaultValue="option-5">
+          <MenuDropdown.Container
+            onChange={value => console.log(value)}
+            defaultValue="option-5"
+          >
             <MenuDropdown.Header>
-              Placeholder 2
+              <div>Placeholder 2</div>
             </MenuDropdown.Header>
             <MenuDropdown.ItemsContainer>
               <MenuDropdown.Item value="option-5"><span>Option 5</span></MenuDropdown.Item>
