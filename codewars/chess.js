@@ -80,6 +80,13 @@ function Board(pieces, player) {
       switch (piece) {
         case 'pawn':
           if (owner === 0) {
+            let newY = y - 1;
+            if (newY > -1 && !this.occupiedSquares[x][newY]) {
+              addAttackIfPossible(x, newY);
+              newY = y - 2;
+              if (newY === 4  && !this.occupiedSquares[x][newY]) addAttackIfPossible(x, newY);
+            }
+
             let occupiedBy = x < 7 && y > 0 ? this.occupiedSquares[x + 1][y - 1] : -1;
             if (occupiedBy > -1 && this.pieces[occupiedBy].owner === 1
               || enPassantPiece && enPassantPiece.owner === 1 && enPassantPiece.enPassantX === x + 1 && enPassantPiece.enPassantY === y - 1) {
@@ -97,6 +104,13 @@ function Board(pieces, player) {
               if (this.occupiedSquares[x][y - 2] === -1) addAttackIfPossible(x, y - 2);
             }
           } else {
+            let newY = y + 1;
+            if (newY < 8 && !this.occupiedSquares[x][newY]) {
+              addAttackIfPossible(x, newY);
+              newY = y + 2;
+              if (newY === 3 && !this.occupiedSquares[x][newY]) addAttackIfPossible(x, newY);
+            }
+
             let occupiedBy = x < 7 && y < 7 ? this.occupiedSquares[x + 1][y + 1] : -1;
             if (occupiedBy > -1 && this.pieces[occupiedBy].owner === 0
               || enPassantPiece && enPassantPiece.owner === 0 && enPassantPiece.enPassantX === x + 1 && enPassantPiece.enPassantY === y + 1) {
@@ -285,11 +299,9 @@ function Board(pieces, player) {
       if (x === targetX && y === targetY && owner !== player) return true;
       return enPassantPiece && enPassantPiece.inx === inx;
     });
-    // console.log(pieceInx, this.pieces[pieceInx])
     this.pieces[pieceInx].x = x;
     this.pieces[pieceInx].y = y;
-    // console.log('beatenPieceInx=', beatenPieceInx, this.pieces[beatenPieceInx])
-    this.pieces.splice(beatenPieceInx, 1);
+    if (beatenPieceInx > -1) this.pieces.splice(beatenPieceInx, 1);
     this.updateCalculatedFields();
   };
 
@@ -385,82 +397,82 @@ pieces = [
   {piece: "king", owner: 0, x: 4, y: 7},
   {piece: "queen", owner: 1, x: 4, y: 1}
 ];
-// assert.deepStrictEqual(isCheck(pieces, 0), [pieces[2]], "Queen threatens king");
-//
-// pieces = [
-//   {piece: "king", owner: 1, x: 4, y: 0},
-//   {piece: "king", owner: 0, x: 4, y: 7},
-//   {piece: "queen", owner: 1, x: 7, y: 4}
-// ];
-// assert.deepStrictEqual(isCheck(pieces, 0), [pieces[2]], "Queen threatens king");
-//
-// pieces = [
-//   {piece: "king", owner: 1, x: 4, y: 0},
-//   {piece: "pawn", owner: 0, x: 4, y: 6},
-//   {piece: "pawn", owner: 0, x: 5, y: 6},
-//   {piece: "king", owner: 0, x: 4, y: 7},
-//   {piece: "bishop", owner: 0, x: 5, y: 7},
-//   {piece: "bishop", owner: 1, x: 1, y: 4},
-//   {piece: "rook", owner: 1, x: 2, y: 7, prevX: 2, prevY: 5}
-// ];
-// sortFunc = function(a, b) {
-//   if(a.y == b.y) return a.x - b.x;
-//   return a.y - b.y;
-// };
-// assert.deepStrictEqual(isCheck(pieces, 0).sort(sortFunc), [pieces[5], pieces[6]], "Double threat");
-//
-// // ********************************
-//
-// pieces = [ { piece: 'pawn', owner: 0, x: 6, y: 4 },
-//   { piece: 'pawn', owner: 0, x: 5, y: 5 },
-//   { piece: 'pawn', owner: 0, x: 3, y: 6 },
-//   { piece: 'pawn', owner: 0, x: 4, y: 6 },
-//   { piece: 'pawn', owner: 0, x: 7, y: 6 },
-//   { piece: 'king', owner: 0, x: 4, y: 7 },
-//   { piece: 'bishop', owner: 0, x: 5, y: 7 },
-//   { piece: 'knight', owner: 0, x: 6, y: 7 },
-//   { piece: 'rook', owner: 0, x: 7, y: 7 },
-//   { piece: 'queen', owner: 1, x: 7, y: 4, prevX: 3, prevY: 0 },
-//   { piece: 'king', owner: 1, x: 4, y: 0 } ];
-// assert.strictEqual(isMate(pieces, 0), false, '??? #1');
-//
-//
-//  pieces = [ { piece: 'pawn', owner: 0, x: 6, y: 4 },
-//    { piece: 'pawn', owner: 0, x: 5, y: 5 },
-//    { piece: 'pawn', owner: 0, x: 3, y: 6 },
-//    { piece: 'pawn', owner: 0, x: 4, y: 6 },
-//    { piece: 'pawn', owner: 0, x: 7, y: 6 },
-//    { piece: 'queen', owner: 0, x: 3, y: 7 },
-//    { piece: 'king', owner: 0, x: 4, y: 7 },
-//    { piece: 'bishop', owner: 0, x: 5, y: 7 },
-//    { piece: 'knight', owner: 0, x: 6, y: 7 },
-//    { piece: 'rook', owner: 0, x: 7, y: 7 },
-//    { piece: 'queen', owner: 1, x: 7, y: 4, prevX: 3, prevY: 0 },
-//    { piece: 'king', owner: 1, x: 4, y: 0 } ];
-//  assert.strictEqual(isMate(pieces, 0), true, '#2: Should be a mate for player 0');
-//
-// pieces = [ { piece: 'king', owner: 1, x: 4, y: 0 },
-//   { piece: 'bishop', owner: 1, x: 1, y: 4, prevX: 3, prevY: 2 },
-//   { piece: 'queen', owner: 1, x: 0, y: 7 },
-//   { piece: 'pawn', owner: 0, x: 4, y: 6 },
-//   { piece: 'pawn', owner: 0, x: 5, y: 6 },
-//   { piece: 'knight', owner: 0, x: 1, y: 7 },
-//   { piece: 'bishop', owner: 0, x: 3, y: 7 },
-//   { piece: 'king', owner: 0, x: 4, y: 7 },
-//   { piece: 'rook', owner: 0, x: 5, y: 7 } ];
-// assert.strictEqual(isMate(pieces, 0), false, '#3: Should not be a mate for player 0');
-//
-// pieces = [ { piece: 'king', owner: 1, x: 4, y: 0 },
-//   { piece: 'bishop', owner: 1, x: 1, y: 4, prevX: 3, prevY: 2 },
-//   { piece: 'queen', owner: 1, x: 0, y: 7 },
-//   { piece: 'pawn', owner: 0, x: 4, y: 6 },
-//   { piece: 'pawn', owner: 0, x: 5, y: 6 },
-//   { piece: 'rook', owner: 0, x: 1, y: 7 },
-//   { piece: 'bishop', owner: 0, x: 3, y: 7 },
-//   { piece: 'king', owner: 0, x: 4, y: 7 },
-//   { piece: 'rook', owner: 0, x: 5, y: 7 } ]
-//
-// assert.strictEqual(isMate(pieces, 0), false, '#4: Should not be a mate for player 0');
+assert.deepStrictEqual(isCheck(pieces, 0), [pieces[2]], "Queen threatens king");
+
+pieces = [
+  {piece: "king", owner: 1, x: 4, y: 0},
+  {piece: "king", owner: 0, x: 4, y: 7},
+  {piece: "queen", owner: 1, x: 7, y: 4}
+];
+assert.deepStrictEqual(isCheck(pieces, 0), [pieces[2]], "Queen threatens king");
+
+pieces = [
+  {piece: "king", owner: 1, x: 4, y: 0},
+  {piece: "pawn", owner: 0, x: 4, y: 6},
+  {piece: "pawn", owner: 0, x: 5, y: 6},
+  {piece: "king", owner: 0, x: 4, y: 7},
+  {piece: "bishop", owner: 0, x: 5, y: 7},
+  {piece: "bishop", owner: 1, x: 1, y: 4},
+  {piece: "rook", owner: 1, x: 2, y: 7, prevX: 2, prevY: 5}
+];
+sortFunc = function(a, b) {
+  if(a.y == b.y) return a.x - b.x;
+  return a.y - b.y;
+};
+assert.deepStrictEqual(isCheck(pieces, 0).sort(sortFunc), [pieces[5], pieces[6]], "Double threat");
+
+// ********************************
+
+pieces = [ { piece: 'pawn', owner: 0, x: 6, y: 4 },
+  { piece: 'pawn', owner: 0, x: 5, y: 5 },
+  { piece: 'pawn', owner: 0, x: 3, y: 6 },
+  { piece: 'pawn', owner: 0, x: 4, y: 6 },
+  { piece: 'pawn', owner: 0, x: 7, y: 6 },
+  { piece: 'king', owner: 0, x: 4, y: 7 },
+  { piece: 'bishop', owner: 0, x: 5, y: 7 },
+  { piece: 'knight', owner: 0, x: 6, y: 7 },
+  { piece: 'rook', owner: 0, x: 7, y: 7 },
+  { piece: 'queen', owner: 1, x: 7, y: 4, prevX: 3, prevY: 0 },
+  { piece: 'king', owner: 1, x: 4, y: 0 } ];
+assert.strictEqual(isMate(pieces, 0), false, '??? #1');
+
+
+ pieces = [ { piece: 'pawn', owner: 0, x: 6, y: 4 },
+   { piece: 'pawn', owner: 0, x: 5, y: 5 },
+   { piece: 'pawn', owner: 0, x: 3, y: 6 },
+   { piece: 'pawn', owner: 0, x: 4, y: 6 },
+   { piece: 'pawn', owner: 0, x: 7, y: 6 },
+   { piece: 'queen', owner: 0, x: 3, y: 7 },
+   { piece: 'king', owner: 0, x: 4, y: 7 },
+   { piece: 'bishop', owner: 0, x: 5, y: 7 },
+   { piece: 'knight', owner: 0, x: 6, y: 7 },
+   { piece: 'rook', owner: 0, x: 7, y: 7 },
+   { piece: 'queen', owner: 1, x: 7, y: 4, prevX: 3, prevY: 0 },
+   { piece: 'king', owner: 1, x: 4, y: 0 } ];
+ assert.strictEqual(isMate(pieces, 0), true, '#2: Should be a mate for player 0');
+
+pieces = [ { piece: 'king', owner: 1, x: 4, y: 0 },
+  { piece: 'bishop', owner: 1, x: 1, y: 4, prevX: 3, prevY: 2 },
+  { piece: 'queen', owner: 1, x: 0, y: 7 },
+  { piece: 'pawn', owner: 0, x: 4, y: 6 },
+  { piece: 'pawn', owner: 0, x: 5, y: 6 },
+  { piece: 'knight', owner: 0, x: 1, y: 7 },
+  { piece: 'bishop', owner: 0, x: 3, y: 7 },
+  { piece: 'king', owner: 0, x: 4, y: 7 },
+  { piece: 'rook', owner: 0, x: 5, y: 7 } ];
+assert.strictEqual(isMate(pieces, 0), false, '#3: Should not be a mate for player 0');
+
+pieces = [ { piece: 'king', owner: 1, x: 4, y: 0 },
+  { piece: 'bishop', owner: 1, x: 1, y: 4, prevX: 3, prevY: 2 },
+  { piece: 'queen', owner: 1, x: 0, y: 7 },
+  { piece: 'pawn', owner: 0, x: 4, y: 6 },
+  { piece: 'pawn', owner: 0, x: 5, y: 6 },
+  { piece: 'rook', owner: 0, x: 1, y: 7 },
+  { piece: 'bishop', owner: 0, x: 3, y: 7 },
+  { piece: 'king', owner: 0, x: 4, y: 7 },
+  { piece: 'rook', owner: 0, x: 5, y: 7 } ]
+
+assert.strictEqual(isMate(pieces, 0), false, '#4: Should not be a mate for player 0');
 
 pieces = [ { piece: 'king', owner: 1, x: 4, y: 0 },
   { piece: 'bishop', owner: 1, x: 0, y: 3, prevX: 3, prevY: 0 },
@@ -474,28 +486,28 @@ pieces = [ { piece: 'king', owner: 1, x: 4, y: 0 },
 
 assert.strictEqual(isMate(pieces, 0), false, '#4.1: Pawn should intercept by double-moving');
 
-// pieces = [ { piece: 'king', owner: 1, x: 5, y: 3 },
-//   { piece: 'pawn', owner: 0, x: 4, y: 4, prevX: 4, prevY: 6 },
-//   { piece: 'pawn', owner: 0, x: 5, y: 6 },
-//   { piece: 'king', owner: 0, x: 4, y: 7 },
-//   { piece: 'knight', owner: 0, x: 2, y: 5 },
-//   { piece: 'pawn', owner: 1, x: 3, y: 4 },
-//   { piece: 'knight', owner: 1, x: 3, y: 3 },
-//   { piece: 'pawn', owner: 1, x: 4, y: 3 },
-//   { piece: 'bishop', owner: 1, x: 4, y: 2 },
-//   { piece: 'rook', owner: 1, x: 5, y: 2 },
-//   { piece: 'queen', owner: 0, x: 6, y: 5 } ];
-// assert.strictEqual(isMate(pieces, 1), false, '#5: En passant');
-//
-// pieces = [ { piece: 'king', owner: 1, x: 5, y: 3 },
-//   { piece: 'pawn', owner: 0, x: 4, y: 4, prevX: 4, prevY: 6 },
-//   { piece: 'rook', owner: 0, x: 5, y: 6 },
-//   { piece: 'king', owner: 0, x: 4, y: 7 },
-//   { piece: 'knight', owner: 0, x: 2, y: 5 },
-//   { piece: 'pawn', owner: 1, x: 5, y: 4 },
-//   { piece: 'knight', owner: 1, x: 3, y: 3 },
-//   { piece: 'pawn', owner: 1, x: 4, y: 3 },
-//   { piece: 'bishop', owner: 1, x: 4, y: 2 },
-//   { piece: 'rook', owner: 1, x: 5, y: 2 },
-//   { piece: 'queen', owner: 0, x: 6, y: 5 } ];
-// assert.strictEqual(isMate(pieces, 1), true, '#6: En passant would cause check');
+pieces = [ { piece: 'king', owner: 1, x: 5, y: 3 },
+  { piece: 'pawn', owner: 0, x: 4, y: 4, prevX: 4, prevY: 6 },
+  { piece: 'pawn', owner: 0, x: 5, y: 6 },
+  { piece: 'king', owner: 0, x: 4, y: 7 },
+  { piece: 'knight', owner: 0, x: 2, y: 5 },
+  { piece: 'pawn', owner: 1, x: 3, y: 4 },
+  { piece: 'knight', owner: 1, x: 3, y: 3 },
+  { piece: 'pawn', owner: 1, x: 4, y: 3 },
+  { piece: 'bishop', owner: 1, x: 4, y: 2 },
+  { piece: 'rook', owner: 1, x: 5, y: 2 },
+  { piece: 'queen', owner: 0, x: 6, y: 5 } ];
+assert.strictEqual(isMate(pieces, 1), false, '#5: En passant');
+
+pieces = [ { piece: 'king', owner: 1, x: 5, y: 3 },
+  { piece: 'pawn', owner: 0, x: 4, y: 4, prevX: 4, prevY: 6 },
+  { piece: 'rook', owner: 0, x: 5, y: 6 },
+  { piece: 'king', owner: 0, x: 4, y: 7 },
+  { piece: 'knight', owner: 0, x: 2, y: 5 },
+  { piece: 'pawn', owner: 1, x: 5, y: 4 },
+  { piece: 'knight', owner: 1, x: 3, y: 3 },
+  { piece: 'pawn', owner: 1, x: 4, y: 3 },
+  { piece: 'bishop', owner: 1, x: 4, y: 2 },
+  { piece: 'rook', owner: 1, x: 5, y: 2 },
+  { piece: 'queen', owner: 0, x: 6, y: 5 } ];
+assert.strictEqual(isMate(pieces, 1), true, '#6: En passant would cause check');
