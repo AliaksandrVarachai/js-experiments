@@ -42,7 +42,7 @@ function generateVisibilities(size) {
     const perm = permutations[i];
     const visibleLeft = getLeftVisibleItems(perm);
     const visibleRight = getRightVisibleItems(perm);
-    visibleItems[visibleLeft - 1][visibleRight - 1].push(toBinary2(perm));
+    visibleItems[visibleLeft - 1][visibleRight - 1].push(toBinary(perm));
   }
 
   return visibleItems;
@@ -74,29 +74,22 @@ function getRightVisibleItems(perm) {
   return visibleRight;
 }
 
-const visibleItems = generateVisibilities(3);
-console.log('Visible items:');
-printVisibleItems(visibleItems);
-
-
-function printVisibleItems(visibleItems) {
-  visibleItems.forEach((leftArr, leftInx) => {
-    leftArr.forEach((rightArr, rightInx) => {
-      // console.log(`${leftInx + 1}:${rightInx + 1} -> ${rightArr.join('; ')}`)
-      console.log(`${leftInx}:${rightInx} -> ${rightArr.length ? rightArr.length + ' numbers' : ''}`);
-    })
-  });
-}
+// const visibleItems = generateVisibilities(3);
+// console.log('Visible items:');
+// printVisibleItems(visibleItems);
+//
+//
+// function printVisibleItems(visibleItems) {
+//   visibleItems.forEach((leftArr, leftInx) => {
+//     leftArr.forEach((rightArr, rightInx) => {
+//       // console.log(`${leftInx + 1}:${rightInx + 1} -> ${rightArr.join('; ')}`)
+//       console.log(`${leftInx}:${rightInx} -> ${rightArr.length ? rightArr.length + ' numbers' : ''}`);
+//     })
+//   });
+// }
 
 // array max length is 8, max integer is 15;
 function toBinary(arr) {
-  let result = 0;
-  for (let i = 0, l = arr.length; i < l; ++i)
-    result |= arr[i] << 4 * i;
-  return result;
-}
-
-function toBinary2(arr) {
   let result = new Int32Array(2);
   for (let i = 0, l = arr.length; i < l; ++i)
     result[i < 4 ? 0 : 1] |= (1 << arr[i]) << (i << 3);
@@ -104,17 +97,7 @@ function toBinary2(arr) {
 }
 
 // maxLen <= 8
-function fromBinary(int, maxLen = 8) {
-  const arr = [];
-  for (let i = 0; i < maxLen; ++i) {
-    const mask = 15 << (i << 2);
-    const n = (int & mask) >>> (i << 2);
-    arr.push(n);
-  }
-  return arr;
-}
-
-function fromBinary2(int32arr, maxLen = 8) {
+function fromBinary(int32arr, maxLen = 8) {
   const arr = [];
   for (let i = 0; i < maxLen; ++i) {
     const mask = 255 << (i << 3);
@@ -133,23 +116,27 @@ function isSimilarBinaries(arr1, arr2) {
   return (arr1[0] & arr2[0]) || (arr1[1] & arr2[1]);
 }
 
-let b = toBinary([1,2,3,4,5,6,7,15]);
-let arr = fromBinary(b, 8);
-
-console.log(b, arr);
 
 // binArr: size x size
 function checkHorizontalLines(binArr, clues) {
-  // TODO: check clues
-  for (let pos = 0, l = binArr.length; pos < l; ++pos) {
+  const size = binArr.length;
+  const binArrTransposed = new Int32Array(size);
+  for (let pos = 0; pos < size; ++pos) {
     mask = 15 << (pos << 2);
-    let counter = 0;
-    for (let i = 0; i < l; ++i) {
-      if ((mask & binArr[i]) === 0) continue;
-      ++counter;
-      if (counter > 1) return false;
+    for (let i = 0; i < size; ++i)
+      binArrTransposed[i] |= mask & binArr[i];
+  }
+
+  for (let i = 0; i < size; ++i) {
+    const leftClue = clues[4 * size - 1 - i];
+    const rightClue = clues[size + i];
+    if (leftClue > 0 && leftClue !== getLeftVisibleItems(binArrTransposed[i])) return false;
+    if (rightClue > 0 && rightClue !== getRightVisibleItems(binArrTransposed[i])) return false;
+    for (let j = 0; j < i; ++j) {
+      if (isSimilarBinaries(binArrTransposed[i], binArrTransposed[j])) return false;
     }
   }
+
   return true;
 }
 
@@ -172,9 +159,6 @@ function solvePuzzle(clues) {
     visibleClues[li].unshift(visibleItems[li - 1].flat()); // [1..size]:0
   }
 
-  // console.log('Visible clues:');
-  // printVisibleItems(visibleClues);
-
   // Generates graph with possible skyscrapers combinations
   const graph = [];
   const graphLengths = [];
@@ -193,9 +177,9 @@ function solvePuzzle(clues) {
       // vertical checks are passed
       console.log('Vertical checks are passed');
       const binArr = graph.map((col, i) => col[graphIndexes[i]]);
-      if (checkHorizontalLines(binArr)) {
-        // TODO: transform from binary to array of int
-        return binArr;
+      if (checkHorizontalLines(binArr, clues)) {
+        console.log('Horizontal checks are passed');
+        return transpose(binArr.map(binNumber => fromBinary(binNumber, size)));
       } else {
         --colInx;
         ++graphIndexes[colInx];
@@ -217,7 +201,7 @@ function solvePuzzle(clues) {
 
     let isPossible = true;
     for (let i = 0; i < colInx; ++i) {
-      console.log(`[${fromBinary2(graph[colInx][graphInx])}] & [${fromBinary2(graph[i][graphIndexes[i]])}] => ${isSimilarBinaries(graph[colInx][graphInx], graph[i][graphIndexes[i]])}`);
+      // console.log(`[${fromBinary(graph[colInx][graphInx])}] & [${fromBinary(graph[i][graphIndexes[i]])}] => ${isSimilarBinaries(graph[colInx][graphInx], graph[i][graphIndexes[i]])}`);
       if (isSimilarBinaries(graph[colInx][graphInx], graph[i][graphIndexes[i]])) {
         // checks compatibility with previous skyscrapers (vertical lines)
         isPossible = false;
@@ -232,7 +216,21 @@ function solvePuzzle(clues) {
   }
 }
 
-var clues1 = [0,0,0, 0,0,0, 0,0,0, 0,0,0];
+// transposes a square matrix
+function transpose(matr) {
+  const m = matr.length;
+  const n = matr[0].length;
+  const t = matr.map(row => row.slice());
+  for (let i = 0; i < m - 1; ++i) {
+    for (let j = i + 1; j < n; ++j) {
+      [t[i][j], t[j][i]] = [t[j][i], t[i][j]];
+    }
+  }
+  return t;
+}
+
+var clues1 = [0,0,1, 0,0,0, 0,0,0, 0,0,0];
 var clues2 = [1,2,3,4,  1,2,3,4,  1,2,3,4,  1,2,3,4]
 
-solvePuzzle(clues1);
+var result = solvePuzzle(clues1);
+result.forEach(row => console.log(`[${row}]`));
