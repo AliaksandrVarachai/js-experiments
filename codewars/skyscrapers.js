@@ -27,7 +27,7 @@ function generatePermutations(size = 6) {
 /**
  * Generates permutations and collects them in the structure [L][R][permutationInx]: [0..size-1][0..size-1][number]
  * @param size {number} - number of skyscrapers.
- * @returns {{visibleItems: [number], permutations: [number][number][number]}}
+ * @returns {[[[number]]]}
  */
 function calculateVisibility(size) {
   const permutations = generatePermutations(size);
@@ -62,22 +62,24 @@ function calculateVisibility(size) {
     visibleItems[visibleLeft - 1][visibleRight - 1].push(toBinary(permutations[i]));
   }
 
-  return {
-    permutations,
-    visibleItems
-  };
+  return visibleItems;
 }
 
 // generatePermutations(3).forEach(perm => console.log(perm.join()));
 
-const { permutations, visibleItems } = calculateVisibility(3);
+const visibleItems = calculateVisibility(3);
+console.log('Visible items:');
+printVisibleItems(visibleItems);
 
-visibleItems.forEach((leftArr, leftInx) => {
-  leftArr.forEach((rightArr, rightInx) => {
-    // console.log(`${leftInx + 1}:${rightInx + 1} -> ${rightArr.join('; ')}`)
-    console.log(`${leftInx + 1}:${rightInx + 1} -> ${rightArr.length ? rightArr.length + ' numbers' : ''}`);
-  })
-});
+
+function printVisibleItems(visibleItems) {
+  visibleItems.forEach((leftArr, leftInx) => {
+    leftArr.forEach((rightArr, rightInx) => {
+      // console.log(`${leftInx + 1}:${rightInx + 1} -> ${rightArr.join('; ')}`)
+      console.log(`${leftInx}:${rightInx} -> ${rightArr.length ? rightArr.length + ' numbers' : ''}`);
+    })
+  });
+}
 
 // array max length is 8, max integer is 15;
 function toBinary(arr) {
@@ -106,5 +108,33 @@ console.log(b, arr);
 
 
 function solvePuzzle(clues) {
+  const size = clues.length / 4;
+  const visibleItems = calculateVisibility(size);
+  const visibleClues = visibleItems.slice();
 
+  visibleClues.unshift([visibleItems.flat(2)]); // 0:0
+  for (i = 1; i <= size; ++i)
+    visibleClues[0].push([]);
+  for (let li = 1; li <= size; ++li) {
+    for (let ri = 1; ri <= size; ++ri) {
+      visibleClues[0][ri].push(...visibleItems[li - 1][ri - 1]);  //0:[1..size]
+    }
+  }
+  for (let li = 1; li <= size; ++li) {
+    visibleClues[li].unshift(visibleItems[li - 1].flat()); // [1..size]:0
+  }
+
+  // console.log('Visible clues:');
+  // printVisibleItems(visibleClues);
+
+
+  // top:button
+  // const cols = [];
+  // for (let i = 0; i < size; ++i) {
+  //   const leftClue = clues[i];
+  //   const rightClue = clues[3 * size - 1 - i];
+  //   cols.push(visibleClues[leftClue][rightClue])
+  // }
 }
+
+solvePuzzle([1,2,3,4,  1,2,3,4,  1,2,3,4,  1,2,3,4]);
