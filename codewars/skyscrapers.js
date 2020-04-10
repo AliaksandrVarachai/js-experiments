@@ -24,7 +24,11 @@ function generatePermutations(size = 6) {
   return permutations;
 }
 
-// returns [L][R][permutationInx]: [0..size-1][0..size-1][number]
+/**
+ * Generates permutations and collects them in the structure [L][R][permutationInx]: [0..size-1][0..size-1][number]
+ * @param size {number} - number of skyscrapers.
+ * @returns {{visibleItems: [number], permutations: [number][number][number]}}
+ */
 function calculateVisibility(size) {
   const permutations = generatePermutations(size);
   const visibleItems = [];
