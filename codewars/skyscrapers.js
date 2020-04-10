@@ -105,6 +105,21 @@ let arr = fromBinary(b, 8);
 
 console.log(b, arr);
 
+// binArr: size x size
+function checkHorizontalLines(binArr, clues) {
+  // TODO: check clues
+  for (let pos = 0, l = binArr.length; pos < l; ++pos) {
+    mask = 15 << (pos << 2);
+    let counter = 0;
+    for (let i = 0; i < l; ++i) {
+      if ((mask & binArr[i]) === 0) continue;
+      ++counter;
+      if (counter > 1) return false;
+    }
+  }
+  return true;
+}
+
 
 
 function solvePuzzle(clues) {
@@ -127,14 +142,70 @@ function solvePuzzle(clues) {
   // console.log('Visible clues:');
   // printVisibleItems(visibleClues);
 
+  // Generates graph with possible skyscrapers combinations
+  const graph = [];
+  const graphLengths = [];
+  const graphIndexes = new Int32Array(size);
 
-  // top:button
-  // const cols = [];
-  // for (let i = 0; i < size; ++i) {
-  //   const leftClue = clues[i];
-  //   const rightClue = clues[3 * size - 1 - i];
-  //   cols.push(visibleClues[leftClue][rightClue])
+  for (let colInx = 0; colInx < size; ++colInx) {
+    const leftClue = clues[colInx];
+    const rightClue = clues[3 * size - 1 - colInx];
+    graph.push(visibleClues[leftClue][rightClue]);
+    graphLengths.push(graph[colInx].length);
+  }
+
+  // function isEnumerationFinished() {
+  //   for (let i = size - 1; i > -1; --i)
+  //     if (graphIndexes[i] < graphLengths[i]) return false;
+  //   return true;
   // }
+
+  let colInx = 0;
+  while (true) {
+    if (colInx === size) {
+      // vertical checks are passed
+      console.log('Vertical checks are passed');
+      const binArr = graph.map((col, i) => col[graphIndexes[i]]);
+      if (checkHorizontalLines(binArr)) {
+        // TODO: transform from binary to array of int
+        return binArr;
+      } else {
+        --colInx;
+        ++graphIndexes[colInx];
+        // continue;
+      }
+    }
+    let graphInx = graphIndexes[colInx];
+    if (graphInx === graphLengths[colInx]) {
+      graphIndexes[colInx] = 0;
+      --colInx;
+      if (colInx < 0) throw Error('Skyscrapers combination is not found');
+      ++graphIndexes[colInx];
+      continue;
+    }
+    if (colInx === 0) {
+      colInx = 1;
+      continue;
+    }
+
+    let isPossible = true;
+    for (let i = 0; i < colInx; ++i) {
+      console.log(`[${fromBinary(graph[colInx][graphInx])}] & [${fromBinary(graph[i][graphIndexes[i]])}] => ${(graph[colInx][graphInx] & graph[i][graphIndexes[i]]) !== 0}`);
+      if ((graph[colInx][graphInx] & graph[i][graphIndexes[i]]) !== 0) {
+        // checks compatibility with previous skyscrapers (vertical lines)
+        isPossible = false;
+        break;
+      }
+    }
+    if (isPossible) {
+      ++colInx;
+    } else {
+      ++graphIndexes[colInx];
+    }
+  }
 }
 
-solvePuzzle([1,2,3,4,  1,2,3,4,  1,2,3,4,  1,2,3,4]);
+var clues1 = [0,0,0, 0,0,0, 0,0,0, 0,0,0];
+var clues2 = [1,2,3,4,  1,2,3,4,  1,2,3,4,  1,2,3,4]
+
+solvePuzzle(clues1);
