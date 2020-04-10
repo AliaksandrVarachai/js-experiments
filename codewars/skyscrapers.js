@@ -29,9 +29,10 @@ function generatePermutations(size = 6) {
  * @param size {number} - number of skyscrapers.
  * @returns {[[[number]]]}
  */
-function calculateVisibility(size) {
+function generateVisibilities(size) {
   const permutations = generatePermutations(size);
   const visibleItems = [];
+
   for (let i = 0; i < size; ++i) {
     visibleItems.push([]);
     for (let j = 0; j < size; ++j) visibleItems[i].push([]);
@@ -39,35 +40,41 @@ function calculateVisibility(size) {
 
   for (let i = 0, len = permutations.length; i < len; ++i) {
     const perm = permutations[i];
-
-    let visibleLeft = 1;
-    let visibleRight = 1;
-
-    let height = perm[0];
-    for (let j = 1; j < size; ++j) {
-      if (perm[j] > height) {
-        ++visibleLeft;
-        height = perm[i];
-      }
-    }
-    height = perm[size - 1];
-    for (let j = size - 1; j > -1; --j) {
-      if (perm[j] > height) {
-        ++visibleRight;
-        height = perm[i];
-      }
-    }
-
-    // visibleItems[visibleLeft - 1][visibleRight - 1].push(i);
-    visibleItems[visibleLeft - 1][visibleRight - 1].push(toBinary2(permutations[i]));
+    const visibleLeft = getLeftVisibleItems(perm);
+    const visibleRight = getRightVisibleItems(perm);
+    visibleItems[visibleLeft - 1][visibleRight - 1].push(toBinary2(perm));
   }
 
   return visibleItems;
 }
 
-// generatePermutations(3).forEach(perm => console.log(perm.join()));
+function getLeftVisibleItems(perm) {
+  const size = perm.length;
+  let visibleLeft = 1;
+  let height = perm[0];
+  for (let j = 1; j < size; ++j) {
+    if (perm[j] > height) {
+      ++visibleLeft;
+      height = perm[j];
+    }
+  }
+  return visibleLeft;
+}
 
-const visibleItems = calculateVisibility(3);
+function getRightVisibleItems(perm) {
+  const size = perm.length;
+  let visibleRight = 1;
+  let height = perm[size - 1];
+  for (let j = size - 1; j > -1; --j) {
+    if (perm[j] > height) {
+      ++visibleRight;
+      height = perm[j];
+    }
+  }
+  return visibleRight;
+}
+
+const visibleItems = generateVisibilities(3);
 console.log('Visible items:');
 printVisibleItems(visibleItems);
 
@@ -150,7 +157,7 @@ function checkHorizontalLines(binArr, clues) {
 
 function solvePuzzle(clues) {
   const size = clues.length / 4;
-  const visibleItems = calculateVisibility(size);
+  const visibleItems = generateVisibilities(size);
   const visibleClues = visibleItems.slice();
 
   visibleClues.unshift([visibleItems.flat(2)]); // 0:0
@@ -179,12 +186,6 @@ function solvePuzzle(clues) {
     graph.push(visibleClues[leftClue][rightClue]);
     graphLengths.push(graph[colInx].length);
   }
-
-  // function isEnumerationFinished() {
-  //   for (let i = size - 1; i > -1; --i)
-  //     if (graphIndexes[i] < graphLengths[i]) return false;
-  //   return true;
-  // }
 
   let colInx = 0;
   while (true) {
