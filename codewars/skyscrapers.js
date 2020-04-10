@@ -59,7 +59,7 @@ function calculateVisibility(size) {
     }
 
     // visibleItems[visibleLeft - 1][visibleRight - 1].push(i);
-    visibleItems[visibleLeft - 1][visibleRight - 1].push(toBinary(permutations[i]));
+    visibleItems[visibleLeft - 1][visibleRight - 1].push(toBinary2(permutations[i]));
   }
 
   return visibleItems;
@@ -89,6 +89,13 @@ function toBinary(arr) {
   return result;
 }
 
+function toBinary2(arr) {
+  let result = new Int32Array(2);
+  for (let i = 0, l = arr.length; i < l; ++i)
+    result[i < 4 ? 0 : 1] |= (1 << arr[i]) << (i << 3);
+  return result;
+}
+
 // maxLen <= 8
 function fromBinary(int, maxLen = 8) {
   const arr = [];
@@ -98,6 +105,25 @@ function fromBinary(int, maxLen = 8) {
     arr.push(n);
   }
   return arr;
+}
+
+function fromBinary2(int32arr, maxLen = 8) {
+  const arr = [];
+  for (let i = 0; i < maxLen; ++i) {
+    const mask = 255 << (i << 3);
+    let n = (int32arr[i < 4 ? 0 : 1] & mask) >>> (i << 3);
+    let p = 0;
+    while(n > 1) {
+      ++p;
+      n >>= 1;
+    }
+    arr.push(p);
+  }
+  return arr;
+}
+
+function isSimilarBinaries(arr1, arr2) {
+  return (arr1[0] & arr2[0]) || (arr1[1] & arr2[1]);
 }
 
 let b = toBinary([1,2,3,4,5,6,7,15]);
@@ -190,8 +216,8 @@ function solvePuzzle(clues) {
 
     let isPossible = true;
     for (let i = 0; i < colInx; ++i) {
-      console.log(`[${fromBinary(graph[colInx][graphInx])}] & [${fromBinary(graph[i][graphIndexes[i]])}] => ${(graph[colInx][graphInx] & graph[i][graphIndexes[i]]) !== 0}`);
-      if ((graph[colInx][graphInx] & graph[i][graphIndexes[i]]) !== 0) {
+      console.log(`[${fromBinary2(graph[colInx][graphInx])}] & [${fromBinary2(graph[i][graphIndexes[i]])}] => ${isSimilarBinaries(graph[colInx][graphInx], graph[i][graphIndexes[i]])}`);
+      if (isSimilarBinaries(graph[colInx][graphInx], graph[i][graphIndexes[i]])) {
         // checks compatibility with previous skyscrapers (vertical lines)
         isPossible = false;
         break;
