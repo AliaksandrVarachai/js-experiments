@@ -58,7 +58,8 @@ function calculateVisibility(size) {
       }
     }
 
-    visibleItems[visibleLeft - 1][visibleRight - 1].push(i);
+    // visibleItems[visibleLeft - 1][visibleRight - 1].push(i);
+    visibleItems[visibleLeft - 1][visibleRight - 1].push(toBinary(permutations[i]));
   }
 
   return {
@@ -73,7 +74,7 @@ const { permutations, visibleItems } = calculateVisibility(3);
 
 visibleItems.forEach((leftArr, leftInx) => {
   leftArr.forEach((rightArr, rightInx) => {
-    // console.log(`${leftInx + 1}:${rightInx + 1} -> ${rightArr.map(inx => permutations[inx].join()).join('; ')}`)
+    // console.log(`${leftInx + 1}:${rightInx + 1} -> ${rightArr.join('; ')}`)
     console.log(`${leftInx + 1}:${rightInx + 1} -> ${rightArr.length ? rightArr.length + ' numbers' : ''}`);
   })
 });
