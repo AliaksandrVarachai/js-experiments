@@ -140,14 +140,27 @@ function checkHorizontalLines(binArr, clues) {
   return true;
 }
 
+function flatDeep(arr) {
+  const result = [];
 
+  (function flat(a) {
+    if (!Array.isArray(a)) {
+      result.push(a);
+      return;
+    }
+    for (let i = 0, l = a.length; i < l; ++i)
+      flat(a[i]);
+  })(arr);
+
+  return result;
+}
 
 function solvePuzzle(clues) {
   const size = clues.length / 4;
   const visibleItems = generateVisibilities(size);
   const visibleClues = visibleItems.slice();
 
-  visibleClues.unshift([visibleItems.flat(2)]); // 0:0
+  visibleClues.unshift([flatDeep(visibleItems)]); // 0:0
   for (i = 1; i <= size; ++i)
     visibleClues[0].push([]);
   for (let li = 1; li <= size; ++li) {
@@ -156,7 +169,7 @@ function solvePuzzle(clues) {
     }
   }
   for (let li = 1; li <= size; ++li) {
-    visibleClues[li].unshift(visibleItems[li - 1].flat()); // [1..size]:0
+    visibleClues[li].unshift(flatDeep(visibleItems[li - 1])); // [1..size]:0
   }
 
   // Generates graph with possible skyscrapers combinations
