@@ -78,6 +78,32 @@ visibleItems.forEach((leftArr, leftInx) => {
   })
 });
 
+// array max length is 8, max integer is 15;
+function toBinary(arr) {
+  let result = 0;
+  for (let i = 0, l = arr.length; i < l; ++i)
+    result |= arr[i] << 4 * i;
+  return result;
+}
+
+// maxLen <= 8
+function fromBinary(int, maxLen = 8) {
+  const arr = [];
+  for (let i = 0; i < maxLen; ++i) {
+    const mask = 15 << (i << 2);
+    const n = (int & mask) >>> (i << 2);
+    arr.push(n);
+  }
+  return arr;
+}
+
+let b = toBinary([1,2,3,4,5,6,7,15]);
+let arr = fromBinary(b, 8);
+
+console.log(b, arr);
+
+
+
 function solvePuzzle(clues) {
 
 }
