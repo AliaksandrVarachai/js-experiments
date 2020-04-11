@@ -79,14 +79,14 @@ function getRightVisibleItems(perm) {
 // printVisibleItems(visibleItems);
 //
 //
-// function printVisibleItems(visibleItems) {
-//   visibleItems.forEach((leftArr, leftInx) => {
-//     leftArr.forEach((rightArr, rightInx) => {
-//       // console.log(`${leftInx + 1}:${rightInx + 1} -> ${rightArr.join('; ')}`)
-//       console.log(`${leftInx}:${rightInx} -> ${rightArr.length ? rightArr.length + ' numbers' : ''}`);
-//     })
-//   });
-// }
+function printVisibleItems(visibleItems) {
+  visibleItems.forEach((leftArr, leftInx) => {
+    leftArr.forEach((rightArr, rightInx) => {
+      // console.log(`${leftInx + 1}:${rightInx + 1} -> ${rightArr.join('; ')}`)
+      console.log(`${leftInx}:${rightInx} -> ${rightArr.length ? rightArr.length + ' numbers' : ''}`);
+    })
+  });
+}
 
 // array max length is 8, max integer is 15;
 function toBinary(arr) {
@@ -116,6 +116,7 @@ function isSimilarBinaries(arr1, arr2) {
   return (arr1[0] & arr2[0]) || (arr1[1] & arr2[1]);
 }
 
+let counter = 0;
 
 // binArr: size x size
 function checkHorizontalLines(binArr, clues) {
@@ -125,6 +126,13 @@ function checkHorizontalLines(binArr, clues) {
   const arrTransposed = rotateCW(arr);
   const binArrTransposed = [];
   arrTransposed.forEach(row => binArrTransposed.push(toBinary(row)));
+  // ++counter;
+  // if (counter % 10000 === 0) {
+  //   console.log(counter);
+  //   arr.forEach(row => console.log(`[${row}]`))
+  //   console.log()
+  // }
+
 
   for (let i = 0; i < size; ++i) {
     const leftClue = clues[size + i];
@@ -171,6 +179,8 @@ function solvePuzzle(clues) {
     visibleClues[li].unshift(flatDeep(visibleItems[li - 1])); // [1..size]:0
   }
 
+  printVisibleItems(visibleClues)
+
   // Generates graph with possible skyscrapers combinations
   const graph = [];
   const graphLengths = [];
@@ -189,6 +199,7 @@ function solvePuzzle(clues) {
       // vertical checks are passed
       const binArr = graph.map((col, i) => col[graphIndexes[i]]);
       if (checkHorizontalLines(binArr, clues)) {
+        console.log(counter)
         return transpose(binArr.map(binNumber => fromBinary(binNumber, size)));
       } else {
         --colInx;
@@ -262,5 +273,28 @@ var clues2 = [
   3, 2, 1, 2, 2, 4
 ];
 
-var result = solvePuzzle(clues1);
-result.forEach(row => console.log(`[${row}]`));
+// var result = solvePuzzle(clues1);
+// result.forEach(row => console.log(`[${row}]`));
+
+var clues = [
+  // [
+  //   3, 2, 2, 3, 2, 1,
+  //   1, 2, 3, 3, 2, 2,
+  //   5, 1, 2, 2, 4, 3,
+  //   3, 2, 1, 2, 2, 4
+  // ],
+  [
+    0, 0, 0, 2, 2, 0,
+    0, 0, 0, 6, 3, 0,
+    0, 4, 0, 0, 0, 0,
+    4, 4, 0, 3, 0, 0
+  ],
+  // [
+  //   0, 3, 0, 5, 3, 4,
+  //   0, 0, 0, 0, 0, 1,
+  //   0, 3, 0, 3, 2, 3,
+  //   3, 2, 0, 3, 1, 0
+  // ],
+];
+
+clues.forEach(clue => solvePuzzle(clue).forEach(row => console.log(`[${row}]`)))
