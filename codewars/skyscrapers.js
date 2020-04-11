@@ -120,43 +120,15 @@ function isSimilarBinaries(arr1, arr2) {
 // binArr: size x size
 function checkHorizontalLines(binArr, clues) {
   const size = binArr.length;
-  binArr.forEach(bin => console.log(`[${fromBinary(bin, size)}]`));
-  console.log();
   const arr = [];
   binArr.forEach(bin => arr.push(fromBinary(bin, size)));
   const arrTransposed = rotateCW(arr);
   const binArrTransposed = [];
   arrTransposed.forEach(row => binArrTransposed.push(toBinary(row)));
 
-  // console.log();
-  // const binArrTransposed = [];
-  // for (let i = 0; i < size; ++i)
-  //   binArrTransposed.push(new Int32Array(2));
-  // for (let pos = 0; pos < size; ++pos) {
-  //   const inx = pos < 4 ? 0 : 1;
-  //   let mask = 255 << (size * 8 - pos % 4 * 8);
-  //   for (let i = 0; i < size; ++i) {
-  //     const value = (mask & binArr[i][inx]) >>> (24 - pos % 4 * 8);
-  //     binArrTransposed[pos][inx] |= value << (i % 4 * 8);
-  //     console.log(pos, i, value, binArr[i][inx], mask, binArrTransposed[pos][inx])
-  //   }
-  // }
-
-  // for (let pos = 0; pos < size; ++pos) {
-  //   let mask = 15 << pos % 4;
-  //   for (let i = 0; i < size; ++i) {
-  //     const inx = pos < 4 ? 0 : 1;
-  //     binArrTransposed[i][inx] |= (mask & binArr[i][inx]);
-  //   }
-  // }
-  binArrTransposed.forEach(bin => console.log(`[${fromBinary(bin, size)}]`));
-
   for (let i = 0; i < size; ++i) {
     const leftClue = clues[size + i];
     const rightClue = clues[4 * size - 1 - i];
-    console.log('******************')
-    console.log(fromBinary(binArrTransposed[i], size).join());
-    console.log(`${leftClue}:${getLeftVisibleItems(arrTransposed[i])}`, `${rightClue}:${getRightVisibleItems(arrTransposed[i])}`)
     if (leftClue > 0 && leftClue !== getLeftVisibleItems(arrTransposed[i])) return false;
     if (rightClue > 0 && rightClue !== getRightVisibleItems(arrTransposed[i])) return false;
     for (let j = 0; j < i; ++j) {
@@ -215,12 +187,8 @@ function solvePuzzle(clues) {
   while (true) {
     if (colInx === size) {
       // vertical checks are passed
-      console.log('Vertical checks are passed');
       const binArr = graph.map((col, i) => col[graphIndexes[i]]);
-      // checkHorizontalLines(binArr, clues)
-      // throw Error('end')
       if (checkHorizontalLines(binArr, clues)) {
-        console.log('Horizontal checks are passed');
         return transpose(binArr.map(binNumber => fromBinary(binNumber, size)));
       } else {
         --colInx;
@@ -243,9 +211,7 @@ function solvePuzzle(clues) {
 
     let isPossible = true;
     for (let i = 0; i < colInx; ++i) {
-      // console.log(`[${fromBinary(graph[colInx][graphInx])}] & [${fromBinary(graph[i][graphIndexes[i]])}] => ${isSimilarBinaries(graph[colInx][graphInx], graph[i][graphIndexes[i]])}`);
       if (isSimilarBinaries(graph[colInx][graphInx], graph[i][graphIndexes[i]])) {
-        // checks compatibility with previous skyscrapers (vertical lines)
         isPossible = false;
         break;
       }
@@ -267,16 +233,6 @@ function transpose(matr) {
     for (let j = i + 1; j < n; ++j) {
       [t[i][j], t[j][i]] = [t[j][i], t[i][j]];
     }
-  }
-  return t;
-}
-
-function rotateCCW(matr) {
-  const n = matr.length;
-  const t = matr.map(() => []);
-  for (let i = 0; i < n; ++i) {
-    for (let j = 0; j < n; ++j)
-      t[i].push(matr[j][n - 1 - i]);
   }
   return t;
 }
