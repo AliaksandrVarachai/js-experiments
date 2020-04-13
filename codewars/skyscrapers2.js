@@ -42,8 +42,7 @@ function generateVisibilities(size) {
     const perm = permutations[i];
     const visibleLeft = getLeftVisibleItems(perm);
     const visibleRight = getRightVisibleItems(perm);
-    visibleItems[visibleLeft - 1][visibleRight - 1].push(perm);
-    // visibleItems[visibleLeft - 1][visibleRight - 1].push(toBinary(perm));
+    visibleItems[visibleLeft - 1][visibleRight - 1].push(toBinary(perm));
   }
 
   return visibleItems;
@@ -84,6 +83,30 @@ function printVisibleItems(visibleItems) {
   });
 }
 
+// array max length is 8, max integer is 15;
+function toBinary(arr) {
+  let result = new Int32Array(2);
+  for (let i = 0, l = arr.length; i < l; ++i)
+    result[i < 4 ? 0 : 1] |= (1 << arr[i]) << (i << 3);
+  return result;
+}
+
+// maxLen <= 8
+function fromBinary(int32arr, maxLen = 8) {
+  const arr = [];
+  for (let i = 0; i < maxLen; ++i) {
+    const mask = 255 << (i << 3);
+    let n = (int32arr[i < 4 ? 0 : 1] & mask) >>> (i << 3);
+    let p = 0;
+    while(n > 1) {
+      ++p;
+      n >>= 1;
+    }
+    arr.push(p);
+  }
+  return arr;
+}
+
 function flatDeep(arr) {
   const result = [];
 
@@ -97,6 +120,24 @@ function flatDeep(arr) {
   })(arr);
 
   return result;
+}
+
+function checkParallelLines(lines, newLine) {
+  for (let i = 0, size = lines.length; i < size; ++i) {
+    const line = lines[i];
+    if ((line[0] & newLine[0]) || (line[1] & newLine[1])) return false;
+  }
+  return true;
+}
+
+function checkPerpendicularLines(lines, perpendicular) {
+  for (let i = 0, size = lines.length; i < size; ++i) {
+    if (lines[0] & lines[1] === 0) continue;
+    const inx = i < 4 ? 0 : 1;
+    const mask = 255 << (i << 3);
+    if (lines[i][inx] & mask !== perpendicular[inx] & mask) return false;
+  }
+  return true;
 }
 
 function solvePuzzle(clues) {
@@ -118,10 +159,79 @@ function solvePuzzle(clues) {
 
   printVisibleItems(visibleClues);
 
+  // prepare clues for enumeration in order according their items
+  const sortedCluePairs = [];
+  for (let i = 0; i < size; ++i) {
+    const left = clues[i];                  // top
+    const right = clues[3 * size - 1 - i];  // bottom
+    sortedCluePairs.push({
+      isVert: true,
+      inx: i,
+      left,
+      right,
+      itemsNumber: visibleClues[left][right].length
+    });
+  }
+  for (let i = 0; i < size; ++i) {
+    const left = clues[4 * size - 1 - i];
+    const right = clues[size + i];
+    sortedCluePairs.push({
+      isVert: false,
+      inx: i,
+      left,
+      right,
+      itemsNumber: visibleClues[left][right].length
+    });
+  }
+  sortedCluePairs.sort((a, b) => a.itemsNumber - b.itemsNumber);
+
+  const verticals = [];
+  const horizontals = [];
+
+  const currentVisibleClueIndexes = [];
+  for (let li = 0; li <= size; ++li) {
+    currentVisibleClueIndexes.push([]);
+    for (let ri = 0; ri <= size; ++ri) {
+      currentVisibleClueIndexes[li].push(0);
+    }
+  }
+
+
+  let clueIndex = 0;
+  while (true) {
+    if (clueIndex < 0) {
+      throw Error('Target block of skyscrapers is impossible.');
+    }
+    if (clueIndex === size * 2) {
+      return horizontals.map(line => fromBinary(line, size));
+    }
+    const cluePair = sortedCluePairs[clueIndex];
+    const { isVert, inx, left, right } = cluePair;
+    if (currentVisibleClueIndexes[left][right] === cluePair.itemsNumber) {
+      currentVisibleClueIndexes[left][right] = 0;
+      --clueIndex;
+    }
+
+    const currentVisibleClueIndex = currentVisibleClueIndexes[left][right];
+    const lines = isVert ? verticals : horizontals;
+    const perpendicularLines = isVert ? horizontals : verticals;
+    const newLine = visibleClues[left][right][currentVisibleClueIndex];
+
+    // checks vertical and horizontal intersections
+    if (checkParallelLines(lines, newLine) && checkPerpendicularLines(perpendicularLines, newLine)) {
+      ++clueIndex;
+      lines[inx] = newLine;
+    } else {
+      ++currentVisibleClueIndexes[left][right];
+    }
+  }
+
 }
 
 let clues1 = [0,0,0,0,0,0, 0,0,0,0,0,0, 0,0,0,0,0,0, 0,0,0,0,0,0,];
-solvePuzzle(clues1);
+
+let result = solvePuzzle(clues1);
+result.forEach(line => console.log(`[${line}]`));
 
 
 
