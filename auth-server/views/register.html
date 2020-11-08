@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <script src="config.js" defer></script>
+    <script src="register.js" defer></script>
+</head>
+<body>
+<div class="container">
+    <h3>Register</h3>
+    <form id="form">
+        <p>
+            <label>
+                New username:
+                <input type="text" name="username" id="username">
+            </label>
+        </p>
+        <p>
+            <label>
+                Password:
+                <input type="password" name="password" id="password">
+            </label>
+        </p>
+        <p>
+            <label>
+                Confirm password:
+                <input type="password" name="confirm-password" id="confirm-password">
+            </label>
+        </p>
+        <input type="reset" value="Reset">
+        <input type="submit" value="Send">
+    </form>
+    <p>
+        If your are already registered, please, <a href="#0" id="login-link">login</a>
+    </p>
+</div>
+</body>
+</html>
