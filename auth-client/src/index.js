@@ -2,15 +2,25 @@ const dataUrlString = 'http://localhost:3001/api/data';
 const loginUrlString = 'http://localhost:3001/static/login.html';
 const appNode = document.getElementById('app');
 
-const params = new URLSearchParams(location.search);
-let accessToken = params.get('access_token') || localStorage.getItem('accessToken');
-const refreshToken = params.get('refresh_token') || localStorage.getItem('refreshToken');
-params.delete('access_token');
-params.delete('refresh_token');
-accessToken && localStorage.setItem('accessToken', accessToken);
-refreshToken && localStorage.setItem('refreshToken', refreshToken);
-// TODO: replace params with hash to avoid page reloading
-// location.search = params.toString();
+const hashParams = new URLSearchParams(location.hash.substring(1));
+
+let accessToken = hashParams.get('access_token')
+if (accessToken) {
+  localStorage.setItem('accessToken', accessToken);
+  hashParams.delete('access_token');
+} else {
+  accessToken = localStorage.getItem('accessToken');
+}
+
+let refreshToken = hashParams.get('refresh_token');
+if (refreshToken) {
+  localStorage.setItem('refreshToken', refreshToken);
+  hashParams.delete('refresh_token');
+} else {
+  refreshToken = localStorage.getItem('refreshToken');
+}
+
+location.hash = hashParams.toString();
 
 if (accessToken && refreshToken) {
   fetch(dataUrlString, {

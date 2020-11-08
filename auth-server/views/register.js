@@ -29,7 +29,7 @@ formNode.onsubmit = function(event) {
       const params = new URLSearchParams();
       params.set('access_token', accessToken);
       params.set('refresh_token', refreshToken);
-      redirectUrl.search = params.toString();
+      redirectUrl.hash = params.toString();
       document.location = redirectUrl.href;
     })
     .catch (error => {
