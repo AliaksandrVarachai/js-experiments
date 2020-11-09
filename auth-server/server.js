@@ -2,6 +2,12 @@ import express from 'express';
 import cors from 'cors';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
+import jwt from 'jwt-simple';
+import { origin, pageLoginUrl, apiLoginPathname, apiRegisterPathname, apiRefreshPathname } from './views/config.js';
+
+const secret = 'secret';
+const accessTokenTTL = 10; // sec
+const refreshTokenTTL = 10 * 60 * 60; // sec
 
 const port = 3001;
 const __filename = fileURLToPath(import.meta.url);
@@ -25,57 +31,82 @@ const controller = {
       return res.status(403).json({error: {message: 'Incorrect password.'}});
     }
     // redirect must be provided by the login form
-    return res.status(200).json({
-      accessToken: 'accessToken',
-      refreshToken: 'refreshToken'
-    })
+    return res.status(200).json(generateTokens(username, true));
   },
 
   async register(req, res) {
     const { username, password } = req.body;
     const user = users.find(u => u.username === username);
     if (user) {
-      return res.status(401).json({error: {message: `User name "${username}" is occupied.`}});
+      return res.status(401).json({error: {message: `User name "${username}" is already taken.`}});
     }
     // adding the user
     users.push({username, password});
-    return res.status(200).json(`User "${username}" is created. Log in please.`)
+    return res.status(201).end();
   },
 
   async refresh(req, res) {
-    const { refreshToken } = req.body;
-    // checks refresh token and provides a new pair of tokens
+    // checks refresh token and provides a new access token
+    const { 'x-refresh-token': refreshToken } = req.headers;
     if (!refreshToken) {
-      // TODO: check if the refresh token is expired or revoked
+      return res.status(401).json(createErrorResponse('Refresh token is not provided', pageLoginUrl));
     }
-    return res.status(200).json({
-      accessToken: 'newAccessToken'
-    })
+    const decodedRefreshToken = jwt.decode(refreshToken, secret);
+    const { sub: username, exp } = decodedRefreshToken;
+    if (exp && +exp > Date.now()) {
+      return res.status(200).json(generateTokens(username, false));
+    }
+    return res.status(403).json(createErrorResponse('Refresh token is expired', pageLoginUrl));
   },
 
   async data(req, res) {
-    const { accessToken, refreshToken } = req.body;
-    if (accessToken) {
-      // refreshToken is not expired
+    const { 'x-access-token': accessToken } = req.headers;
+    if (!accessToken) {
+      return res.status(401).json(createErrorResponse('Access token is not provided', pageLoginUrl));
+    }
+    const { exp } = jwt.decode(accessToken, secret);
+    if (exp && +exp > Date.now()) {
       return res.status(200).json({ data });
     }
-    if (refreshToken) {
-      // refreshToken is not expired/revoked
-      const params = new URLSearchParams();
-      params.set('redirect', )
-      res.redirect('');
-      // TODO: redirect to api/refresh
-      return res.status(400).json({error: {message: 'refresh is not implemented yet'}});
-    }
-    // TODO: redirect to api/login
-    return res.status(400).json({error: {message: 'login redirect is not implemented yet'}});
+    return res.status(403).json(createErrorResponse('Access token is expired', pageLoginUrl));
   }
 };
 
-app.post('/api/login', controller.login);
-app.post('/api/register', controller.register);
-app.post('/api/refresh', controller.refresh);
-app.post('/api/data', controller.data);
+function generateTokens(username, withRefreshToken = false) {
+  const now = Date.now();
+  const accessToken = jwt.encode({
+    sub: username,
+    exp: now + accessTokenTTL * 1e3
+  }, secret);
+  const refreshToken = withRefreshToken
+    ? jwt.encode({
+      sub: username,
+      exp: now + refreshTokenTTL * 1e3
+    }, secret)
+    : null;
+  return withRefreshToken
+    ? {
+      accessToken,
+      refreshToken
+    } : {
+      accessToken
+    };
+}
+
+function createErrorResponse(message, redirectUrl = '') {
+  const errorResponse = {
+    error: { message }
+  };
+  if (redirectUrl) {
+    errorResponse.redirectUrl = redirectUrl
+  }
+  return errorResponse;
+}
+
+app.post(apiLoginPathname, controller.login);
+app.post(apiRegisterPathname, controller.register);
+app.post(apiRefreshPathname, controller.refresh);
+app.get('/api/data', controller.data);
 
 const users = [
   {
@@ -90,5 +121,5 @@ const data = {
 
 
 app.listen(port, () => {
-  console.log(`server is started on http://localhost:${port}`);
+  console.log(`server is started on ${origin}`);
 })
