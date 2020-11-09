@@ -1,8 +1,9 @@
 const dataUrlString = 'http://localhost:3001/api/data';
 const loginUrlString = 'http://localhost:3001/static/login.html';
 const redirectOrigin = 'http://localhost:3001';
-const appNode = document.getElementById('app');
-
+const dataNode = document.getElementById('data-section');
+const errorNode = document.getElementById('error-section');
+const maxRefreshAttemptNumber = 3;
 
 const hashParams = new URLSearchParams(location.hash.substring(1));
 
@@ -24,40 +25,74 @@ if (refreshToken) {
 
 location.hash = hashParams.toString();
 
-const headers = {
+const baseHeaders = {
   'Content-Type': 'application/json',
   'Accept': 'application/json'
-}
-if (accessToken) headers['X-Access-Token'] = accessToken;
-if (refreshToken) headers['X-Refresh-Token'] = refreshToken;
+};
 
-let isOk = false;
-fetch(dataUrlString, {
-  method: 'GET',
-  headers
-})
-  .then(response => {
-    isOk = response.ok;
-    return response.json();
-  })
-  .then(json => {
-    if (isOk) {
+(async () => {
+  let refreshAttemptNumber = 0; // to avoid infinite loop with wrong access
+
+  while (refreshAttemptNumber < maxRefreshAttemptNumber) {
+
+
+    const response = await fetch(dataUrlString, {
+      method: 'GET',
+      headers: {
+        ...baseHeaders,
+        'X-Access-Token': accessToken
+      }
+    });
+
+    const json = await response.json();
+
+    if (response.ok) {
       const { data } = json;
-      appNode.innerText = JSON.stringify(data);
+      dataNode.innerText = JSON.stringify(data);
       return;
     }
-    const { message, redirectUrl } = json;
+
+    const { redirectUrl, refreshUrl } = json;
+
     if (redirectUrl) {
-      const url = new URL(redirectUrl)
-      const searchParams = new URLSearchParams(url.search);
-      searchParams.set('redirect', location.href);
-      url.search = searchParams.toString();
-      location.href = url.href;
-      return;
+      redirectToLoginPage(redirectUrl);
+      return
     }
-    appNode.innerText = message;
-  })
-  .catch(({ message }) => {
-    console.error(message);
-    appNode.innerText = message;
-  });
+
+    if (refreshUrl) {
+      const refreshResponse = await fetch(refreshUrl, {
+        method: 'GET',
+        headers: {
+          ...baseHeaders,
+          'X-Refresh-Token': refreshToken
+        }
+      });
+
+      if (!refreshResponse.ok) {
+        const { redirectUrl } = await refreshResponse.json();
+        if (!redirectUrl) {
+          errorNode.innerText = `${Error.message}. Neither refresh nor redirect URL provided by refresh service.`
+          return;
+        }
+        redirectToLoginPage(redirectUrl);
+        return
+      }
+
+      // New access-token is successfully provided -> next attempt to get data
+      const refreshJson = await refreshResponse.json();
+      accessToken = refreshJson.accessToken;
+      localStorage.setItem('accessToken', accessToken);
+      ++refreshAttemptNumber;
+    }
+  }
+
+  errorNode.innerText = `Max allowed attempts to refresh access token (${maxRefreshAttemptNumber}) is exceeded`;
+})();
+
+function redirectToLoginPage(redirectUrl) {
+  const url = new URL(redirectUrl)
+  const searchParams = new URLSearchParams(url.search);
+  searchParams.set('redirect', location.href);
+  url.search = searchParams.toString();
+  location.href = url.href;
+}
