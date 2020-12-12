@@ -9,9 +9,9 @@ function crossword2x2(p) {
   if (p[0][0] === '#') {
     sharedIndexes = [1, 1];
     if (p[0][1] !== '_') {
-      letter = { word: 0, inx: 0, value: p[0][1] };
+      letter = { word: 1, inx: 0, value: p[0][1] };
     } else if (p[1][0] !== '_') {
-      letter = { word: 1, inx: 0, value: p[1][0] };
+      letter = { word: 0, inx: 0, value: p[1][0] };
     } else {
       letter = { value: p[1][1]  };
     }
