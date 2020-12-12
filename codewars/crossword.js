@@ -16,11 +16,11 @@ function crossword2x2(p) {
       letter = { value: p[1][1]  };
     }
   } else if (p[0][1] === '#') {
-    sharedIndexes = [1, 0]
+    sharedIndexes = [0, 1]
     if (p[0][0] !== '_') {
-      letter = { word: 0, inx: 0, value: p[0][0] }
+      letter = { word: 1, inx: 0, value: p[0][0] }
     } else if (p[1][1] !== '_') {
-      letter = { word: 1, inx: 1, value: p[1][1] }
+      letter = { word: 0, inx: 1, value: p[1][1] }
     } else {
       letter = { value: p[1][0]  };
     }
