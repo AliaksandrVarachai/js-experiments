@@ -62,11 +62,6 @@ function plantsAndZombies(origLawn, origZombies) {
       }
     }
   }
-  origZombies.forEach(([i, j, health]) => {
-    const zombie = new Zombie(health);
-    const len = zombies.push({ zombie, i, j });
-    lawn[i][j] = { zombie, inx: len - 1 };
-  });
 
   function printLawn() {
     lawn.forEach(row)
@@ -77,8 +72,7 @@ function plantsAndZombies(origLawn, origZombies) {
     generateZombies(moveNumber);
     if (areZombiesWon()) return moveNumber + 1;
     volley();
-    console.log(zombies)
-    if (zombies.length < 1) return null;
+    if (zombies.length < 1 && futureZombies.length < 1) return null;
   }
 
 
@@ -142,7 +136,6 @@ function plantsAndZombies(origLawn, origZombies) {
     for (let zombieInx = 0; zombieInx < zombies.length; ++zombieInx) {
       const { zombie, i, j } = zombies[zombieInx];
       if (zombie.isKilled()) {
-        console.log(zombie)
         lawn[i][j] = null;
         zombies.splice(zombieInx, zombieInx + 1);
       }
@@ -156,3 +149,14 @@ function plantsAndZombies(origLawn, origZombies) {
     return false;
   }
 }
+
+const origLawn = [
+  '2       ',
+  '  S     ',
+  '21  S   ',
+  '13      ',
+  '2 3     '
+];
+const origZombies = [[0,4,28],[1,1,6],[2,0,10],[2,4,15],[3,2,16],[3,3,13]];
+
+console.log(plantsAndZombies(origLawn, origZombies))
