@@ -28,22 +28,27 @@ function plantsAndZombies(origLawn, origZombies) {
     lawn.push([]);
     for (let j = 0; j < lawnWidth; ++j) {
       const c = origLawn[i][j];
-      if (c) {
-        let shooter, len;
-        if (c === 'S') {
-          shooter = new SShooter();
-          len = sShooters.push({ shooter, i, j});
-        } else if (c !== ' ') {
-          shooter = new NShooter(Number.parseInt(c, 10));
-          len = nShooters.push({ shooter, i, j });
-        }
-        lawn[i][j] = { shooter, inx: len - 1 };
-      } else {
+      if (c === ' ') {
         lawn[i][j] = null;
+        continue;
+      }
+      let shooter, len;
+      if (c === 'S') {
+        shooter = new SShooter();
+        len = sShooters.push({ shooter, i, j});
+      } else if (c !== ' ') {
+        shooter = new NShooter(Number.parseInt(c, 10));
+        len = nShooters.push({ shooter, i, j });
+        lawn[i][j] = { shooter, inx: len - 1 };
       }
     }
   }
   sShooters.sort((s1, s2) => s1.j !== s2.j ? s2.j - s1.j : s2.i - s1.i);
+  sShooters.forEach(({ shooter, i, j }, inx) => {
+    lawn[i][j] = { shooter, inx };
+  })
+
+  printLawn()
 
   const zombies = [];
   const futureZombies = origZombies.slice();
@@ -56,18 +61,30 @@ function plantsAndZombies(origLawn, origZombies) {
         const zombie = new Zombie(health);
         const len = zombies.push({ zombie, i: row, j: lawnWidth - 1 });
         lawn[row][lawnWidth - 1] = { zombie, inx: len - 1 };
-        futureZombies.splice(i, i + 1);
+        futureZombies.splice(i, 1);
       } else {
         ++i;
       }
     }
   }
 
-  function printLawn() {
-    lawn.forEach(row)
+  function printLawn(label) {
+    console.log('-----------' + label);
+    lawn.forEach(row => {
+      let line = ''
+      row.forEach(item => {
+        if (item === null) line += '+';
+        else if (item.zombie) line += item.zombie.health;
+        else if (item.shooter instanceof NShooter) line += item.shooter.speed;
+        else line += 'S';
+      });
+      console.log(line);
+    });
+    console.log('-----------');
   }
 
   for (let moveNumber = 0; true; ++moveNumber) {
+    printLawn(moveNumber);
     moveZombies();
     generateZombies(moveNumber);
     if (areZombiesWon()) return moveNumber + 1;
@@ -80,7 +97,8 @@ function plantsAndZombies(origLawn, origZombies) {
     for (let j = shooterJ + 1; j < lawnWidth; ++j) {
       const zombie = lawn[shooterI][j] && lawn[shooterI][j].zombie;
       if (zombie) {
-        zombie.decreaseHealth(shooter instanceof NShooter ? shooter.speed : 1);
+        // zombie.decreaseHealth(shooter instanceof NShooter ? shooter.speed : 1);
+        zombie.decreaseHealth(1);
         break;
       }
     }
@@ -104,10 +122,12 @@ function plantsAndZombies(origLawn, origZombies) {
 
   function volley() {
     nShooters.forEach(({ shooter, i, j }) => {
-      // TODO: clear killed zombies after every shoot
-      shoot(shooter, i, j);
+      for (let shootInx = 0; shootInx < shooter.speed; ++shootInx) {
+        shoot(shooter, i, j);
+        clearKilledZombies();
+      }
     });
-    clearKilledZombies();
+
     sShooters.forEach(({ shooter, i, j }) => {
       shoot(shooter, i, j);
       clearKilledZombies();
@@ -119,11 +139,10 @@ function plantsAndZombies(origLawn, origZombies) {
       const { zombie, i, j } = indexedZombie;
       const nextLawn = lawn[i][j - 1];
       if (nextLawn && nextLawn.shooter) {
-        const { shooter, inx: shooterInx } = nextLawn;
-        if (shooter instanceof NShooter) {
-          nShooters.splice(shooterInx, shooterInx + 1);
-        } else {
-          sShooters.splice(shooterInx, shooterInx + 1);
+        const { shooter, inx } = nextLawn;
+        if (shooter) {
+          console.log('zombie', zombie, i, j, 'killed shooter', shooter, i, j - 1)
+          killEntity(shooter, inx)
         }
       }
       lawn[i][j - 1] = lawn[i][j];
@@ -132,12 +151,39 @@ function plantsAndZombies(origLawn, origZombies) {
     })
   }
 
+  function killEntity(entity, inx) {
+    let entities, entityName;
+    if (entity instanceof Zombie) {
+      entities = zombies;
+      entityName = 'zombie'
+    } else if (entity instanceof NShooter) {
+      entities = nShooters;
+      entityName = 'shooter'
+    } else if (entity instanceof SShooter ) {
+      entities = sShooters;
+      entityName = 'shooter'
+    } else {
+      throw Error('Unknown entity');
+    }
+    console.log(inx, entities[inx])
+    const { i, j } = entities[inx];
+
+    lawn[i][j] = null;
+    entities.splice(inx, 1);
+    for (let k = entities.length - 1; k >= inx; --k) {
+      const { i, j } = entities[k];
+      lawn[i][j].inx -= 1;
+    }
+  }
+
   function clearKilledZombies() {
-    for (let zombieInx = 0; zombieInx < zombies.length; ++zombieInx) {
-      const { zombie, i, j } = zombies[zombieInx];
+    let zombieInx = 0;
+    while (zombieInx < zombies.length) {
+      const { zombie } = zombies[zombieInx];
       if (zombie.isKilled()) {
-        lawn[i][j] = null;
-        zombies.splice(zombieInx, zombieInx + 1);
+        killEntity(zombie, zombieInx);
+      } else {
+        ++zombieInx;
       }
     }
   }
@@ -150,13 +196,22 @@ function plantsAndZombies(origLawn, origZombies) {
   }
 }
 
+// const origLawn = [
+//     '12      ',
+//     '2S      ',
+//     '1S      ',
+//     '2S      ',
+//     '3       '
+// ];
+// const origZombies = [[0,0,15],[1,1,18],[2,2,14],[3,3,15],[4,4,13],[5,0,12],[6,1,19],[7,2,11],[8,3,17],[9,4,18],[10,0,15],[11,4,14]];
+
 const origLawn = [
-  '2       ',
-  '  S     ',
-  '21  S   ',
-  '13      ',
-  '2 3     '
+  '11      ',
+  ' 2S     ',
+  '11S     ',
+  '3       ',
+  '13      '
 ];
-const origZombies = [[0,4,28],[1,1,6],[2,0,10],[2,4,15],[3,2,16],[3,3,13]];
+const origZombies = [[0,3,16],[2,2,15],[2,1,16],[4,4,30],[4,2,12],[5,0,14],[7,3,16],[7,0,13]];
 
 console.log(plantsAndZombies(origLawn, origZombies))
