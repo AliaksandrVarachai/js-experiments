@@ -2,7 +2,7 @@ FROM node:latest
 RUN mkdir -p /usr/src/docker-swarm
 WORKDIR /usr/src/docker-swarm
 COPY . .
-# RUN [ "node server.js" ]
+# RUN [ "node server.mjs" ]
 # just a recommendation which ports need to be published with -p flag
 EXPOSE 3000
 ENTRYPOINT [ "node", "server.js" ]
