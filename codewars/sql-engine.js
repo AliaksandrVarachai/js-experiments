@@ -85,3 +85,5 @@ function SQLEngine(database) {
   }
 
 }
+
+module.exports = SQLEngine;
