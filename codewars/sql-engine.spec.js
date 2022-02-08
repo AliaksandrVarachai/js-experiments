@@ -1,6 +1,10 @@
-const { assert } = require('chai');
+const chai = require('chai');
 // const { describe, it } = require('mocha');
 const SQLEngine = require('./sql-engine');
+
+chai.config.truncateThreshold = 0;
+
+const { assert } = chai;
 
 const movieDatabase = {
   movie: [
@@ -31,10 +35,10 @@ const movieDatabase = {
 };
 
 describe('execution',function(){
-  var engine = new SQLEngine(movieDatabase);
+  const engine = new SQLEngine(movieDatabase);
 
   it('should SELECT columns', function(){
-    var actual = engine.execute('SELECT movie.name FROM movie');
+    const actual = engine.execute('SELECT movie.name FROM movie');
     assertSimilarRows(actual, [{'movie.name':'Avatar'},
       {'movie.name':'Titanic'},
       {'movie.name':'Infamous'},
@@ -50,7 +54,7 @@ describe('execution',function(){
   });
 
   it('should perform parent->child JOIN', function(){
-    var actual = engine.execute('SELECT movie.name, director.name '
+    const actual = engine.execute('SELECT movie.name, director.name '
       +'FROM movie '
       +'JOIN director ON director.id = movie.directorID');
     assertSimilarRows(actual, [{'movie.name':'Avatar','director.name':'James Cameron'},
@@ -61,7 +65,7 @@ describe('execution',function(){
   });
 
   it('should perform child->parent JOIN ', function(){
-    var actual = engine.execute('SELECT movie.name, director.name '
+    const actual = engine.execute('SELECT movie.name, director.name '
       +'FROM director '
       +'JOIN movie ON director.id = movie.directorID');
     assertSimilarRows(actual, [{'movie.name':'Avatar','director.name':'James Cameron'},
@@ -72,7 +76,7 @@ describe('execution',function(){
   });
 
   it('should perform many-to-many JOIN and apply WHERE', function(){
-    var actual = engine.execute('SELECT movie.name, actor.name '
+    const actual = engine.execute('SELECT movie.name, actor.name '
       +'FROM movie '
       +'JOIN actor_to_movie ON actor_to_movie.movieID = movie.id '
       +'JOIN actor ON actor_to_movie.actorID = actor.id '
@@ -87,10 +91,10 @@ describe('execution',function(){
 
 function assertSimilarRows(actual, expected, message){
   function logFailed(m, rows){
-    Test.expect(false, m +'<pre>' + rows.map(JSON.stringify).join(',\n') + '</pre>');
+    console.log(m +'<pre>' + rows.map(JSON.stringify).join(',\n') + '</pre>');
   }
   if(!actual || actual.length === 0 || !expected || expected.length === 0){
-    return Test.assertSimilar(actual, expected, message);
+    return assert.strictEqual(actual, expected, message);
   }
   function allPropertiesInLeftInRight(a,b){
     return Object.keys(a).every(function(ak){ return a[ak] === b[ak]; })
@@ -103,7 +107,7 @@ function assertSimilarRows(actual, expected, message){
       return !right.some(function(a){ return similarObjects(a,r); });
     });
   }
-  var missingRowsInActual = getRowsInLeftWhichAreNotInRight(expected, actual),
+  const missingRowsInActual = getRowsInLeftWhichAreNotInRight(expected, actual),
     extraRowsInActual = getRowsInLeftWhichAreNotInRight(actual, expected);
   if(missingRowsInActual.length > 0){
     logFailed('Failure: expected result to include the following rows, but they were missing: ', missingRowsInActual);
@@ -114,14 +118,5 @@ function assertSimilarRows(actual, expected, message){
     return;
   }
 
-  Test.expect(true, message);
+  console.log(message);
 }
-
-// describe('example', () => {
-//   it('should test', () => {
-//     assert.strictEqual(1 + 1, 2);
-//     assert.deepEqual([2, 2], [2, -(-2)]);
-//   });
-// });
-
-
