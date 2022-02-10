@@ -37,7 +37,7 @@ const movieDatabase = {
 describe('execution',function(){
   const engine = new SQLEngine(movieDatabase);
 
-  it('should SELECT columns', function(){
+  it.only('should SELECT columns', function(){
     const actual = engine.execute('SELECT movie.name FROM movie');
     assertSimilarRows(actual, [{'movie.name':'Avatar'},
       {'movie.name':'Titanic'},
@@ -91,10 +91,10 @@ describe('execution',function(){
 
 function assertSimilarRows(actual, expected, message){
   function logFailed(m, rows){
-    console.log(m +'<pre>' + rows.map(JSON.stringify).join(',\n') + '</pre>');
+    console.log(m +'\n' + rows.map(JSON.stringify).join(',\n') + '\n');
   }
   if(!actual || actual.length === 0 || !expected || expected.length === 0){
-    return assert.strictEqual(actual, expected, message);
+    return assert.deepStrictEqual(actual, expected, message);
   }
   function allPropertiesInLeftInRight(a,b){
     return Object.keys(a).every(function(ak){ return a[ak] === b[ak]; })

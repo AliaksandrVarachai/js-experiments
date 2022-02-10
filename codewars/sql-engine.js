@@ -1,56 +1,46 @@
-function SQLEngine(database) {
-  this.parseColumnId = function(columnLexem) {
-    const [table, column] = columnLexem.split('.');
-    return {
-      name: 'column',
-      table,
-      column,
-    }
+function SQLEngine(db) {
+  // @returns [tableId: string, columnId: string]
+  this.parseColumnId = function(columnLexeme) {
+    return columnLexeme.split('.');
   };
 
-  this.parseSelect = function(lexems) {
-    if (!(/select/i).test(lexems[0])) throw Error('SELECT query must start with "select"');
-    const len = lexems.length;
+  this.parseSelect = function(lexemes) {
+    if (!(/select/i).test(lexemes[0])) throw Error('SELECT query must start with "select"');
+    const len = lexemes.length;
 
     let i = 1;
-    while (i < len && !(/from/i).test(lexems[i])) ++i;
+    while (i < len && !(/from/i).test(lexemes[i])) ++i;
     const fromPos = i;
-    const columnLexems = lexems.slice(1, fromPos);
-    console.log(columnLexems, i)
+    const columnLexemes = lexemes.slice(1, fromPos);
 
     ++i;
-    while (i < len && !(/join/i).test(lexems[i])) ++i;  // TODO: replace with joinS
+    while (i < len && !(/join/i).test(lexemes[i])) ++i;  // TODO: replace with joinS
     const joinPos = i;
-    const fromLexems = lexems.slice(fromPos + 1, joinPos);
+    const fromLexemes = lexemes.slice(fromPos + 1, joinPos);
 
     ++i;
-    while (i < len && !(/where/i).test(lexems[i])) ++i;
+    while (i < len && !(/where/i).test(lexemes[i])) ++i;
     const wherePos = i;
-    const joinLexems = lexems.slice(joinPos + 1, wherePos);
+    const joinLexemes = lexemes.slice(joinPos + 1, wherePos);
 
-    const whereLexems = lexems.slice(wherePos + 1);
+    const whereLexemes = lexemes.slice(wherePos + 1);
 
     return {
       name: 'select',
-      columns: this.parseColumnIds(columnLexems),
-      from: this.parseTables(fromLexems),
-      join: joinLexems.length ? this.parseJoin(joinLexems) : null,
-      where: whereLexems.length ? this.parseWhere(whereLexems) : null,
+      columns: this.parseColumns(columnLexemes), // Array<[tableId, columnId]>
+      from: this.parseTables(fromLexemes), // Array<string>
+      join: joinLexemes.length ? this.parseJoin(joinLexemes) : null,
+      where: whereLexemes.length ? this.parseWhere(whereLexemes) : null,
     };
   };
 
-  this.parseTables = function(tableLexems) {
-    return {
-      name: 'tables',
-      tables: tableLexems.filter(lexem => lexem !== ','),
-    };
+  this.parseTables = function(tableLexemes) {
+    return tableLexemes.filter(lexeme => lexeme !== ',');
   };
 
-  this.parseColumnIds = function(columnLexems) {
-    return {
-      name: 'columns',
-      columns: columnLexems.filter(lexem => lexem !== ',').map(this.parseColumnId),
-    }
+  // @returns Array<[tableId:string, columnId: string]>
+  this.parseColumns = function(columnLexemes) {
+    return columnLexemes.filter(lexeme => lexeme !== ',').map(this.parseColumnId);
   };
 
   this.parseCondition = function([leftArg, operator, rightArg]) {
@@ -78,12 +68,44 @@ function SQLEngine(database) {
   }
 
   this.execute = function(query){
-    const lexems = query.split(/\s+/);
-    const { columns, from, join, where } = this.parseSelect(lexems);
+    const lexemes = query.split(/\s+/);
+    const { columns, from, join, where } = this.parseSelect(lexemes);
 
+    // groupedColumnIds
+    const groupedColumnIds = {};
+    columns.forEach(([tableId, columnId]) => {
+      if (groupedColumnIds[tableId]) {
+        groupedColumnIds[tableId].push(columnId);
+      } else {
+        groupedColumnIds[tableId] = [columnId];
+      }
+    });
 
+    // merge grouped columns to result object
+    const queryResult = [];
+    Object.entries(groupedColumnIds).forEach(([tableId, columnIds], groupedColumnIndex) => {
+      const dbTable = db[tableId];
+      if (groupedColumnIndex === 0) {
+        columnIds.forEach(columnId => {
+          dbTable.forEach((dbRow, dbRowIndex) => {
+            queryResult[dbRowIndex] = { [`${tableId}.${columnId}`]: dbRow[columnId] };
+          });
+        });
+        return;
+      }
+
+      const queryResultCopy = queryResult.map(row => ({ ...row })); // be attentive with this shallow copy; for the sake of memory
+      queryResultCopy.forEach(queryResultRow => {
+        columnIds.forEach((columnId, columnIndex) => {
+          if (queryResultRow[columnId]) throw Error(`Two columns have the same name "${columnId}". Column name must be unique among different tables`);
+          queryResultRow[columnId] = dbTable[columnIndex][columnId];
+        });
+      });
+      queryResult.push(...queryResultCopy);
+    });
+
+    return queryResult;
   }
-
 }
 
 module.exports = SQLEngine;
