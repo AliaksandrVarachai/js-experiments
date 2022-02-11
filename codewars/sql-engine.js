@@ -68,7 +68,7 @@ function SQLEngine(db) {
   }
 
   this.execute = function(query){
-    const lexemes = query.split(/\s+/);
+    const lexemes = query.split(/\s+|(?=,)/);
     const { columns, from, join, where } = this.parseSelect(lexemes);
 
     // groupedColumnIds
@@ -82,7 +82,7 @@ function SQLEngine(db) {
     });
 
     // merge grouped columns to result object
-    const queryResult = [];
+    let queryResult = [];
     Object.entries(groupedColumnIds).forEach(([tableId, columnIds], groupedColumnIndex) => {
       const dbTable = db[tableId];
       if (groupedColumnIndex === 0) {
@@ -93,16 +93,26 @@ function SQLEngine(db) {
         });
         return;
       }
+      debugger;
 
-      const queryResultCopy = queryResult.map(row => ({ ...row })); // be attentive with this shallow copy; for the sake of memory
-      queryResultCopy.forEach(queryResultRow => {
-        columnIds.forEach((columnId, columnIndex) => {
-          if (queryResultRow[columnId]) throw Error(`Two columns have the same name "${columnId}". Column name must be unique among different tables`);
-          queryResultRow[columnId] = dbTable[columnIndex][columnId];
+      const intermediateQueryResult = [];
+      columnIds.forEach(columnId => {
+        dbTable.forEach((dbRow, dbRowIndex) => {
+          intermediateQueryResult[dbRowIndex] = { [`${tableId}.${columnId}`]: dbRow[columnId] };
         });
       });
-      queryResult.push(...queryResultCopy);
+      debugger;
+
+      // union of queryResult & intermediateQueryResult sets
+      const unitedQueryResult = [];
+      queryResult.forEach(queryResultRow => {
+        intermediateQueryResult.forEach(intermediateQueryRow => {
+          unitedQueryResult.push({ ...queryResultRow, ...intermediateQueryRow });
+        });
+      });
+      queryResult = unitedQueryResult;
     });
+    debugger;
 
     return queryResult;
   }

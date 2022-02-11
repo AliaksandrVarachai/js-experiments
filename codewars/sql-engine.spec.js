@@ -53,10 +53,10 @@ describe('execution',function(){
       {'movie.name':'Aliens'}]);
   });
 
-  it('should perform parent->child JOIN', function(){
+  it.only('should perform parent->child JOIN', function(){
     const actual = engine.execute('SELECT movie.name, director.name '
-      +'FROM movie '
-      +'JOIN director ON director.id = movie.directorID');
+      +'FROM movie ');
+      // +'JOIN director ON director.id = movie.directorID');
     assertSimilarRows(actual, [{'movie.name':'Avatar','director.name':'James Cameron'},
       {'movie.name':'Titanic','director.name':'James Cameron'},
       {'movie.name':'Aliens','director.name':'James Cameron'},
@@ -85,6 +85,7 @@ describe('execution',function(){
       {'movie.name':'Avatar','actor.name':'Sigourney Weaver'},
       {'movie.name':'Infamous','actor.name':'Sigourney Weaver'},
       {'movie.name':'Titanic','actor.name':'Leonardo DiCaprio'}]);
+    assert(1, 2)
   });
 
 });
