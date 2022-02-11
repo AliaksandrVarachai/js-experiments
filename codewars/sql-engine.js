@@ -65,56 +65,58 @@ function SQLEngine(db) {
       name: 'where',
       condition: this.parseCondition(whereLexems),
     }
-  }
+  };
+
+  this.getUnion = function(columns) {
+    const groupedColumnNamesByTableName = {};
+    columns.forEach(([tableId, columnId]) => {
+      if (groupedColumnNamesByTableName[tableId]) {
+        groupedColumnNamesByTableName[tableId].push(columnId);
+      } else {
+        groupedColumnNamesByTableName[tableId] = [columnId];
+      }
+    });
+
+    let union = [];
+    Object.entries(groupedColumnNamesByTableName).forEach(([tableId, columnIds], groupedColumnIndex) => {
+      const dbTable = db[tableId];
+
+      const extractedDbColumns = [];
+      columnIds.forEach(columnId => {
+        dbTable.forEach((dbRow, dbRowIndex) => {
+          extractedDbColumns[dbRowIndex] = { [`${tableId}.${columnId}`]: dbRow[columnId] };
+        });
+      });
+
+      if (groupedColumnIndex === 0) {
+        union = extractedDbColumns;
+        return;
+      }
+
+      const unionWithExtractedDbColumns = [];
+      union.forEach(queryResultRow => {
+        extractedDbColumns.forEach(intermediateQueryRow => {
+          unionWithExtractedDbColumns.push({ ...queryResultRow, ...intermediateQueryRow });
+        });
+      });
+      union = unionWithExtractedDbColumns;
+    });
+    return union;
+  };
+
+  this.reduceByWhen = function(union) {
+    return union;
+  };
 
   this.execute = function(query){
     const lexemes = query.split(/\s+|(?=,)/);
     const { columns, from, join, where } = this.parseSelect(lexemes);
 
-    // groupedColumnIds
-    const groupedColumnIds = {};
-    columns.forEach(([tableId, columnId]) => {
-      if (groupedColumnIds[tableId]) {
-        groupedColumnIds[tableId].push(columnId);
-      } else {
-        groupedColumnIds[tableId] = [columnId];
-      }
-    });
+    const unionOfColumns = this.getUnion(columns);
+    const unionReducedByWhen = this.reduceByWhen(unionOfColumns);
 
-    // merge grouped columns to result object
-    let queryResult = [];
-    Object.entries(groupedColumnIds).forEach(([tableId, columnIds], groupedColumnIndex) => {
-      const dbTable = db[tableId];
-      if (groupedColumnIndex === 0) {
-        columnIds.forEach(columnId => {
-          dbTable.forEach((dbRow, dbRowIndex) => {
-            queryResult[dbRowIndex] = { [`${tableId}.${columnId}`]: dbRow[columnId] };
-          });
-        });
-        return;
-      }
-      debugger;
 
-      const intermediateQueryResult = [];
-      columnIds.forEach(columnId => {
-        dbTable.forEach((dbRow, dbRowIndex) => {
-          intermediateQueryResult[dbRowIndex] = { [`${tableId}.${columnId}`]: dbRow[columnId] };
-        });
-      });
-      debugger;
-
-      // union of queryResult & intermediateQueryResult sets
-      const unitedQueryResult = [];
-      queryResult.forEach(queryResultRow => {
-        intermediateQueryResult.forEach(intermediateQueryRow => {
-          unitedQueryResult.push({ ...queryResultRow, ...intermediateQueryRow });
-        });
-      });
-      queryResult = unitedQueryResult;
-    });
-    debugger;
-
-    return queryResult;
+    return unionOfColumns;
   }
 }
 
