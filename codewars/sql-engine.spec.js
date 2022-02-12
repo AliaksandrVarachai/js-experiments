@@ -37,7 +37,7 @@ const movieDatabase = {
 describe('execution',function(){
   const engine = new SQLEngine(movieDatabase);
 
-  it.only('should SELECT columns', function(){
+  it('should SELECT columns', function(){
     const actual = engine.execute('SELECT movie.name FROM movie');
     assertSimilarRows(actual, [{'movie.name':'Avatar'},
       {'movie.name':'Titanic'},
@@ -53,10 +53,10 @@ describe('execution',function(){
       {'movie.name':'Aliens'}]);
   });
 
-  it.only('should perform parent->child JOIN', function(){
+  it.skip('should perform parent->child JOIN', function(){
     const actual = engine.execute('SELECT movie.name, director.name '
-      +'FROM movie ');
-      // +'JOIN director ON director.id = movie.directorID');
+      +'FROM movie '
+      +'JOIN director ON director.id = movie.directorID');
     assertSimilarRows(actual, [{'movie.name':'Avatar','director.name':'James Cameron'},
       {'movie.name':'Titanic','director.name':'James Cameron'},
       {'movie.name':'Aliens','director.name':'James Cameron'},
@@ -64,7 +64,7 @@ describe('execution',function(){
       {'movie.name':'Skyfall','director.name':'Sam Mendes'}]);
   });
 
-  it('should perform child->parent JOIN ', function(){
+  it.skip('should perform child->parent JOIN ', function(){
     const actual = engine.execute('SELECT movie.name, director.name '
       +'FROM director '
       +'JOIN movie ON director.id = movie.directorID');
@@ -75,7 +75,7 @@ describe('execution',function(){
       {'movie.name':'Aliens','director.name':'James Cameron'}]);
   });
 
-  it('should perform many-to-many JOIN and apply WHERE', function(){
+  it.skip('should perform many-to-many JOIN and apply WHERE', function(){
     const actual = engine.execute('SELECT movie.name, actor.name '
       +'FROM movie '
       +'JOIN actor_to_movie ON actor_to_movie.movieID = movie.id '

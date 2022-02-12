@@ -4,27 +4,22 @@ function SQLEngine(db) {
     return columnLexeme.split('.');
   };
 
-  this.parseSelect = function(lexemes) {
-    if (!(/select/i).test(lexemes[0])) throw Error('SELECT query must start with "select"');
+  this.parseQuery = function(lexemes) {
+    if (!(/select/i).test(lexemes[0])) throw Error('Query must start with "select"');
     const len = lexemes.length;
-
-    let i = 1;
-    while (i < len && !(/from/i).test(lexemes[i])) ++i;
-    const fromPos = i;
+    let fromPos = 0, joinPos = 0, wherePos = 0;
+    for (let i = 1; i < len; ++i) {
+      const lexeme = lexemes[i].toLowerCase();
+      switch(lexeme) {
+        case 'from': fromPos = i; break;
+        case 'join': joinPos = i; break;
+        case 'where': wherePos = i; break;
+      }
+    }
     const columnLexemes = lexemes.slice(1, fromPos);
-
-    ++i;
-    while (i < len && !(/join/i).test(lexemes[i])) ++i;  // TODO: replace with joinS
-    const joinPos = i;
-    const fromLexemes = lexemes.slice(fromPos + 1, joinPos);
-
-    ++i;
-    while (i < len && !(/where/i).test(lexemes[i])) ++i;
-    const wherePos = i;
-    const joinLexemes = lexemes.slice(joinPos + 1, wherePos);
-
-    const whereLexemes = lexemes.slice(wherePos + 1);
-
+    const fromLexemes = lexemes.slice(fromPos + 1, joinPos || wherePos || len);
+    const joinLexemes = joinPos > 0 ? lexemes.slice(joinPos + 1, wherePos || len) : [];
+    const whereLexemes = wherePos > 0 ? lexemes.slice(wherePos + 1) : [];
     return {
       name: 'select',
       columns: this.parseColumns(columnLexemes), // Array<[tableId, columnId]>
@@ -44,7 +39,7 @@ function SQLEngine(db) {
   };
 
   this.parseCondition = function([leftArg, operator, rightArg]) {
-    return { name: 'condition', leftArg, operator, rightArg };
+    return { leftArg, operator, rightArg };
   };
 
   this.parseJoin = function(joinLexems) {
@@ -60,11 +55,8 @@ function SQLEngine(db) {
   };
 
 
-  this.parseWhere = function(whereLexems) {
-    return {
-      name: 'where',
-      condition: this.parseCondition(whereLexems),
-    }
+  this.parseWhere = function(whereLexemes) {
+    return this.parseCondition(whereLexemes);
   };
 
   this.getUnion = function(columns) {
@@ -104,19 +96,65 @@ function SQLEngine(db) {
     return union;
   };
 
-  this.reduceByWhen = function(union) {
-    return union;
+  this.reduceByWhere = function(union, where) {
+    const parseArg = (arg) => {
+      if (arg.startsWith("'") && arg.endsWith("'")) {
+        return { type: 'string', value: arg.slice(1, -1) };
+      }
+      if (!isNaN(arg)) {
+        return { type: 'number', value: +arg };
+      }
+      const parsedColumnId = this.parseColumnId(arg); // TODO: simplify
+      if (parsedColumnId.length === 2) {
+        return { type: 'column', value: arg };
+      }
+      throw Error(`Argument "${arg}" cannot be parsed`);
+    }
+
+    // accepts values;
+    const checkCondition = (leftOperand, operator, rightOperand) => {
+      switch(operator) {
+        case '=': return leftOperand === rightOperand;
+        case '<': return leftOperand < rightOperand;
+        case '>': return leftOperand > rightOperand;
+        case '<=': return leftOperand <= rightOperand;
+        case '>=': return leftOperand >= rightOperand;
+        default: throw Error(`Operator "${operator}" is not supported`);
+      }
+    }
+
+    // accepts NOT parsed args
+    const checkRowWithCondition = (row, { leftArg, operator, rightArg }) => {
+      const la = parseArg(leftArg);
+      const ra = parseArg(rightArg);
+      if (la.type === 'column') {
+        const [lTable, lColumn] = la.value;
+        if (ra.type === 'column') {
+          return checkCondition(row[la.value], operator, row[ra.value]);
+        }
+        debugger;
+        return checkCondition(row[la.value], operator, ra.value);
+      }
+      if (ra.type === 'column') {
+        const [rTable, rColumn] = ra.value;
+        return checkCondition(la.value, operator, row[rTable][rColumn]);
+      }
+      return checkCondition(la.value, operator, ra.value);
+    }
+
+    debugger;
+    return union.filter(row => checkRowWithCondition(row, where));
   };
 
   this.execute = function(query){
     const lexemes = query.split(/\s+|(?=,)/);
-    const { columns, from, join, where } = this.parseSelect(lexemes);
+    const { columns, from, join, where } = this.parseQuery(lexemes);
 
     const unionOfColumns = this.getUnion(columns);
-    const unionReducedByWhen = this.reduceByWhen(unionOfColumns);
+    if (!where) return unionOfColumns;
 
-
-    return unionOfColumns;
+    const unionReducedByWhere = this.reduceByWhere(unionOfColumns, where);
+    return unionReducedByWhere;
   }
 }
 
