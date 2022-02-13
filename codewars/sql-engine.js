@@ -33,9 +33,9 @@ function SQLEngine(db) {
     return tableLexemes.filter(lexeme => lexeme !== ',');
   };
 
-  // @returns Array<[tableId:string, columnId: string]>
+  // returns tableName.columnName
   this.parseColumns = function(columnLexemes) {
-    return columnLexemes.filter(lexeme => lexeme !== ',').map(this.parseColumnId);
+    return columnLexemes.filter(lexeme => lexeme !== ',');
   };
 
   this.parseCondition = function([leftArg, operator, rightArg]) {
@@ -59,44 +59,21 @@ function SQLEngine(db) {
     return this.parseCondition(whereLexemes);
   };
 
-  this.getUnion = function(columns) {
-    const groupedColumnNamesByTableName = {};
-    columns.forEach(([tableId, columnId]) => {
-      if (groupedColumnNamesByTableName[tableId]) {
-        groupedColumnNamesByTableName[tableId].push(columnId);
-      } else {
-        groupedColumnNamesByTableName[tableId] = [columnId];
-      }
-    });
-
-    let union = [];
-    Object.entries(groupedColumnNamesByTableName).forEach(([tableId, columnIds], groupedColumnIndex) => {
-      const dbTable = db[tableId];
-
-      const extractedDbColumns = [];
-      columnIds.forEach(columnId => {
-        dbTable.forEach((dbRow, dbRowIndex) => {
-          extractedDbColumns[dbRowIndex] = { [`${tableId}.${columnId}`]: dbRow[columnId] };
-        });
+  // @returns row | null
+  this.getRowByIndexes = function(tableNames, outputRowIndexes, where) {
+    const outputRow = {};
+    outputRowIndexes.forEach((rowIndex, tableIndex) => {
+      const tableName = tableNames[tableIndex];
+      const table = db[tableName];
+      const columnNames = Object.keys(table[0]);
+      columnNames.map(columnName => {
+        outputRow[`${tableName}.${columnName}`] = table[rowIndex][columnName];
       });
-
-      if (groupedColumnIndex === 0) {
-        union = extractedDbColumns;
-        return;
-      }
-
-      const unionWithExtractedDbColumns = [];
-      union.forEach(queryResultRow => {
-        extractedDbColumns.forEach(intermediateQueryRow => {
-          unionWithExtractedDbColumns.push({ ...queryResultRow, ...intermediateQueryRow });
-        });
-      });
-      union = unionWithExtractedDbColumns;
     });
-    return union;
+    return where ? this.reduceRowByWhere(outputRow, where) : outputRow;
   };
 
-  this.reduceByWhere = function(union, where) {
+  this.reduceRowByWhere = function(row, where) {
     const parseArg = (arg) => {
       if (arg.startsWith("'") && arg.endsWith("'")) {
         return { type: 'string', value: arg.slice(1, -1) };
@@ -104,8 +81,7 @@ function SQLEngine(db) {
       if (!isNaN(arg)) {
         return { type: 'number', value: +arg };
       }
-      const parsedColumnId = this.parseColumnId(arg); // TODO: simplify
-      if (parsedColumnId.length === 2) {
+      if (this.parseColumnId(arg).length === 2) {
         return { type: 'column', value: arg };
       }
       throw Error(`Argument "${arg}" cannot be parsed`);
@@ -128,11 +104,9 @@ function SQLEngine(db) {
       const la = parseArg(leftArg);
       const ra = parseArg(rightArg);
       if (la.type === 'column') {
-        const [lTable, lColumn] = la.value;
         if (ra.type === 'column') {
           return checkCondition(row[la.value], operator, row[ra.value]);
         }
-        debugger;
         return checkCondition(row[la.value], operator, ra.value);
       }
       if (ra.type === 'column') {
@@ -142,19 +116,67 @@ function SQLEngine(db) {
       return checkCondition(la.value, operator, ra.value);
     }
 
-    debugger;
-    return union.filter(row => checkRowWithCondition(row, where));
+    return checkRowWithCondition(row, where) ? row : null;
   };
+
+  this.getRowWithRequiredColumns = function(row, requiredColumnIds) {
+    const outputRow = {};
+    Object.keys(row).forEach(columnId => {
+      if (requiredColumnIds.includes(columnId)) outputRow[columnId] = row[columnId];
+    });
+    return outputRow;
+  }
 
   this.execute = function(query){
     const lexemes = query.split(/\s+|(?=,)/);
     const { columns, from, join, where } = this.parseQuery(lexemes);
 
-    const unionOfColumns = this.getUnion(columns);
-    if (!where) return unionOfColumns;
+    const outputData = [];
+    const tableSizes = from.map(tableName => db[tableName].length);
+    const rowIndexes = [];
+    for (let i = tableSizes.length - 1; i >= 0; --i) rowIndexes.push(0);
+    let tableIndex = tableSizes.length - 1;
+    let isEnd = false;
+    while (!isEnd) {
+      const rowWithAllColumns = this.getRowByIndexes(from, rowIndexes, where);
+      if (rowWithAllColumns) {
+        outputData.push(this.getRowWithRequiredColumns(rowWithAllColumns, columns));
+      }
 
-    const unionReducedByWhere = this.reduceByWhere(unionOfColumns, where);
-    return unionReducedByWhere;
+      if (rowIndexes[tableIndex] < tableSizes[tableIndex] - 1) {
+        ++rowIndexes[tableIndex];
+        continue;
+      }
+      while (rowIndexes[tableIndex] === tableSizes[tableIndex] - 1) {
+        --tableIndex;
+        if (tableIndex < 0) {
+          isEnd = true;
+          break;
+        }
+      }
+      for (let i = tableIndex + 1; i < tableSizes.length; ++i) rowIndexes[i] = 0;
+    }
+
+    const areRowsEqual = (row1, row2) => {
+      const row1Keys = Object.keys(row1);
+      for (let i = row1Keys.length - 1; i >= 0; --i) {
+        const key = row1Keys[i];
+        if (row1[key] !== row2[key]) return false;
+      }
+      return true;
+    }
+
+    // keeps only unique rows
+    for (let i = 0; i < outputData.length; ++i) {
+      const row = outputData[i];
+      let j = i + 1;
+      while (j < outputData.length) {
+        if (areRowsEqual(row, outputData[j])) outputData.splice(j, 1);
+        else ++j;
+      }
+    }
+
+    return outputData;
   }
 }
 

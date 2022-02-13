@@ -47,7 +47,7 @@ describe('execution',function(){
   });
 
   it('should apply WHERE', function(){
-    var actual = engine.execute('SELECT movie.name FROM movie WHERE movie.directorID = 1');
+    const actual = engine.execute('SELECT movie.name FROM movie WHERE movie.directorID = 1');
     assertSimilarRows(actual, [{'movie.name':'Avatar'},
       {'movie.name':'Titanic'},
       {'movie.name':'Aliens'}]);
