@@ -53,7 +53,7 @@ describe('execution',function(){
       {'movie.name':'Aliens'}]);
   });
 
-  it.skip('should perform parent->child JOIN', function(){
+  it('should perform parent->child JOIN', function(){
     const actual = engine.execute('SELECT movie.name, director.name '
       +'FROM movie '
       +'JOIN director ON director.id = movie.directorID');
@@ -64,7 +64,7 @@ describe('execution',function(){
       {'movie.name':'Skyfall','director.name':'Sam Mendes'}]);
   });
 
-  it.skip('should perform child->parent JOIN ', function(){
+  it('should perform child->parent JOIN ', function(){
     const actual = engine.execute('SELECT movie.name, director.name '
       +'FROM director '
       +'JOIN movie ON director.id = movie.directorID');
@@ -75,7 +75,7 @@ describe('execution',function(){
       {'movie.name':'Aliens','director.name':'James Cameron'}]);
   });
 
-  it.skip('should perform many-to-many JOIN and apply WHERE', function(){
+  it('should perform many-to-many JOIN and apply WHERE', function(){
     const actual = engine.execute('SELECT movie.name, actor.name '
       +'FROM movie '
       +'JOIN actor_to_movie ON actor_to_movie.movieID = movie.id '

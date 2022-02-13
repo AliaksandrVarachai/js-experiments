@@ -1,5 +1,6 @@
 function SQLEngine(db) {
   // @returns [tableId: string, columnId: string]
+  // TODO: remove
   this.parseColumnId = function(columnLexeme) {
     return columnLexeme.split('.');
   };
@@ -7,25 +8,31 @@ function SQLEngine(db) {
   this.parseQuery = function(lexemes) {
     if (!(/select/i).test(lexemes[0])) throw Error('Query must start with "select"');
     const len = lexemes.length;
-    let fromPos = 0, joinPos = 0, wherePos = 0;
+    let fromPos = 0, joinPoses = [], wherePos = 0;
     for (let i = 1; i < len; ++i) {
       const lexeme = lexemes[i].toLowerCase();
       switch(lexeme) {
         case 'from': fromPos = i; break;
-        case 'join': joinPos = i; break;
+        case 'join': joinPoses.push(i); break;
         case 'where': wherePos = i; break;
       }
     }
     const columnLexemes = lexemes.slice(1, fromPos);
-    const fromLexemes = lexemes.slice(fromPos + 1, joinPos || wherePos || len);
-    const joinLexemes = joinPos > 0 ? lexemes.slice(joinPos + 1, wherePos || len) : [];
+    const fromLexemes = lexemes.slice(fromPos + 1, joinPoses[0] || wherePos || len);
     const whereLexemes = wherePos > 0 ? lexemes.slice(wherePos + 1) : [];
+    joinPoses.forEach(joinPos => {
+      // JOINs are transformed to WHERE
+      const tableNamePos = joinPos + 1;
+      const onConditionPos = joinPos + 3;
+      fromLexemes.push(',', lexemes[tableNamePos]);
+      if (whereLexemes.length > 0) whereLexemes.push('and');
+      whereLexemes.push(lexemes[onConditionPos], lexemes[onConditionPos + 1], lexemes[onConditionPos + 2]);
+    });
     return {
       name: 'select',
       columns: this.parseColumns(columnLexemes), // Array<[tableId, columnId]>
       from: this.parseTables(fromLexemes), // Array<string>
-      join: joinLexemes.length ? this.parseJoin(joinLexemes) : null,
-      where: whereLexemes.length ? this.parseWhere(whereLexemes) : null,
+      whereArray: whereLexemes.length ? this.parseWhere(whereLexemes) : null,
     };
   };
 
@@ -38,29 +45,23 @@ function SQLEngine(db) {
     return columnLexemes.filter(lexeme => lexeme !== ',');
   };
 
-  this.parseCondition = function([leftArg, operator, rightArg]) {
-    return { leftArg, operator, rightArg };
-  };
-
-  this.parseJoin = function(joinLexems) {
-    const [leftTable, _on, ...conditionLexems] = joinLexems;
-    const { leftArg, rightArg, operator } = this.parseCondition(conditionLexems);
-    return {
-      name: 'join',
-//       condition: this.parsecondition(conditionLexems),
-      leftTable: this.parseColumnId(leftArg),
-      rightTable: this.parseColumnId(rightArg),
-      operator,
-    };
-  };
-
-
+   // @returns Array<{leftArg, rightArg, operator, nextConnective}>
   this.parseWhere = function(whereLexemes) {
-    return this.parseCondition(whereLexemes);
+    // TODO: implement 'and' & 'or' operators
+    const groupedConditions = [];
+    for (let i = 0, len = whereLexemes.length; i < len; i += 4) {
+      groupedConditions.push({
+        leftArg: whereLexemes[i],
+        operator: whereLexemes[i + 1],
+        rightArg: whereLexemes[i + 2],
+        nextConnective: whereLexemes[i + 3] ? whereLexemes[i + 3].toLowerCase() : 'end',  // 'end' for the last condition
+      });
+    }
+    return groupedConditions;
   };
 
   // @returns row | null
-  this.getRowByIndexes = function(tableNames, outputRowIndexes, where) {
+  this.getRowByIndexes = function(tableNames, outputRowIndexes, whereArray) {
     const outputRow = {};
     outputRowIndexes.forEach((rowIndex, tableIndex) => {
       const tableName = tableNames[tableIndex];
@@ -70,10 +71,10 @@ function SQLEngine(db) {
         outputRow[`${tableName}.${columnName}`] = table[rowIndex][columnName];
       });
     });
-    return where ? this.reduceRowByWhere(outputRow, where) : outputRow;
+    return whereArray && whereArray.length > 0 ? this.reduceRowByWhere(outputRow, whereArray) : outputRow;
   };
 
-  this.reduceRowByWhere = function(row, where) {
+  this.reduceRowByWhere = function(row, whereArray) {
     const parseArg = (arg) => {
       if (arg.startsWith("'") && arg.endsWith("'")) {
         return { type: 'string', value: arg.slice(1, -1) };
@@ -100,23 +101,38 @@ function SQLEngine(db) {
     }
 
     // accepts NOT parsed args
-    const checkRowWithCondition = (row, { leftArg, operator, rightArg }) => {
-      const la = parseArg(leftArg);
-      const ra = parseArg(rightArg);
-      if (la.type === 'column') {
-        if (ra.type === 'column') {
-          return checkCondition(row[la.value], operator, row[ra.value]);
+    const areConditionsMet = (row, whereArray) => {
+      for (let i = 0, len = whereArray.length; i < len; ++i) {
+        const { leftArg, operator, rightArg, nextConnective } = whereArray[i];
+        const la = parseArg(leftArg);
+        const ra = parseArg(rightArg);
+        if (la.type === 'column') {
+          if (ra.type === 'column') {
+            return checkCondition(row[la.value], operator, row[ra.value]);
+          }
+          return checkCondition(row[la.value], operator, ra.value);
         }
-        return checkCondition(row[la.value], operator, ra.value);
+        if (ra.type === 'column') {
+          const [rTable, rColumn] = ra.value;
+          return checkCondition(la.value, operator, row[rTable][rColumn]);
+        }
+        const isConditionMet = checkCondition(la.value, operator, ra.value);
+        switch (nextConnective) {
+          case 'and':
+            if (!isConditionMet) return false;
+            break;
+          case 'or':
+            if (isConditionMet) return true;
+            break;
+          case 'end':
+            return isConditionMet;
+          default:
+            throw Error(`Conditional connective "${nextConnective}" is not recognized`);
+        }
       }
-      if (ra.type === 'column') {
-        const [rTable, rColumn] = ra.value;
-        return checkCondition(la.value, operator, row[rTable][rColumn]);
-      }
-      return checkCondition(la.value, operator, ra.value);
     }
 
-    return checkRowWithCondition(row, where) ? row : null;
+    return areConditionsMet(row, whereArray) ? row : null;
   };
 
   this.getRowWithRequiredColumns = function(row, requiredColumnIds) {
@@ -129,7 +145,7 @@ function SQLEngine(db) {
 
   this.execute = function(query){
     const lexemes = query.split(/\s+|(?=,)/);
-    const { columns, from, join, where } = this.parseQuery(lexemes);
+    const { columns, from, whereArray } = this.parseQuery(lexemes);
 
     const outputData = [];
     const tableSizes = from.map(tableName => db[tableName].length);
@@ -138,7 +154,7 @@ function SQLEngine(db) {
     let tableIndex = tableSizes.length - 1;
     let isEnd = false;
     while (!isEnd) {
-      const rowWithAllColumns = this.getRowByIndexes(from, rowIndexes, where);
+      const rowWithAllColumns = this.getRowByIndexes(from, rowIndexes, whereArray);
       if (rowWithAllColumns) {
         outputData.push(this.getRowWithRequiredColumns(rowWithAllColumns, columns));
       }
@@ -147,14 +163,14 @@ function SQLEngine(db) {
         ++rowIndexes[tableIndex];
         continue;
       }
-      while (rowIndexes[tableIndex] === tableSizes[tableIndex] - 1) {
+      while (!isEnd && rowIndexes[tableIndex] === tableSizes[tableIndex] - 1) {
         --tableIndex;
-        if (tableIndex < 0) {
-          isEnd = true;
-          break;
-        }
+        if (tableIndex < 0) isEnd = true;
       }
+      if (isEnd) break;
+      ++rowIndexes[tableIndex];
       for (let i = tableIndex + 1; i < tableSizes.length; ++i) rowIndexes[i] = 0;
+      tableIndex = tableSizes.length - 1;
     }
 
     const areRowsEqual = (row1, row2) => {
