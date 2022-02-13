@@ -1,10 +1,4 @@
 function SQLEngine(db) {
-  // @returns [tableId: string, columnId: string]
-  // TODO: remove
-  this.parseColumnId = function(columnLexeme) {
-    return columnLexeme.split('.');
-  };
-
   this.parseQuery = function(lexemes) {
     if (!(/select/i).test(lexemes[0])) throw Error('Query must start with "select"');
     const len = lexemes.length;
@@ -82,7 +76,7 @@ function SQLEngine(db) {
       if (!isNaN(arg)) {
         return { type: 'number', value: +arg };
       }
-      if (this.parseColumnId(arg).length === 2) {
+      if (/\w+\.\w+/.test(arg)) {
         return { type: 'column', value: arg };
       }
       throw Error(`Argument "${arg}" cannot be parsed`);
@@ -96,6 +90,7 @@ function SQLEngine(db) {
         case '>': return leftOperand > rightOperand;
         case '<=': return leftOperand <= rightOperand;
         case '>=': return leftOperand >= rightOperand;
+        case '<>': return leftOperand !== rightOperand;
         default: throw Error(`Operator "${operator}" is not supported`);
       }
     }
@@ -103,20 +98,21 @@ function SQLEngine(db) {
     // accepts NOT parsed args
     const areConditionsMet = (row, whereArray) => {
       for (let i = 0, len = whereArray.length; i < len; ++i) {
+        let isConditionMet;
         const { leftArg, operator, rightArg, nextConnective } = whereArray[i];
         const la = parseArg(leftArg);
         const ra = parseArg(rightArg);
         if (la.type === 'column') {
           if (ra.type === 'column') {
-            return checkCondition(row[la.value], operator, row[ra.value]);
+            isConditionMet = checkCondition(row[la.value], operator, row[ra.value]);
+          } else {
+            isConditionMet = checkCondition(row[la.value], operator, ra.value);
           }
-          return checkCondition(row[la.value], operator, ra.value);
+        } else if (ra.type === 'column') {
+          isConditionMet = checkCondition(la.value, operator, row[ra.value]);
+        } else {
+          isConditionMet = checkCondition(la.value, operator, ra.value);
         }
-        if (ra.type === 'column') {
-          const [rTable, rColumn] = ra.value;
-          return checkCondition(la.value, operator, row[rTable][rColumn]);
-        }
-        const isConditionMet = checkCondition(la.value, operator, ra.value);
         switch (nextConnective) {
           case 'and':
             if (!isConditionMet) return false;
@@ -144,7 +140,29 @@ function SQLEngine(db) {
   }
 
   this.execute = function(query){
-    const lexemes = query.split(/\s+|(?=,)/);
+    let isOpeningQuotationMark = false
+    const lexemes = [];
+    let lexeme = '';
+    for (let i = 0, len = query.length; i < len; ++i) {
+      const c = query[i];
+      if (/\s/.test(c)) {
+        if (isOpeningQuotationMark) lexeme += c;
+        else if (lexeme) {
+          lexemes.push(lexeme);
+          lexeme = '';
+        }
+      } else if (c === "'") {
+        lexeme += c;
+        isOpeningQuotationMark = !isOpeningQuotationMark;
+      } else if (c === ',') {
+        lexemes.push(lexeme, c);
+        lexeme = '';
+      } else {
+        lexeme += c;
+      }
+    }
+    if (lexeme) lexemes.push(lexeme);
+
     const { columns, from, whereArray } = this.parseQuery(lexemes);
 
     const outputData = [];
