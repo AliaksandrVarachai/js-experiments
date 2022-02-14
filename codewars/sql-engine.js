@@ -152,7 +152,7 @@ function SQLEngine(db) {
           lexeme = '';
         }
       } else if (c === "'") {
-        lexeme += c;
+        if (query[i - 1] !== "'") lexeme += c;
         isOpeningQuotationMark = !isOpeningQuotationMark;
       } else if (c === ',') {
         lexemes.push(lexeme, c);
