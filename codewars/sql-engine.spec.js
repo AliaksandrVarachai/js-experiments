@@ -1,6 +1,7 @@
 const chai = require('chai');
 // const { describe, it } = require('mocha');
 const SQLEngine = require('./sql-engine');
+const db1 = require('./sql-engine-random-db');
 
 chai.config.truncateThreshold = 0;
 
@@ -85,9 +86,30 @@ describe('execution',function(){
       {'movie.name':'Avatar','actor.name':'Sigourney Weaver'},
       {'movie.name':'Infamous','actor.name':'Sigourney Weaver'},
       {'movie.name':'Titanic','actor.name':'Leonardo DiCaprio'}]);
-    assert(1, 2)
   });
 
+  const randomEngine = new SQLEngine(db1);
+  this.timeout(12000);
+  it('Random tests', () => {
+    const randomQueries = [
+      "select director.name, actor.id FROM movie join director ON director.id = movie.directorID JOIN actor_to_movie ON actor_to_movie.movieID = movie.id join actor on actor.id = actor_to_movie.actorID where movie.year < 2002",
+      "SELECT movie.title, movie.directorID FROM movie WHERE movie.year = 1995",
+      "SELECT actor.id, movie.title FROM director JOIN movie on movie.directorID = director.id join actor_to_movie on actor_to_movie.movieID = movie.id JOIN actor on actor.id = actor_to_movie.actorID",
+      "SELECT director.id, director.name FROM director JOIN movie on movie.directorID = director.id join actor_to_movie ON actor_to_movie.movieID = movie.id",
+      "select movie.directorID, movie.title, movie.id FROM movie where movie.year = 2003",
+      "SELECT actor.id from actor",
+      "select director.name from movie join director ON director.id = movie.directorID JOIN actor_to_movie ON actor_to_movie.movieID = movie.id where movie.year = 1993",
+      "SELECT movie.directorID from actor join actor_to_movie on actor_to_movie.actorID = actor.id JOIN movie on movie.id = actor_to_movie.movieID WHERE actor.name = 'Don Cheadle'",
+      "SELECT director.id, director.name, movie.directorID from director join movie on movie.directorID = director.id join actor_to_movie ON actor_to_movie.movieID = movie.id JOIN actor ON actor.id = actor_to_movie.actorID",
+      "SELECT movie.id FROM director join movie on movie.directorID = director.id JOIN actor_to_movie ON actor_to_movie.movieID = movie.id JOIN actor on actor.id = actor_to_movie.actorID where director.name = 'Jon Favreau'",
+    ];
+    const start = Date.now();
+    randomQueries.forEach((query, inx) => {
+      console.log(`Test #${inx} is completed in ${Date.now() - start} ms`)
+      const actual = randomEngine.execute(query);
+      // console.log(actual)
+    });
+  });
 });
 
 function assertSimilarRows(actual, expected, message){
