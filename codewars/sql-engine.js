@@ -14,18 +14,17 @@ function SQLEngine(db) {
     const columnLexemes = lexemes.slice(1, fromPos);
     const fromLexemes = lexemes.slice(fromPos + 1, joinPoses[0] || wherePos || len);
     const whereLexemes = wherePos > 0 ? lexemes.slice(wherePos + 1) : [];
-    joinPoses.forEach(joinPos => {
-      // JOINs are transformed to WHERE
-      const tableNamePos = joinPos + 1;
-      const onConditionPos = joinPos + 3;
-      fromLexemes.push(',', lexemes[tableNamePos]);
-      if (whereLexemes.length > 0) whereLexemes.push('and');
-      whereLexemes.push(lexemes[onConditionPos], lexemes[onConditionPos + 1], lexemes[onConditionPos + 2]);
+    const joinedColumnIdPairs = joinPoses.map(joinPos => {
+      const columnId1 = lexemes[joinPos + 3]; // before ON
+      const columnId2 = lexemes[joinPos + 5]; // after ON
+      return([columnId1, columnId2]);
     });
+
     return {
       name: 'select',
       columns: this.parseColumns(columnLexemes), // Array<[tableId, columnId]>
       from: this.parseTables(fromLexemes), // Array<string>
+      joinedColumnIdPairs, // Array<{columnId1, columnId2}>
       whereArray: whereLexemes.length ? this.parseWhere(whereLexemes) : null,
     };
   };
@@ -52,20 +51,6 @@ function SQLEngine(db) {
       });
     }
     return groupedConditions;
-  };
-
-  // @returns row | null
-  this.getRowByIndexes = function(tableNames, outputRowIndexes, whereArray) {
-    const outputRow = {};
-    outputRowIndexes.forEach((rowIndex, tableIndex) => {
-      const tableName = tableNames[tableIndex];
-      const table = db[tableName];
-      const columnNames = Object.keys(table[0]);
-      columnNames.map(columnName => {
-        outputRow[`${tableName}.${columnName}`] = table[rowIndex][columnName];
-      });
-    });
-    return whereArray && whereArray.length > 0 ? this.reduceRowByWhere(outputRow, whereArray) : outputRow;
   };
 
   this.reduceRowByWhere = function(row, whereArray) {
@@ -139,6 +124,90 @@ function SQLEngine(db) {
     return outputRow;
   }
 
+  /**
+   * @param columnIdPairs: [columnId1, columnId2]
+   */
+  this.getMultipleJoins = function(columnIdPairs) {
+    let joinedTableIndexes = [];
+
+    const indexByTableNames = {};
+    const tableNameByIndexes = [];
+    const tableByIndexes = [];
+    for (let k = 0; k < columnIdPairs.length; ++k) {
+      let [tableName1, columnName1] = columnIdPairs[k][0].split('.');
+      let [tableName2, columnName2] = columnIdPairs[k][1].split('.');
+      let isTable1Indexed = indexByTableNames.hasOwnProperty(tableName1);
+      let isTable2Indexed = indexByTableNames.hasOwnProperty(tableName2);
+
+      if (!isTable1Indexed && isTable2Indexed) {
+        // to avoid code duplication
+        [tableName1, tableName2] = [tableName2, tableName1];
+        [columnName1, columnName2] = [columnName2, columnName1];
+        [isTable1Indexed, isTable2Indexed] = [isTable2Indexed, isTable1Indexed];
+      }
+
+      if (!isTable1Indexed) {
+        tableNameByIndexes.push(tableName1);
+        indexByTableNames[tableName1] = tableByIndexes.push(db[tableName1]) - 1;
+      }
+      if (!isTable2Indexed) {
+        tableNameByIndexes.push(tableName2);
+        indexByTableNames[tableName2] = tableByIndexes.push(db[tableName2]) - 1;
+      }
+      if (!isTable1Indexed && !isTable2Indexed) {
+        const table1 = db[tableName1];
+        const table2 = db[tableName2];
+        table1.forEach((row1, index1) => {
+          const value1 = row1[columnName1];
+          table2.forEach((row2, index2) => {
+            const value2 = row2[columnName2];
+            if (value1 === value2) joinedTableIndexes.push([index1, index2]);
+          });
+        });
+      } else if (isTable1Indexed && !isTable2Indexed) {
+        debugger;
+        const newJoinedTableIndexes = [];
+        const table1IndexInIndexedTables = indexByTableNames[tableName1];
+        const table1 = tableByIndexes[table1IndexInIndexedTables];
+        const table2 = db[tableName2];
+        joinedTableIndexes.forEach(joinedTableRow => {
+          const table1RowIndex = joinedTableRow[table1IndexInIndexedTables];
+          const value1 = table1[table1RowIndex][columnName1];
+          table2.forEach((row2, index2) => {
+            const value2 = row2[columnName2];
+            if (value1 === value2) newJoinedTableIndexes.push([...joinedTableRow, index2]);
+          });
+        });
+        joinedTableIndexes = newJoinedTableIndexes;
+        debugger;
+      } else { // FIXME: does this make sense?
+        const table1IndexInIndexedTables = indexByTableNames[tableName1];
+        const table2IndexInIndexedTables = indexByTableNames[tableName2];
+        const table1 = tableByIndexes[table1IndexInIndexedTables];
+        const table2 = tableByIndexes[table2IndexInIndexedTables];
+        joinedTableIndexes = joinedTableIndexes.filter(joinedTableRow => {
+          const table1RowIndex = joinedTableRow[table1IndexInIndexedTables];
+          const table2RowIndex = joinedTableRow[table2IndexInIndexedTables];
+          const value1 = table1[table1RowIndex];
+          const value2 = table2[table2RowIndex];
+          return value1 === value2;
+        });
+      }
+    }
+
+    return joinedTableIndexes.map(joinedTableRow => {
+      const joinedValues = {};
+      joinedTableRow.forEach((rowIndex, tableIndex) => {
+        const tableName = tableNameByIndexes[tableIndex];
+        const table = tableByIndexes[tableIndex];
+         Object.entries(table[rowIndex]).forEach(([columnName, value]) => {
+           joinedValues[`${tableName}.${columnName}`] = value;
+         });
+      });
+      return joinedValues;
+    });
+  };
+
   this.execute = function(query){
     let isOpeningQuotationMark = false
     const lexemes = [];
@@ -163,33 +232,29 @@ function SQLEngine(db) {
     }
     if (lexeme) lexemes.push(lexeme);
 
-    const { columns, from, whereArray } = this.parseQuery(lexemes);
+    const { columns, from, joinedColumnIdPairs, whereArray } = this.parseQuery(lexemes);
 
-    const outputData = [];
-    const tableSizes = from.map(tableName => db[tableName].length);
-    const rowIndexes = [];
-    for (let i = tableSizes.length - 1; i >= 0; --i) rowIndexes.push(0);
-    let tableIndex = tableSizes.length - 1;
-    let isEnd = false;
-    while (!isEnd) {
-      const rowWithAllColumns = this.getRowByIndexes(from, rowIndexes, whereArray);
-      if (rowWithAllColumns) {
-        outputData.push(this.getRowWithRequiredColumns(rowWithAllColumns, columns));
-      }
+    let outputData = [];
 
-      if (rowIndexes[tableIndex] < tableSizes[tableIndex] - 1) {
-        ++rowIndexes[tableIndex];
-        continue;
-      }
-      while (!isEnd && rowIndexes[tableIndex] === tableSizes[tableIndex] - 1) {
-        --tableIndex;
-        if (tableIndex < 0) isEnd = true;
-      }
-      if (isEnd) break;
-      ++rowIndexes[tableIndex];
-      for (let i = tableIndex + 1; i < tableSizes.length; ++i) rowIndexes[i] = 0;
-      tableIndex = tableSizes.length - 1;
+    if (joinedColumnIdPairs.length > 0) {
+      const joinedData = this.getMultipleJoins(joinedColumnIdPairs);
+      outputData = whereArray ? joinedData.filter(row => this.reduceRowByWhere(row, whereArray)) : joinedData;
+    } else {
+      // todo: remove FROM array
+      const tableName = from[0];
+      const table = db[tableName];
+      const extendedTable = table.map(row => {
+        const rowWithTableName = {};
+        Object.entries(row).forEach(([columnName, value]) => {
+          rowWithTableName[`${tableName}.${columnName}`] = value;
+        });
+        return rowWithTableName;
+      });
+      outputData = whereArray
+        ? extendedTable.filter(row => this.reduceRowByWhere(row, whereArray))
+        : extendedTable;
     }
+    outputData = outputData.map(row => this.getRowWithRequiredColumns(row, columns));
 
     const areRowsEqual = (row1, row2) => {
       const row1Keys = Object.keys(row1);

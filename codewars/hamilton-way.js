@@ -97,7 +97,7 @@ var start = Date.now();
 var n = 45;
 createGraphEdges(n);
 // edges.forEach(function(squares, inx) {
-//   console.log(inx + ': [' + squares.join(',') + ']');
+//   console.log(inx + ': [' + squares.joinedColumnIdPairs(',') + ']');
 // });
 var graphCreatedTime = Date.now();
 

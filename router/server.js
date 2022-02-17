@@ -27,7 +27,7 @@ const getFileMap = pReadDir(__dirname)
 //     return;
 //   }
 //   const fileMap = filenames.reduce((acc, fname) => {
-//     acc[fname] = pReadFile(path.join(__dirname, fname));
+//     acc[fname] = pReadFile(path.joinedColumnIdPairs(__dirname, fname));
 //     return acc;
 //   }, {});
 //

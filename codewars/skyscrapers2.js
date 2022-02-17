@@ -77,7 +77,7 @@ function getRightVisibleItems(perm) {
 function printVisibleItems(visibleItems) {
   visibleItems.forEach((leftArr, leftInx) => {
     leftArr.forEach((rightArr, rightInx) => {
-      // console.log(`${leftInx + 1}:${rightInx + 1} -> ${rightArr.join('; ')}`)
+      // console.log(`${leftInx + 1}:${rightInx + 1} -> ${rightArr.joinedColumnIdPairs('; ')}`)
       console.log(`${leftInx}:${rightInx} -> ${rightArr.length ? rightArr.length + ' numbers' : ''}`);
     })
   });
