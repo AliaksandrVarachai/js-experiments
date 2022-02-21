@@ -1,70 +1,54 @@
 function toPostfix (infix) {
   const lexemes = infix.split(/(?<=[()*\+-]^)|(?=[()*\+-^])/g);
-  const len = lexemes.length;
-
+  const operators = '^*/+-'.split('').reduce((acc, c) => {
+    acc[c] = true;
+    return acc;
+  }, {});
   const precedences = ['()', '^', '*/', '+-'].reverse().reduce((acc, s, i) => {
     s.split('').forEach(c => { acc[c] = i; });
     return acc;
   }, {});
+  const isLeftAssociative = (operator) => operator !== '^';
 
-  const isOperator = (lexeme) => '()^*/+-'.indexOf(lexeme) > -1;
+  const output = [];
+  const operatorStack = [];
 
-  let pos = 0;
-
-  function parse( isParenthesis = false) {
-    debugger;
-    let operands = '';
-    let operators = '';
-    let startP = -1;
-    let prevOperand = '';
-    let prevOperator = '';
-
-    while (pos < len) {
-      const c = lexemes[pos];
-      if (isOperator(c)) {
-        if (c === '(') {
-          ++pos;
-          operands = parse( true) + prevOperand;
-          operators = operators + prevOperator;
-          continue;
-        }
-        if (c === ')') {
-          if (isParenthesis) ++pos;
-          operands = prevOperand + operands;
-          operators = operators + prevOperator;
-          return operands + operators;
-        }
-        const p = precedences[c];
-        if (startP < 0) startP = p;
-        if (p > startP) {
-          --pos;
-          operands = operands + parse(); // because the order is changed
-          // operators = prevOperator + operators;
-          prevOperand = '';
-        } else if (p < startP) {
-          // ++pos;
-          operands = operands + prevOperand;
-          operators = prevOperator + operators;
-          return operands + operators;
-        } else {
-          ++pos;
-          operands = operands + prevOperand;
-          operators = prevOperator + operators;
-          prevOperator = c;
-        }
-      } else {
-        ++pos;
-        prevOperand = c;
+  for (let c of lexemes) {
+    if (operators[c]) {
+      let p = precedences[c];
+      let topOperator = operatorStack[operatorStack.length - 1];
+      while (topOperator !== '(' && (precedences[topOperator] > p || precedences[topOperator] === p && isLeftAssociative(c))) {
+        output.push(operatorStack.pop());
+        topOperator = operatorStack[operatorStack.length - 1];
       }
+      operatorStack.push(c);
+    } else if (c === '(') {
+      operatorStack.push(c);
+    } else if (c === ')') {
+      while (operatorStack[operatorStack.length - 1] !== '(') {
+        output.push(operatorStack.pop());
+      }
+      operatorStack.pop()
+    } else {
+      output.push(c);
     }
-
-    operands = operands + prevOperand;
-    operators = prevOperator + operators;
-    return operands + operators;
   }
 
-  return parse();
+  return output.join('') + operatorStack.reverse().join('');
 }
 
-console.log(toPostfix('1+2*8-3+4-5'))
-// module.exports = {};
+const tests = [
+  {expr: "1*2", answer: "12*"},
+  {expr: "2+7*5", answer: "275*+"},
+  {expr: "3*3/(7+1)", answer: "33*71+/"},
+  {expr: "5+(6-2)*9+3^(7-1)", answer: "562-9*+371-^+"},
+  {expr: "1^2^3", answer: "123^^"},
+]
+
+tests.forEach(it => {
+  const actual = toPostfix(it.expr);
+  console.log(actual === it.answer
+    ? `"${it.expr}" test passed`
+    : `"${it.expr}" test failed: actual="${actual}, expected=${it.answer}"`
+  )
+})
