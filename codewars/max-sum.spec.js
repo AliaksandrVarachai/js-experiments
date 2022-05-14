@@ -308,7 +308,7 @@ const matrix300x300 = [
 
 describe('execution', () => {
   it('should work up to 12s', () => {
-    maxSum(matrix300x300);
+    for(let i = 0; i < 70; ++i) maxSum(matrix300x300);
     assert.strictEqual(true, true, 'Something wrong');
   });
 

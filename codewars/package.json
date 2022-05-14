@@ -5,7 +5,7 @@
   "main": "24.js",
   "scripts": {
     "test": "mocha sql-engine.spec.js",
-    "test-max-sum": "mocha max-sum.spec.js --timeout=60000"
+    "test-max-sum": "mocha max-sum.spec.js --timeout=20000"
   },
   "keywords": [],
   "author": "",
