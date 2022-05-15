@@ -99,6 +99,7 @@ module.exports = function maxSumOf(matrix) {
     }
   }
 
+
   // Kagane's algorithm providing O(n^3) complexity
   var maxSum = Number.NEGATIVE_INFINITY;
   for (var i = 0; i < n; ++i) {
