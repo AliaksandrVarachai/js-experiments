@@ -51,14 +51,14 @@ function maxSumOfOld(matrix) {
 }
 
 module.exports = function maxSumOf(matrix) {
-  const n = matrix.length;
+  var n = matrix.length;
 
   // case when the matrix does not contain any positive elements
-  let areNonPositiveElements = true;
-  let maxNonPositiveElement = Number.NEGATIVE_INFINITY;
-  for (let i = 0; i < n; ++i) {
+  var areNonPositiveElements = true;
+  var maxNonPositiveElement = Number.NEGATIVE_INFINITY;
+  for (var i = 0; i < n; ++i) {
     if (!areNonPositiveElements) break;
-    for (let j = 0; j < n; ++j) {
+    for (var j = 0; j < n; ++j) {
       if (matrix[i][j] > 0) {
         areNonPositiveElements = false;
         break;
@@ -70,10 +70,10 @@ module.exports = function maxSumOf(matrix) {
   if (areNonPositiveElements) return maxNonPositiveElement;
 
   // 2D array each element is a sum of [0,0]-[i,j] submatrix.
-  const sums = [];
-  for (let i = 0; i < n; ++i) {
-    const row = [];
-    for (let j = 0; j < n; ++j) {
+  var sums = [];
+  for (var i = 0; i < n; ++i) {
+    var row = [];
+    for (var j = 0; j < n; ++j) {
       if (i === 0) {
         if (j === 0) row.push(matrix[0][0]);
         else row.push(matrix[0][j] + row[j - 1]);
@@ -85,9 +85,9 @@ module.exports = function maxSumOf(matrix) {
     sums.push(row);
   }
 
-  const getSubmatrixSum = (rowInx, colInx, width, height) => {
-    const maxI = rowInx + height - 1;
-    const maxJ = colInx + width - 1;
+  function getSubmatrixSum (rowInx, colInx, height) {
+    var maxI = rowInx + height - 1;
+    var maxJ = colInx;
     if (rowInx === 0) {
       if (colInx === 0) return sums[maxI][maxJ];
       else {
@@ -100,12 +100,12 @@ module.exports = function maxSumOf(matrix) {
   }
 
   // Kagane's algorithm providing O(n^3) complexity
-  let maxSum = Number.NEGATIVE_INFINITY;
-  for (let i = 0; i < n; ++i) {
-    for (let h = 1; h <= n - i; ++h) {
-      let currentSum = 0;
-      for (let j = 0; j < n; ++j) {
-        currentSum += getSubmatrixSum(i, j, 1, h)
+  var maxSum = Number.NEGATIVE_INFINITY;
+  for (var i = 0; i < n; ++i) {
+    for (var h = 1; h <= n - i; ++h) {
+      var currentSum = 0;
+      for (var j = 0; j < n; ++j) {
+        currentSum += getSubmatrixSum(i, j, h)
         if (currentSum < 0) currentSum = 0;
         if (currentSum > maxSum) maxSum = currentSum;
       }
