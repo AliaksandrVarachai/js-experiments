@@ -85,6 +85,7 @@ module.exports = function maxSumOf(matrix) {
     sums.push(row);
   }
 
+
   function getSubmatrixSum (rowInx, colInx, height) {
     var maxI = rowInx + height - 1;
     var maxJ = colInx;
