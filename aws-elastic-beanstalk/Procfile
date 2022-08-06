@@ -1,1 +1,1 @@
-node root-index.js
+web: node root-index.js
