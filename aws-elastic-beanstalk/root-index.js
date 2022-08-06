@@ -21,7 +21,7 @@ app.all('/*', (req, res) => {
   if (recipientUrl) {
     const axiosConfig = {
       method: req.method,
-      url: `${recipientUrl}${req.originalUrl}`,
+      url: recipientUrl,
       ...(Object.keys(req.body || {}).length > 0 && { data: req.body })
     };
     console.log('axiosConfig', axiosConfig);
@@ -43,6 +43,7 @@ app.all('/*', (req, res) => {
   } else {
     res.status(502).json({ error: 'Cannot process request' });
   }
+  console.log('');
 });
 
 app.listen(PORT, () => {
