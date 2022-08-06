@@ -1,4 +1,4 @@
 # https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/nodejs-configuration-procfile.html
 
 # TODO: replace with "npm start"
-web: node root-index.js
+web: node index.js
