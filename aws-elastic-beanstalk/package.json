@@ -2,7 +2,7 @@
   "name": "6",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "root-index.js",
   "scripts": {
     "start": "node root-index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
