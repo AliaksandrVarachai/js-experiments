@@ -1,0 +1,18 @@
+service: experiments-6-product
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: eu-west-1
+  profile: epam-admin2
+
+functions:
+  product:
+    handler: handler.product
+    events:
+      - http:
+          path: product
+          method: get
+          cors: true

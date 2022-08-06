@@ -1,0 +1,19 @@
+service: experiments-6-cart
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: eu-west-1
+  profile: epam-admin2
+
+functions:
+  cart:
+    handler: handler.cart
+    events:
+      - http:
+          path: cart
+          method: get
+          cors: true
+

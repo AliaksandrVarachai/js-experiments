@@ -1,0 +1,18 @@
+service: experiments-6-third-party-product
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: eu-west-1
+  profile: epam-admin2
+
+functions:
+  thirdPartyProduct:
+    handler: handler.thirdPartyProduct
+    events:
+      - http:
+          path: third-party-product
+          method: get
+          cors: true
