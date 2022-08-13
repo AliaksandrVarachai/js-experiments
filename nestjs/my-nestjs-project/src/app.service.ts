@@ -1,15 +1,19 @@
-import { Injectable, HttpCode } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class ProductService {
-  getProducts(): string {
-    return JSON.stringify([
-      {
-        id: 'product1',
-      }, {
-        id: 'product2',
-      }
-    ]);
+  async getProducts(): Promise<any[]> {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve([
+          {
+            id: 'product1',
+          }, {
+            id: 'product2',
+          }
+        ]);
+      }, 500);
+    });
   }
   getProduct(id: string): string {
     return JSON.stringify({ id, description: 'some description' })

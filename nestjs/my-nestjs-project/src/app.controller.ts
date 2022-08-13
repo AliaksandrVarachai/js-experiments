@@ -1,5 +1,6 @@
-import { Controller, Get, HttpCode, Param } from '@nestjs/common';
+import { Controller, Get, HttpCode, Param, Req } from '@nestjs/common';
 import { ProductService, CartService } from './app.service';
+import { Request } from 'express';
 
 @Controller('product')
 export class ProductController {
@@ -7,7 +8,7 @@ export class ProductController {
 
   @Get()
   @HttpCode(201)
-  getProducts(): string {
+  async getProducts(): Promise<any[]> {
     return this.productService.getProducts();
   }
 
@@ -22,7 +23,7 @@ export class CartController {
   constructor(private readonly cartService: CartService) {}
 
   @Get()
-  getCart(): string {
+  getCart(@Req() request: Request): string {
     return this.cartService.getCart();
   }
 }
