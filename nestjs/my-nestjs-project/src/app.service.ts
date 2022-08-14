@@ -1,32 +1,13 @@
-import { Injectable } from '@nestjs/common';
-import { HttpService } from '@nestjs/axios'
+import { Injectable, Req } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
+import { IRequestWithRecipientUrl } from './app.middleware';
 
 @Injectable()
-export class ProductService {
-  async getProducts(): Promise<any[]> {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve([
-          {
-            id: 'product1',
-          }, {
-            id: 'product2',
-          }
-        ]);
-      }, 500);
-    });
-  }
-  async getProduct(id: string): Promise<any> {
-    return { id, description: 'some description' };
-  }
-}
-
-@Injectable()
-export class CartService {
+export class BffService {
   constructor(private readonly httpService: HttpService) {}
 
-  async getCart(): Promise<any> {
-    const response = await this.httpService.axiosRef.get(process.env.CART_SERVICE);
+  async all(@Req() req: IRequestWithRecipientUrl): Promise<any> {
+    const response = await this.httpService.axiosRef.get(req.recipientUrl);
     console.log(response.data);
     return response.data;
   }
