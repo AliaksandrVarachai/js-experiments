@@ -1,12 +1,13 @@
-import {Injectable, Req, RequestMethod} from '@nestjs/common';
+import { Injectable, Req, Res } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
+import { Response } from 'express';
 import { IRequestWithRecipientUrl } from './app.middleware';
 
 @Injectable()
 export class BffService {
   constructor(private readonly httpService: HttpService) {}
 
-  async all(@Req() req: IRequestWithRecipientUrl): Promise<any> {
+  async all(@Req() req: IRequestWithRecipientUrl, @Res() res: Response): Promise<any> {
     const isBody = Object.keys(req.body || {}).length > 0;
     const authorizationHeader = req.get('authorization');
     const axiosRequest = {
@@ -18,30 +19,19 @@ export class BffService {
       }
     };
     try {
-      const response = await this.httpService.axiosRef(axiosRequest);
-      const { error, data } = response.data;
-      if (error) {
-        console.log('**************** ERROR', error);
-        return error;
-      }
-      if (data) {
-        console.log('**************** DATA', data);
-        return data;
-      }
-      return response.data;
+      const axiosResponse = await this.httpService.axiosRef(axiosRequest);
+      res.status(axiosResponse.status)
+      const { error, data } = axiosResponse.data;
+      if (error) return res.json(error);
+      if (data) return res.json(data);
+      return res.json(axiosResponse.data);
     } catch (error) {
-      console.log('**************** ERROR', error);
-      return '99999'
       if (error.response) {
         const { status, data } = error.response;
-        // res.status(status).json(data);
+        return res.status(status).json(data);
       } else {
-        // res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: error.message });
       }
     }
-    // console.log('******************** axiosRequest=', axiosRequest)
-    // const response = await this.httpService.axiosRef(axiosRequest);
-    // console.log(response.data);
-    // return response.data;
   }
 }

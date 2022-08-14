@@ -8,7 +8,7 @@ export class BffController {
 
   @All()
   async all(@Req() req: IRequestWithRecipientUrl, @Res() res): Promise<any> {
-    return this.bffService.all(req);
+    return this.bffService.all(req, res);
   }
 }
 
