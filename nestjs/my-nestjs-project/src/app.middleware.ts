@@ -33,5 +33,3 @@ export function recipientUrl(req: IRequestWithRecipientUrl, res: Response, next:
   req.recipientUrl = recipientUrl.toString();
   next();
 }
-
-
