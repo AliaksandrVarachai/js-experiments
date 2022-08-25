@@ -4,6 +4,7 @@ const { elderAgeSimple } = require('./become-immortal');
 const { assert } = chai;
 
 const testData = [
+  { args: [1,4,0,100000], ans: 5 },
   { args: [8,5,1,100], ans: 5 },
   { args: [8,8,0,100007], ans: 224 },
   { args: [25,31,0,100007], ans: 11925 },
