@@ -10,9 +10,24 @@ function elderAgeSimple(m,n,l,t) {
     }
     array.push(row);
   }
-  // console.log(`${m}x${n}:`);
-  // array.forEach(row => console.log(row.join(',')))
+  console.log(`${m}x${n}:`);
+  array.forEach(row => console.log(row.join(',')))
   return sum % t;
+}
+
+function elderAge2(m,n,l,t) {
+  const m2 = m.toString(2).split('');
+  const n2 = n.toString(2).split('');
+
+
+  function cutRectangle(startColInx = 0, startRowInx = 0) {
+    if (m2.length < n2.length) {
+      const colPower = m2.length - 1
+      //
+    }
+  }
+
+
 }
 
 function elderAge(m,n,l,t) {

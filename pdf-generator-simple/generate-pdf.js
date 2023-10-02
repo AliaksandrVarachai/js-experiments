@@ -10,9 +10,11 @@ const pdfFilename = `file-${date.toISOString().split('.')[0]}.pdf`;
 // Default export is a4 paper, portrait, using millimeters for units
 const doc = new jsPDF();
 console.log('1st font: ', doc.getFont().fontName)
-const binaryTtfData = await fetch('http://localhost:9080/VLGothic-regular.ttf').then(response => response.arrayBuffer());
+const binaryTtfData = await fetch('http://localhost:9080/VLGothic-regular.ttf').then(response => response.text());
+// console.log('********** binaryTtfData=', binaryTtfData)
 const pdfFontName = 'my Font';
-const base64EncodedPdfFont = Buffer.from(binaryTtfData).toString('base64');
+// const base64EncodedPdfFont = Buffer.from(binaryTtfData).toString('base64');
+const base64EncodedPdfFont = btoa(binaryTtfData);
 
 doc.addFileToVFS(`${pdfFontName}.ttf`, base64EncodedPdfFont);
 doc.addFont(`${pdfFontName}.ttf`, pdfFontName, "normal");
