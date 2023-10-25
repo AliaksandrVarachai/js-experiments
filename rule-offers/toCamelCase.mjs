@@ -1,4 +1,4 @@
-import mockedRuleOffersResponse from './mockedRuleOffersResponse.json' assert { type: 'json' };
+import mockedRuleOffersResponse from './mockedRuleOffersResponseV1.1.json' assert { type: 'json' };
 import fs from 'node:fs';
 
 const objToCamelCase = (obj) => {
@@ -44,7 +44,7 @@ const objToCamelCase = (obj) => {
 const camelCaseObj = objToCamelCase(mockedRuleOffersResponse);
 
 try {
-  fs.writeFileSync('./result.json', JSON.stringify(camelCaseObj, null, 4));
+  fs.writeFileSync('./result-v3.json', JSON.stringify(camelCaseObj, null, 4));
 } catch (error) {
   console.error(error);
 }

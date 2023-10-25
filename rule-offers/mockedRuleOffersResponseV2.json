@@ -1,0 +1,1087 @@
+{
+  "RuleOffers": [
+    {
+      "RuleOfferId": "21942660|1606",
+      "Type": "offer",
+      "OfferType": "RuleOffer",
+      "EventId": "1606",
+      "Text": "01/15/20 - Lakers vs. Orlando",
+      "RuleOfferText": "Events With Fees & Taxes",
+      "Details": [
+        "Crypto.com Arena, Los Angeles"
+      ],
+      "OfferCategory": "Extras",
+      "Time": "2023-01-15T19:30:00Z",
+      "EndDateUTC": "2024-01-16T06:59:00Z",
+      "OnSaleDate": "0001-01-01T00:00:00Z",
+      "Expires": "0001-01-01T00:00:00Z",
+      "ExpiresDisplayDate": "0001-01-01T00:00:00Z",
+      "ExpiresDisplayDateUTC": "0001-01-01T00:00:00Z",
+      "Fulfillments": [
+        {
+          "DeliveryMethodDescription": "E-Ticket",
+          "IsFlashSeat": false,
+          "IsETicket": true,
+          "FulfillmentId": "4258",
+          "DeliveryMethod": "E-Ticket"
+        }
+      ],
+      "RuleOfferGroups": [
+        {
+          "RuleOfferId": "21942660|1606",
+          "RuleOfferGroupId": "21942661",
+          "RuleOfferGroupKey": "21942660|1606|21942661",
+          "Text": "Fees&Taxes",
+          "QtyType": "MinMax",
+          "ProductId": 20664487,
+          "ProductTypeDesc": "Lexus Club",
+          "Prices": [
+            25
+          ],
+          "CartCriteria": [
+            {
+              "ZoneId": "1606|3",
+              "PriceCodeId": "45034",
+              "PriceLevelId": "3616",
+              "StatusCodeIds": [
+                6
+              ],
+              "Price": 25
+            }
+          ],
+          "DisplayOrder": 1,
+          "MinQty": 0,
+          "MaxQty": 3,
+          "SalesEnabled": true
+        }
+      ]
+    },
+    {
+      "RuleOfferId": "21942660|2032",
+      "Type": "offer",
+      "OfferType": "RuleOffer",
+      "EventId": "2032",
+      "Text": "Lakers01",
+      "RuleOfferText": "Events With Fees & Taxes",
+      "Details": [
+        "Crypto.com Arena, Los Angeles"
+      ],
+      "OfferCategory": "Extras",
+      "Time": "2023-06-09T00:00:00Z",
+      "EndDateUTC": "2025-06-10T06:59:00Z",
+      "OnSaleDate": "0001-01-01T00:00:00Z",
+      "Expires": "0001-01-01T00:00:00Z",
+      "ExpiresDisplayDate": "0001-01-01T00:00:00Z",
+      "ExpiresDisplayDateUTC": "0001-01-01T00:00:00Z",
+      "Fulfillments": [
+        {
+          "DeliveryMethodDescription": "E-Ticket",
+          "IsFlashSeat": false,
+          "IsETicket": true,
+          "FulfillmentId": "4258",
+          "DeliveryMethod": "E-Ticket"
+        }
+      ],
+      "RuleOfferGroups": [
+        {
+          "RuleOfferId": "21942660|2032",
+          "RuleOfferGroupId": "21942661",
+          "RuleOfferGroupKey": "21942660|2032|21942661",
+          "Text": "Fees&Taxes",
+          "QtyType": "MinMax",
+          "ProductId": 21858153,
+          "ProductTypeDesc": "Lexus Club",
+          "Prices": [
+            25
+          ],
+          "CartCriteria": [
+            {
+              "ZoneId": "2032|3",
+              "PriceCodeId": "45034",
+              "PriceLevelId": "3616",
+              "StatusCodeIds": [
+                6
+              ],
+              "Price": 25
+            }
+          ],
+          "DisplayOrder": 1,
+          "MinQty": 0,
+          "MaxQty": 1,
+          "SalesEnabled": true
+        }
+      ]
+    },
+    {
+      "RuleOfferId": "21942660|2108",
+      "Type": "offer",
+      "OfferType": "RuleOffer",
+      "EventId": "2108",
+      "Text": "Kings Game 1 2050",
+      "RuleOfferText": "Events With Fees & Taxes",
+      "Details": [
+        "Crypto.com Arena, Los Angeles"
+      ],
+      "OfferCategory": "Extras",
+      "Time": "2050-01-01T20:00:00Z",
+      "EndDateUTC": "2050-01-02T06:59:00Z",
+      "OnSaleDate": "0001-01-01T00:00:00Z",
+      "Expires": "0001-01-01T00:00:00Z",
+      "ExpiresDisplayDate": "0001-01-01T00:00:00Z",
+      "ExpiresDisplayDateUTC": "0001-01-01T00:00:00Z",
+      "Fulfillments": [
+        {
+          "DeliveryMethodDescription": "E-Ticket",
+          "IsFlashSeat": false,
+          "IsETicket": true,
+          "FulfillmentId": "4258",
+          "DeliveryMethod": "E-Ticket"
+        }
+      ],
+      "RuleOfferGroups": [
+        {
+          "RuleOfferId": "21942660|2108",
+          "RuleOfferGroupId": "21942661",
+          "RuleOfferGroupKey": "21942660|2108|21942661",
+          "Text": "Fees&Taxes",
+          "QtyType": "MinMax",
+          "ProductId": 21879379,
+          "ProductTypeDesc": "Lexus Club",
+          "Prices": [
+            25
+          ],
+          "CartCriteria": [
+            {
+              "ZoneId": "2108|3",
+              "PriceCodeId": "45034",
+              "PriceLevelId": "3616",
+              "StatusCodeIds": [
+                6
+              ],
+              "Price": 25
+            }
+          ],
+          "DisplayOrder": 1,
+          "MinQty": 0,
+          "MaxQty": 2,
+          "SalesEnabled": true
+        }
+      ]
+    },
+    {
+      "RuleOfferId": "21942660|2061",
+      "Type": "offer",
+      "OfferType": "RuleOffer",
+      "EventId": "2061",
+      "Text": "28/10/25 Clippers vs. Charlotte",
+      "RuleOfferText": "Events With Fees & Taxes",
+      "Details": [
+        "Crypto.com Arena, Los Angeles"
+      ],
+      "OfferCategory": "Extras",
+      "Time": "2025-10-28T00:00:00Z",
+      "EndDateUTC": "2025-10-29T06:59:00Z",
+      "OnSaleDate": "0001-01-01T00:00:00Z",
+      "Expires": "0001-01-01T00:00:00Z",
+      "ExpiresDisplayDate": "0001-01-01T00:00:00Z",
+      "ExpiresDisplayDateUTC": "0001-01-01T00:00:00Z",
+      "Fulfillments": [
+        {
+          "DeliveryMethodDescription": "E-Ticket",
+          "IsFlashSeat": false,
+          "IsETicket": true,
+          "FulfillmentId": "4258",
+          "DeliveryMethod": "E-Ticket"
+        }
+      ],
+      "RuleOfferGroups": [
+        {
+          "RuleOfferId": "21942660|2061",
+          "RuleOfferGroupId": "21942661",
+          "RuleOfferGroupKey": "21942660|2061|21942661",
+          "Text": "Fees&Taxes",
+          "QtyType": "MinMax",
+          "ProductId": 21870216,
+          "ProductTypeDesc": "Lexus Club",
+          "Prices": [
+            25
+          ],
+          "CartCriteria": [
+            {
+              "ZoneId": "2061|3",
+              "PriceCodeId": "45034",
+              "PriceLevelId": "3616",
+              "StatusCodeIds": [
+                6
+              ],
+              "Price": 25
+            }
+          ],
+          "DisplayOrder": 1,
+          "MinQty": 0,
+          "MaxQty": 2,
+          "SalesEnabled": true
+        }
+      ]
+    },
+    {
+      "RuleOfferId": "21942660|2062",
+      "Type": "offer",
+      "OfferType": "RuleOffer",
+      "EventId": "2062",
+      "Text": "10/10/22 Kings vs New Jersey",
+      "RuleOfferText": "Events With Fees & Taxes",
+      "Details": [
+        "Crypto.com Arena, Los Angeles"
+      ],
+      "OfferCategory": "Extras",
+      "Time": "2022-10-10T00:00:00Z",
+      "EndDateUTC": "2025-01-11T06:59:00Z",
+      "OnSaleDate": "0001-01-01T00:00:00Z",
+      "Expires": "0001-01-01T00:00:00Z",
+      "ExpiresDisplayDate": "0001-01-01T00:00:00Z",
+      "ExpiresDisplayDateUTC": "0001-01-01T00:00:00Z",
+      "Fulfillments": [
+        {
+          "DeliveryMethodDescription": "E-Ticket",
+          "IsFlashSeat": false,
+          "IsETicket": true,
+          "FulfillmentId": "4258",
+          "DeliveryMethod": "E-Ticket"
+        }
+      ],
+      "RuleOfferGroups": [
+        {
+          "RuleOfferId": "21942660|2062",
+          "RuleOfferGroupId": "21942661",
+          "RuleOfferGroupKey": "21942660|2062|21942661",
+          "Text": "Fees&Taxes",
+          "QtyType": "MinMax",
+          "ProductId": 21870237,
+          "ProductTypeDesc": "Lexus Club",
+          "Prices": [
+            25
+          ],
+          "CartCriteria": [
+            {
+              "ZoneId": "2062|3",
+              "PriceCodeId": "45034",
+              "PriceLevelId": "3616",
+              "StatusCodeIds": [
+                6
+              ],
+              "Price": 25
+            }
+          ],
+          "DisplayOrder": 1,
+          "MinQty": 0,
+          "MaxQty": 1,
+          "SalesEnabled": true
+        }
+      ]
+    },
+    {
+      "RuleOfferId": "21942660|2060",
+      "Type": "offer",
+      "OfferType": "RuleOffer",
+      "EventId": "2060",
+      "Text": "25/10/25 Clippers vs. Los Angeles Lakers",
+      "RuleOfferText": "Events With Fees & Taxes",
+      "Details": [
+        "Crypto.com Arena, Los Angeles"
+      ],
+      "OfferCategory": "Extras",
+      "Time": "2025-10-25T00:00:00Z",
+      "EndDateUTC": "2025-10-26T06:59:00Z",
+      "OnSaleDate": "0001-01-01T00:00:00Z",
+      "Expires": "0001-01-01T00:00:00Z",
+      "ExpiresDisplayDate": "0001-01-01T00:00:00Z",
+      "ExpiresDisplayDateUTC": "0001-01-01T00:00:00Z",
+      "Fulfillments": [
+        {
+          "DeliveryMethodDescription": "E-Ticket",
+          "IsFlashSeat": false,
+          "IsETicket": true,
+          "FulfillmentId": "4258",
+          "DeliveryMethod": "E-Ticket"
+        }
+      ],
+      "RuleOfferGroups": [
+        {
+          "RuleOfferId": "21942660|2060",
+          "RuleOfferGroupId": "21942661",
+          "RuleOfferGroupKey": "21942660|2060|21942661",
+          "Text": "Fees&Taxes",
+          "QtyType": "MinMax",
+          "ProductId": 21870208,
+          "ProductTypeDesc": "Lexus Club",
+          "Prices": [
+            25
+          ],
+          "CartCriteria": [
+            {
+              "ZoneId": "2060|3",
+              "PriceCodeId": "45034",
+              "PriceLevelId": "3616",
+              "StatusCodeIds": [
+                6
+              ],
+              "Price": 25
+            }
+          ],
+          "DisplayOrder": 1,
+          "MinQty": 0,
+          "MaxQty": 2,
+          "SalesEnabled": true
+        }
+      ]
+    },
+    {
+      "RuleOfferId": "21942660|2063",
+      "Type": "offer",
+      "OfferType": "RuleOffer",
+      "EventId": "2063",
+      "Text": "10/20/22 Kings vs. Toronto",
+      "RuleOfferText": "Events With Fees & Taxes",
+      "Details": [
+        "Crypto.com Arena, Los Angeles"
+      ],
+      "OfferCategory": "Extras",
+      "Time": "2022-10-20T00:00:00Z",
+      "EndDateUTC": "2025-01-21T06:59:00Z",
+      "OnSaleDate": "0001-01-01T00:00:00Z",
+      "Expires": "0001-01-01T00:00:00Z",
+      "ExpiresDisplayDate": "0001-01-01T00:00:00Z",
+      "ExpiresDisplayDateUTC": "0001-01-01T00:00:00Z",
+      "Fulfillments": [
+        {
+          "DeliveryMethodDescription": "E-Ticket",
+          "IsFlashSeat": false,
+          "IsETicket": true,
+          "FulfillmentId": "4258",
+          "DeliveryMethod": "E-Ticket"
+        }
+      ],
+      "RuleOfferGroups": [
+        {
+          "RuleOfferId": "21942660|2063",
+          "RuleOfferGroupId": "21942661",
+          "RuleOfferGroupKey": "21942660|2063|21942661",
+          "Text": "Fees&Taxes",
+          "QtyType": "MinMax",
+          "ProductId": 21870245,
+          "ProductTypeDesc": "Lexus Club",
+          "Prices": [
+            25
+          ],
+          "CartCriteria": [
+            {
+              "ZoneId": "2063|3",
+              "PriceCodeId": "45034",
+              "PriceLevelId": "3616",
+              "StatusCodeIds": [
+                6
+              ],
+              "Price": 25
+            }
+          ],
+          "DisplayOrder": 1,
+          "MinQty": 0,
+          "MaxQty": 2,
+          "SalesEnabled": true
+        }
+      ]
+    },
+    {
+      "RuleOfferId": "21942660|2059",
+      "Type": "offer",
+      "OfferType": "RuleOffer",
+      "EventId": "2059",
+      "Text": "23/10/2025 Clippers vs. Melbourne (Pre)",
+      "RuleOfferText": "Events With Fees & Taxes",
+      "Details": [
+        "Crypto.com Arena, Los Angeles"
+      ],
+      "OfferCategory": "Extras",
+      "Time": "2025-10-23T00:00:00Z",
+      "EndDateUTC": "2025-10-24T06:59:00Z",
+      "OnSaleDate": "0001-01-01T00:00:00Z",
+      "Expires": "0001-01-01T00:00:00Z",
+      "ExpiresDisplayDate": "0001-01-01T00:00:00Z",
+      "ExpiresDisplayDateUTC": "0001-01-01T00:00:00Z",
+      "Fulfillments": [
+        {
+          "DeliveryMethodDescription": "E-Ticket",
+          "IsFlashSeat": false,
+          "IsETicket": true,
+          "FulfillmentId": "4258",
+          "DeliveryMethod": "E-Ticket"
+        }
+      ],
+      "RuleOfferGroups": [
+        {
+          "RuleOfferId": "21942660|2059",
+          "RuleOfferGroupId": "21942661",
+          "RuleOfferGroupKey": "21942660|2059|21942661",
+          "Text": "Fees&Taxes",
+          "QtyType": "MinMax",
+          "ProductId": 21870200,
+          "ProductTypeDesc": "Lexus Club",
+          "Prices": [
+            25
+          ],
+          "CartCriteria": [
+            {
+              "ZoneId": "2059|3",
+              "PriceCodeId": "45034",
+              "PriceLevelId": "3616",
+              "StatusCodeIds": [
+                6
+              ],
+              "Price": 25
+            }
+          ],
+          "DisplayOrder": 1,
+          "MinQty": 0,
+          "MaxQty": 2,
+          "SalesEnabled": true
+        }
+      ]
+    },
+    {
+      "RuleOfferId": "21942660|2058",
+      "Type": "offer",
+      "OfferType": "RuleOffer",
+      "EventId": "2058",
+      "Text": "20/10/25 Clippers vs. Denver (pre)",
+      "RuleOfferText": "Events With Fees & Taxes",
+      "Details": [
+        "Crypto.com Arena, Los Angeles"
+      ],
+      "OfferCategory": "Extras",
+      "Time": "2025-10-20T00:00:00Z",
+      "EndDateUTC": "2025-10-21T06:59:00Z",
+      "OnSaleDate": "0001-01-01T00:00:00Z",
+      "Expires": "0001-01-01T00:00:00Z",
+      "ExpiresDisplayDate": "0001-01-01T00:00:00Z",
+      "ExpiresDisplayDateUTC": "0001-01-01T00:00:00Z",
+      "Fulfillments": [
+        {
+          "DeliveryMethodDescription": "E-Ticket",
+          "IsFlashSeat": false,
+          "IsETicket": true,
+          "FulfillmentId": "4258",
+          "DeliveryMethod": "E-Ticket"
+        }
+      ],
+      "RuleOfferGroups": [
+        {
+          "RuleOfferId": "21942660|2058",
+          "RuleOfferGroupId": "21942661",
+          "RuleOfferGroupKey": "21942660|2058|21942661",
+          "Text": "Fees&Taxes",
+          "QtyType": "MinMax",
+          "ProductId": 21870192,
+          "ProductTypeDesc": "Lexus Club",
+          "Prices": [
+            25
+          ],
+          "CartCriteria": [
+            {
+              "ZoneId": "2058|3",
+              "PriceCodeId": "45034",
+              "PriceLevelId": "3616",
+              "StatusCodeIds": [
+                6
+              ],
+              "Price": 25
+            }
+          ],
+          "DisplayOrder": 1,
+          "MinQty": 0,
+          "MaxQty": 2,
+          "SalesEnabled": true
+        }
+      ]
+    },
+    {
+      "RuleOfferId": "21942660|2213",
+      "Type": "offer",
+      "OfferType": "RuleOffer",
+      "EventId": "2213",
+      "Text": "Kings Game 2 2050",
+      "RuleOfferText": "Events With Fees & Taxes",
+      "Details": [
+        "Crypto.com Arena, Los Angeles"
+      ],
+      "OfferCategory": "Extras",
+      "Time": "2050-01-02T20:00:00Z",
+      "EndDateUTC": "2050-01-03T06:59:00Z",
+      "OnSaleDate": "0001-01-01T00:00:00Z",
+      "Expires": "0001-01-01T00:00:00Z",
+      "ExpiresDisplayDate": "0001-01-01T00:00:00Z",
+      "ExpiresDisplayDateUTC": "0001-01-01T00:00:00Z",
+      "Fulfillments": [
+        {
+          "DeliveryMethodDescription": "E-Ticket",
+          "IsFlashSeat": false,
+          "IsETicket": true,
+          "FulfillmentId": "4258",
+          "DeliveryMethod": "E-Ticket"
+        }
+      ],
+      "RuleOfferGroups": [
+        {
+          "RuleOfferId": "21942660|2213",
+          "RuleOfferGroupId": "21942661",
+          "RuleOfferGroupKey": "21942660|2213|21942661",
+          "Text": "Fees&Taxes",
+          "QtyType": "MinMax",
+          "ProductId": 21893473,
+          "ProductTypeDesc": "Lexus Club",
+          "Prices": [
+            25
+          ],
+          "CartCriteria": [
+            {
+              "ZoneId": "2213|3",
+              "PriceCodeId": "45034",
+              "PriceLevelId": "3616",
+              "StatusCodeIds": [
+                6
+              ],
+              "Price": 25
+            }
+          ],
+          "DisplayOrder": 1,
+          "MinQty": 0,
+          "MaxQty": 2,
+          "SalesEnabled": true
+        }
+      ]
+    },
+    {
+      "RuleOfferId": "21942660|2214",
+      "Type": "offer",
+      "OfferType": "RuleOffer",
+      "EventId": "2214",
+      "Text": "Kings Game 3 2050",
+      "RuleOfferText": "Events With Fees & Taxes",
+      "Details": [
+        "Crypto.com Arena, Los Angeles"
+      ],
+      "OfferCategory": "Extras",
+      "Time": "2050-01-03T20:00:00Z",
+      "EndDateUTC": "2050-01-04T06:59:00Z",
+      "OnSaleDate": "0001-01-01T00:00:00Z",
+      "Expires": "0001-01-01T00:00:00Z",
+      "ExpiresDisplayDate": "0001-01-01T00:00:00Z",
+      "ExpiresDisplayDateUTC": "0001-01-01T00:00:00Z",
+      "Fulfillments": [
+        {
+          "DeliveryMethodDescription": "E-Ticket",
+          "IsFlashSeat": false,
+          "IsETicket": true,
+          "FulfillmentId": "4258",
+          "DeliveryMethod": "E-Ticket"
+        }
+      ],
+      "RuleOfferGroups": [
+        {
+          "RuleOfferId": "21942660|2214",
+          "RuleOfferGroupId": "21942661",
+          "RuleOfferGroupKey": "21942660|2214|21942661",
+          "Text": "Fees&Taxes",
+          "QtyType": "MinMax",
+          "ProductId": 21893481,
+          "ProductTypeDesc": "Lexus Club",
+          "Prices": [
+            25
+          ],
+          "CartCriteria": [
+            {
+              "ZoneId": "2214|3",
+              "PriceCodeId": "45034",
+              "PriceLevelId": "3616",
+              "StatusCodeIds": [
+                6
+              ],
+              "Price": 25
+            }
+          ],
+          "DisplayOrder": 1,
+          "MinQty": 0,
+          "MaxQty": 3,
+          "SalesEnabled": true
+        }
+      ]
+    },
+    {
+      "RuleOfferId": "21942660|2215",
+      "Type": "offer",
+      "OfferType": "RuleOffer",
+      "EventId": "2215",
+      "Text": "Kings Game 4 2050",
+      "RuleOfferText": "Events With Fees & Taxes",
+      "Details": [
+        "Crypto.com Arena, Los Angeles"
+      ],
+      "OfferCategory": "Extras",
+      "Time": "2050-01-04T20:00:00Z",
+      "EndDateUTC": "2050-01-05T06:59:00Z",
+      "OnSaleDate": "0001-01-01T00:00:00Z",
+      "Expires": "0001-01-01T00:00:00Z",
+      "ExpiresDisplayDate": "0001-01-01T00:00:00Z",
+      "ExpiresDisplayDateUTC": "0001-01-01T00:00:00Z",
+      "Fulfillments": [
+        {
+          "DeliveryMethodDescription": "E-Ticket",
+          "IsFlashSeat": false,
+          "IsETicket": true,
+          "FulfillmentId": "4258",
+          "DeliveryMethod": "E-Ticket"
+        }
+      ],
+      "RuleOfferGroups": [
+        {
+          "RuleOfferId": "21942660|2215",
+          "RuleOfferGroupId": "21942661",
+          "RuleOfferGroupKey": "21942660|2215|21942661",
+          "Text": "Fees&Taxes",
+          "QtyType": "MinMax",
+          "ProductId": 21893489,
+          "ProductTypeDesc": "Lexus Club",
+          "Prices": [
+            25
+          ],
+          "CartCriteria": [
+            {
+              "ZoneId": "2215|3",
+              "PriceCodeId": "45034",
+              "PriceLevelId": "3616",
+              "StatusCodeIds": [
+                6
+              ],
+              "Price": 25
+            }
+          ],
+          "DisplayOrder": 1,
+          "MinQty": 0,
+          "MaxQty": 2,
+          "SalesEnabled": true
+        }
+      ]
+    },
+    {
+      "RuleOfferId": "21942660|2216",
+      "Type": "offer",
+      "OfferType": "RuleOffer",
+      "EventId": "2216",
+      "Text": "Kings Game 5 2050",
+      "RuleOfferText": "Events With Fees & Taxes",
+      "Details": [
+        "Crypto.com Arena, Los Angeles"
+      ],
+      "OfferCategory": "Extras",
+      "Time": "2050-01-05T20:00:00Z",
+      "EndDateUTC": "2050-01-06T06:59:00Z",
+      "OnSaleDate": "0001-01-01T00:00:00Z",
+      "Expires": "0001-01-01T00:00:00Z",
+      "ExpiresDisplayDate": "0001-01-01T00:00:00Z",
+      "ExpiresDisplayDateUTC": "0001-01-01T00:00:00Z",
+      "Fulfillments": [
+        {
+          "DeliveryMethodDescription": "E-Ticket",
+          "IsFlashSeat": false,
+          "IsETicket": true,
+          "FulfillmentId": "4258",
+          "DeliveryMethod": "E-Ticket"
+        }
+      ],
+      "RuleOfferGroups": [
+        {
+          "RuleOfferId": "21942660|2216",
+          "RuleOfferGroupId": "21942661",
+          "RuleOfferGroupKey": "21942660|2216|21942661",
+          "Text": "Fees&Taxes",
+          "QtyType": "MinMax",
+          "ProductId": 21893497,
+          "ProductTypeDesc": "Lexus Club",
+          "Prices": [
+            25
+          ],
+          "CartCriteria": [
+            {
+              "ZoneId": "2216|3",
+              "PriceCodeId": "45034",
+              "PriceLevelId": "3616",
+              "StatusCodeIds": [
+                6
+              ],
+              "Price": 25
+            }
+          ],
+          "DisplayOrder": 1,
+          "MinQty": 0,
+          "MaxQty": 2,
+          "SalesEnabled": true
+        }
+      ]
+    }
+  ],
+  "RuleOfferFees": {
+    "Assignments": [
+      {
+        "Id": 8042562,
+        "Assignments": [
+          {
+            "Assignment": "Offer",
+            "Optional": false
+          }
+        ]
+      },
+      {
+        "Id": 21942653,
+        "Assignments": [
+          {
+            "Assignment": "Group",
+            "Optional": false,
+            "AssociatedWith": 21942661
+          }
+        ]
+      },
+      {
+        "Id": 21942657,
+        "Assignments": [
+          {
+            "Assignment": "Group",
+            "Optional": false,
+            "AssociatedWith": 21942661
+          }
+        ]
+      },
+      {
+        "Id": 9516625,
+        "Assignments": [
+          {
+            "Assignment": "Group",
+            "Optional": false,
+            "AssociatedWith": 21942661
+          },
+          {
+            "Assignment": "MethodOfDelivery",
+            "Optional": false,
+            "AssociatedWith": 4258
+          }
+        ]
+      },
+      {
+        "Id": 21943933,
+        "Assignments": [
+          {
+            "Assignment": "Group",
+            "Optional": false,
+            "AssociatedWith": 21942661
+          }
+        ]
+      },
+      {
+        "Id": 11643588,
+        "Assignments": [
+          {
+            "Assignment": "Group",
+            "Optional": false,
+            "AssociatedWith": 21943941
+          }
+        ]
+      },
+      {
+        "Id": 9195922,
+        "Assignments": [
+          {
+            "Assignment": "Group",
+            "Optional": false,
+            "AssociatedWith": 21943941
+          }
+        ]
+      },
+      {
+        "Id": 8439545,
+        "Assignments": [
+          {
+            "Assignment": "Group",
+            "Optional": false,
+            "AssociatedWith": 21943941
+          }
+        ]
+      },
+      {
+        "Id": 21943714,
+        "Assignments": [
+          {
+            "Assignment": "Group",
+            "Optional": false,
+            "AssociatedWith": 21943941
+          }
+        ]
+      }
+    ],
+    "Fees": [
+      {
+        "Id": 8042562,
+        "Description": "FEDEX Overnight",
+        "ApplicationMethod": "PerOrder",
+        "Components": [
+          {
+            "Id": 8042563,
+            "Name": "FEDEX Overnight",
+            "CalculationMethod": "Fixed",
+            "RoundOff": 0,
+            "TaxIds": [],
+            "Rate": 15
+          }
+        ]
+      },
+      {
+        "Id": 21942653,
+        "Description": "Fee Name: Per Item",
+        "ApplicationMethod": "PerItem",
+        "Components": [
+          {
+            "Id": 21942654,
+            "Name": "Fee Component",
+            "CalculationMethod": "Fixed",
+            "RoundOff": 0,
+            "TaxIds": [],
+            "Rate": 1.25
+          }
+        ]
+      },
+      {
+        "Id": 21942657,
+        "Description": "Fee Name: Per Order",
+        "ApplicationMethod": "PerOrder",
+        "Components": [
+          {
+            "Id": 21942658,
+            "Name": "Component",
+            "CalculationMethod": "Fixed",
+            "RoundOff": 0,
+            "TaxIds": [],
+            "Rate": 3.1
+          }
+        ]
+      },
+      {
+        "Id": 9516625,
+        "Description": "CC Fee",
+        "ApplicationMethod": "PerItem",
+        "Components": [
+          {
+            "Id": 9516626,
+            "Name": "CC Fee",
+            "CalculationMethod": "Percentage",
+            "RoundOff": 0.25,
+            "TaxIds": [],
+            "Rate": 3
+          }
+        ]
+      },
+      {
+        "Id": 21943933,
+        "Description": "Lookup Fee",
+        "ApplicationMethod": "PerOrder",
+        "Components": [
+          {
+            "Id": 21943934,
+            "Name": "Lookup Fee",
+            "CalculationMethod": "Lookup",
+            "RoundOff": 0,
+            "LookupRanges": [
+              {
+                "End": 24.99,
+                "Start": 0,
+                "Amount": 0.45
+              },
+              {
+                "End": 44.99,
+                "Start": 24.99,
+                "Amount": 1.1
+              },
+              {
+                "End": 64.99,
+                "Start": 44.99,
+                "Amount": 1.7
+              },
+              {
+                "End": 84.99,
+                "Start": 64.99,
+                "Amount": 2.3
+              },
+              {
+                "End": 104.99,
+                "Start": 84.99,
+                "Amount": 2.9
+              },
+              {
+                "End": 134.99,
+                "Start": 104.99,
+                "Amount": 3.65
+              },
+              {
+                "End": 164.99,
+                "Start": 134.99,
+                "Amount": 4.55
+              },
+              {
+                "End": 184.99,
+                "Start": 164.99,
+                "Amount": 5.3
+              },
+              {
+                "End": 199.99,
+                "Start": 184.99,
+                "Amount": 5.8
+              },
+              {
+                "End": 229.99,
+                "Start": 199.99,
+                "Amount": 6.5
+              },
+              {
+                "End": 264.99,
+                "Start": 229.99,
+                "Amount": 7.45
+              },
+              {
+                "End": 289.99,
+                "Start": 264.99,
+                "Amount": 8.35
+              },
+              {
+                "End": 324.99,
+                "Start": 289.99,
+                "Amount": 9.25
+              },
+              {
+                "End": 359.99,
+                "Start": 324.99,
+                "Amount": 10.3
+              },
+              {
+                "End": 389.99,
+                "Start": 359.99,
+                "Amount": 11.3
+              },
+              {
+                "End": 424.99,
+                "Start": 389.99,
+                "Amount": 12.25
+              },
+              {
+                "End": 454.99,
+                "Start": 424.99,
+                "Amount": 13.25
+              },
+              {
+                "End": 474.99,
+                "Start": 454.99,
+                "Amount": 14
+              },
+              {
+                "End": 499.99,
+                "Start": 474.99,
+                "Amount": 14.65
+              },
+              {
+                "End": 0,
+                "Start": 499.99,
+                "Amount": 15.4
+              }
+            ],
+            "TaxIds": [
+              2001,
+              2002
+            ],
+            "Rate": 0
+          }
+        ]
+      },
+      {
+        "Id": 11643588,
+        "Description": "AXS Fee - $4.00",
+        "ApplicationMethod": "PerItem",
+        "Components": [
+          {
+            "Id": 11643589,
+            "Name": "Processing Fee",
+            "CalculationMethod": "Fixed",
+            "RoundOff": 0,
+            "TaxIds": [],
+            "Rate": 4
+          }
+        ]
+      },
+      {
+        "Id": 9195922,
+        "Description": "AXS Fee",
+        "ApplicationMethod": "PerItem",
+        "Components": [
+          {
+            "Id": 9195923,
+            "Name": "Processing Fee",
+            "CalculationMethod": "Fixed",
+            "RoundOff": 0,
+            "TaxIds": [],
+            "Rate": 3
+          }
+        ]
+      },
+      {
+        "Id": 8439545,
+        "Description": "MT Processing Fee - $10",
+        "ApplicationMethod": "PerOrder",
+        "Components": [
+          {
+            "Id": 8439546,
+            "Name": "MT Processing Fee - $10",
+            "CalculationMethod": "Fixed",
+            "RoundOff": 0,
+            "TaxIds": [],
+            "Rate": 10
+          }
+        ]
+      },
+      {
+        "Id": 21943714,
+        "Description": "AXS RuleOffers Fee + Taxes",
+        "ApplicationMethod": "PerOrder",
+        "Components": [
+          {
+            "Id": 21943715,
+            "Name": "TAX",
+            "CalculationMethod": "Fixed",
+            "RoundOff": 0,
+            "TaxIds": [
+              2001,
+              2002
+            ],
+            "Rate": 3
+          }
+        ]
+      }
+    ],
+    "Taxes": [
+      {
+        "Id": 2001,
+        "Description": "Tax Component 1",
+        "Rate": 0.25
+      },
+      {
+        "Id": 2002,
+        "Description": "Tax Component 2",
+        "Rate": 0.1
+      }
+    ]
+  }
+}
