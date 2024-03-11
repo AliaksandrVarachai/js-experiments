@@ -1,8 +1,54 @@
 import mockedFullRuleOffersResponse from './mockedFullRuleOffersResponse.json' assert { type: 'json' };
 import fs from 'node:fs';
 
-const exclusiveRuleOffers = mockedFullRuleOffersResponse.filter(offer => offer.offerCategory === 'Exclusive');
-console.log('*********** exclusiveRuleOffers.length=', exclusiveRuleOffers.length)
+const { ruleOffers, ruleOfferFeeDetails } = mockedFullRuleOffersResponse;
+
+const exclusiveRuleOffers = ruleOffers.filter(offer => offer.offerCategory === 'Exclusive');
+
+// {
+//   "feeId": 21944701,
+//   "assignment": "Offer",
+//   "optional": false,
+//   "associatedWith": "21853161"
+// },
+const exclusiveRuleOffersWithFees = [];
+const offersWithOfferAssignment = {};
+
+ruleOfferFeeDetails[0].assignments.forEach(assignment => {
+  if (assignment.assignment === 'Offer') {
+    exclusiveRuleOffers.forEach(offer => {
+      if (assignment.associatedWith === offer.ruleOfferOriginId) {
+        // exclusiveRuleOffersWithFees.push(offer);
+        offersWithOfferAssignment[offer.ruleOfferId] = true;
+      }
+    });
+  }
+
+  if (assignment.assignment === 'Group') {
+    exclusiveRuleOffers.forEach(offer => {
+      // if (!offersWithOfferAssignment[offer.ruleOfferId]) return;
+      const groupsWithFees = [];
+      offer.ruleOfferGroups.forEach(group => {
+        // 21944781 -
+        if (assignment.associatedWith === group.ruleOfferGroupId) {
+          groupsWithFees.push(group);
+        }
+      });
+      console.log('******** groupsWithFees=', groupsWithFees)
+      if (groupsWithFees.length > 0) {
+        const offerWithFilteredGroups = {
+          ...offer,
+          ruleOfferGroups: groupsWithFees,
+        }
+        exclusiveRuleOffersWithFees.push(offerWithFilteredGroups);
+      }
+    })
+  }
+});
+
+// console.log('********', offersWithOfferAssignment)
+
+// console.log('*********** foundMultiInventoryRuleOfferGroups.length=', foundMultiInventoryRuleOfferGroups.length)
 
 
 const objToCamelCase = (obj) => {
@@ -45,10 +91,11 @@ const objToCamelCase = (obj) => {
   return resultObj;
 }
 
-const camelCaseObj = objToCamelCase(mockedFullRuleOffersResponse);
+// const camelCaseObj = objToCamelCase(mockedFullRuleOffersResponse);
 
 try {
   fs.writeFileSync('./filtered-exclusive-offers.json', JSON.stringify(exclusiveRuleOffers, null, 4));
+  fs.writeFileSync('./exclusive-rule-offers-with-fees.json', JSON.stringify(exclusiveRuleOffersWithFees, null, 4));
 } catch (error) {
   console.error(error);
 }
