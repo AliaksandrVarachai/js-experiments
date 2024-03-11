@@ -1,6 +1,10 @@
 import mockedFullRuleOffersResponse from './mockedFullRuleOffersResponse.json' assert { type: 'json' };
 import fs from 'node:fs';
 
+const exclusiveRuleOffers = mockedFullRuleOffersResponse.filter(offer => offer.offerCategory === 'Exclusive');
+console.log('*********** exclusiveRuleOffers.length=', exclusiveRuleOffers.length)
+
+
 const objToCamelCase = (obj) => {
   const toCamelCase = (str) => str[0].toLowerCase() + str.slice(1);
 
@@ -44,7 +48,7 @@ const objToCamelCase = (obj) => {
 const camelCaseObj = objToCamelCase(mockedFullRuleOffersResponse);
 
 try {
-  fs.writeFileSync('./result-v3.json', JSON.stringify(camelCaseObj, null, 4));
+  fs.writeFileSync('./filtered-exclusive-offers.json', JSON.stringify(exclusiveRuleOffers, null, 4));
 } catch (error) {
   console.error(error);
 }
