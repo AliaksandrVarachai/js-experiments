@@ -7,15 +7,15 @@ const filterCriteria = [
   ["id", null],
   ["type", null],
   ["rights", null],
-  ["flashEventId", null],
+  ["flashEventId", null], //
   ["assignee", null],
   ["status", "SOLD"],
   ["cansell", true],
   ["barcodeStatus", "1"],
   ["resaleAllowed", true],
-  ["fulfillment.isFlashSeat", true],
+  ["fulfillment.isFlashSeat", true], //
   ["fulfillment.deliveryMethodType", 4],   // ?
-  ["flashSeatId", null],
+  ["flashSeatId", null], //
   ["primarySeatIdentifier", null],
   ["flashMemberId", null],
 ];
