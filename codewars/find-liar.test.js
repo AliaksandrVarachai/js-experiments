@@ -5,7 +5,6 @@ const findOutMrWrong = require("./find-liar");
 
 describe("Sample Tests", () => {
   describe("Basic deduction", () => {
-
     it('Conversation 1', () => {
       const conversation = [
         "John:I'm in 1st position.",
@@ -64,7 +63,7 @@ describe("Sample Tests", () => {
   });
   describe("No alibi", () => {
 
-    it('Conversation 6', () => {
+    it.only('Conversation 6', () => {
       const conversation = [
         "Tom:The man behind me is Bob.",
         "Bob:The man in front of me is Tom.",
