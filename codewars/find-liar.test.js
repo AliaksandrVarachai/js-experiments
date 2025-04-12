@@ -63,7 +63,7 @@ describe("Sample Tests", () => {
   });
   describe("No alibi", () => {
 
-    it.only('Conversation 6', () => {
+    it('Conversation 6', () => {
       const conversation = [
         "Tom:The man behind me is Bob.",
         "Bob:The man in front of me is Tom.",

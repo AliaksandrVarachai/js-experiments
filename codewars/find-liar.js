@@ -21,10 +21,6 @@ function isContradiction(assertionsList) {
     }
   }
 
-  console.log('queue=', queue)
-
-  let isContradictionFound = false;
-
   const nameRelationsMap = {
     // John: {
     //   next: 'Ivan',
@@ -50,7 +46,6 @@ function isContradiction(assertionsList) {
     if (pos2 < 0) return pos1 < queueLen - 1 && !queue[pos1 + 1];
     return pos2 - pos1 === 1;
   }
-
 
   // checks self-contradiction between names & with queue
   for (let [name, a] of assertionsList) {
@@ -137,51 +132,40 @@ function findOutMrWrong(conversation) {
   }
 
   // assertions{} are filled up now
-
   const liars = new Set(Object.keys(assertions));
   const assertionsList = Object.entries(assertions);
-  console.log('assertionsList=', assertionsList)
   for (let i = 0; i < assertionsList.length; ++i) {
     const [excludedName] = assertionsList[i];
-    console.log('excludedName=', excludedName)
     const excludedAssertionList = assertionsList.slice();
     excludedAssertionList.splice(i, 1);
-    console.log('excludedAssertionList=', excludedAssertionList)
-
-    if (excludedName === 'Tom') {
-      debugger;
-    }
     if (isContradiction(excludedAssertionList)) {
-      console.log('************** contradiction => MrRight ', excludedName);
       liars.delete(excludedName)
     }
-    console.log('************** liars=', liars);
+  }
+
+  // find list of trusted then filter them out of liars:
+  const assertionsMap = assertionsList.reduce((acc, [name, a]) => {
+    acc[name] = a;
+    return acc;
+  }, {});
+  const trustedSet = new Set();
+  for (let [name, a] of assertionsList) {
+    if (a.manBehindMe) {
+      if (assertionsMap[a.manBehindMe].manInFrontMe === name) {
+        trustedSet.add(name, a.manBehindMe);
+      }
+    }
+    if (a.manInFrontMe) {
+      if (assertionsMap[a.manInFrontMe].manBehindMe === name) {
+        trustedSet.add(name, a.manInFrontMe);
+      }
+    }
+  }
+  for (let trusted of trustedSet) {
+    liars.delete(trusted);
   }
 
   return liars.size === 1 ? liars.keys().next().value : null;
 }
 
 module.exports = findOutMrWrong;
-
-// prints array of double lists
-function printDoubleLinkedLists(lists) {
-  console.log('******* DoubleLinkedLists START')
-  const array = [];
-  lists.forEach(list => {
-    let hasPrev = !!list?.prev;
-    let item = list;
-    while (hasPrev) {
-      item = item.prev;
-      hasPrev = !!item.prev;
-    }
-    let hasNext = !!item?.next;
-    array.push(item);
-    while (hasNext) {
-      item = item.next;
-      array.push(item);
-      hasNext = !!item.next;
-    }
-  });
-  console.log(array)
-  console.log('******* DoubleLinkedLists END')
-}
