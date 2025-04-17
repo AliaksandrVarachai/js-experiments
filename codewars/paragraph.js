@@ -10,7 +10,7 @@ function nicePara(inText, lineLength) {
   }
 
   while (restText) {
-    // debugger;
+    debugger;
     if (restText.length <= lineLength) {
       paragraphs.push(restText);
       restText = '';
@@ -41,17 +41,22 @@ function nicePara(inText, lineLength) {
     }
     // whitespace found: checking if the word can be broken
     pos -= 1; // for -
-    const wordLeftHalf = restText.slice(wordLeftInx, pos);
-    let wordRightInx = pos;
-    debugger;
-    while (wordRightInx + 1 < restText.length && /[^\s-]/.test(restText[wordRightInx + 1])) ++wordRightInx;
-    const wordRightHalf = restText.slice(pos, wordRightInx + 1);
-    // TODO: is abd|a- possible break?
-    if (/[\w]{2}/i.test(wordLeftHalf) && /[\w]{2}/i.test(wordRightHalf)) {
-      // word can be broken at pos
-      updateRestTextByPos('-');
-      continue;
+
+    while (pos > wordLeftInx) {
+      const wordLeftHalf = restText.slice(wordLeftInx, pos);
+      let wordRightInx = pos;
+      while (wordRightInx + 1 < restText.length && /[^\s-]/.test(restText[wordRightInx + 1])) ++wordRightInx;
+      const wordRightHalf = restText.slice(pos, wordRightInx + 1);
+      // TODO: is abd|a- possible break?
+      if (/[\w]{2}/i.test(wordLeftHalf) && /[\w]{2}/i.test(wordRightHalf)) {
+        // word can be broken at pos
+        updateRestTextByPos('-');
+        break;
+      }
+      pos -= 1;
     }
+    if (pos > wordLeftInx) continue;
+
     // word cannot be broken at pos
     pos = wordLeftInx - 1; // for ' '
     updateRestTextByPos();

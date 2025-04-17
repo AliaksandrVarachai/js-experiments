@@ -25,19 +25,19 @@ describe('\n\nInput text: \'' + inText2 + '\'\n\nLine length: ' + 23, function()
   });
 });
 
-// describe('\n\nInput text: \'' + inText3 + '\'\n\nLine length: ' + 47, function() {
-//   var results = `The words and the meanings would be soaking\nwet, and the meaning would grow with its incre-\nasing layers.`;
-//   it('Correct answer: \n<pre>' + results +'</pre>\nAnswer returned: \n<pre>' + nicePara(inText3, 47) + '</pre>', function() {
-//     assert.strictEqual(nicePara(inText3, 47), results);
-//   });
-// });
-//
-// describe('\n\nInput text: \'' + inText4 + '\'\n\nLine length: ' + 20, function() {
-//   var results = `Rhubarb crumble ma-\nte... Mmm Mmmmm....`;
-//   it('Correct answer: \n<pre>' + results +'</pre>\nAnswer returned: \n<pre>' + nicePara(inText4, 20) + '</pre>', function() {
-//     assert.strictEqual(nicePara(inText4, 20), results);
-//   });
-// });
+describe('\n\nInput text: \'' + inText3 + '\'\n\nLine length: ' + 47, function() {
+  var results = `The words and the meanings would be soaking\nwet, and the meaning would grow with its incre-\nasing layers.`;
+  it('Correct answer: \n<pre>' + results +'</pre>\nAnswer returned: \n<pre>' + nicePara(inText3, 47) + '</pre>', function() {
+    assert.strictEqual(nicePara(inText3, 47), results);
+  });
+});
+
+describe('\n\nInput text: \'' + inText4 + '\'\n\nLine length: ' + 20, function() {
+  var results = `Rhubarb crumble ma-\nte... Mmm Mmmmm....`;
+  it('Correct answer: \n<pre>' + results +'</pre>\nAnswer returned: \n<pre>' + nicePara(inText4, 20) + '</pre>', function() {
+    assert.strictEqual(nicePara(inText4, 20), results);
+  });
+});
 //
 // describe('\n\nInput text: \'' + inText5 + '\'\n\nLine length: ' + 35, function() {
 //   var results = `The answer to that question is,\n\'Inheritance is incompatible with\nequality.\'`;
