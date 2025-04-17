@@ -33,7 +33,8 @@ function nicePara(inText, lineLength) {
     // check if the word can be broken
     let wordLeftInx = pos;
     while (wordLeftInx > 0 && /[^\s-]/.test(restText[wordLeftInx - 1])) --wordLeftInx;
-    if (restText[wordLeftInx - 1] === '-') {
+    const wordLeftHalf = restText.slice(wordLeftInx, pos - 1); // check if a work is broken not by hyphen
+    if (restText[wordLeftInx - 1] === '-' && !/[\w]{2}/.test(wordLeftHalf)) {
       // break by -
       pos = wordLeftInx;
       updateRestTextByPos();
@@ -48,7 +49,7 @@ function nicePara(inText, lineLength) {
       while (wordRightInx + 1 < restText.length && /[^\s-]/.test(restText[wordRightInx + 1])) ++wordRightInx;
       const wordRightHalf = restText.slice(pos, wordRightInx + 1);
       // TODO: is abd|a- possible break?
-      if (/[\w]{2}/i.test(wordLeftHalf) && /[\w]{2}/i.test(wordRightHalf)) {
+      if (/[\w]{2}/.test(wordLeftHalf) && /[\w]{2}/.test(wordRightHalf)) {
         // word can be broken at pos
         updateRestTextByPos('-');
         break;

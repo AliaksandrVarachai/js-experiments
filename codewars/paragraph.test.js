@@ -38,48 +38,48 @@ describe('\n\nInput text: \'' + inText4 + '\'\n\nLine length: ' + 20, function()
     assert.strictEqual(nicePara(inText4, 20), results);
   });
 });
-//
-// describe('\n\nInput text: \'' + inText5 + '\'\n\nLine length: ' + 35, function() {
-//   var results = `The answer to that question is,\n\'Inheritance is incompatible with\nequality.\'`;
-//   it('Correct answer: \n<pre>' + results +'</pre>\nAnswer returned: \n<pre>' + nicePara(inText5, 35) + '</pre>', function() {
-//     assert.strictEqual(nicePara(inText5, 35), results);
-//   });
-// });
-//
-// describe('\n\nInput text: \'' + inText6 + '\'\n\nLine length: ' + 15, function() {
-//   var results = `\'\'Yes\'\', \'\'th-\nat\'\' \'\'was\'\'\n\'\'the\'\' \'\'ma-\nin\'\' \'\'probl-\nem\'\'... \'\'I\'m\'\'\n\'\'going\'\'\n\'\'to\'\' \'\'Barmo-\nuth\'\'. \'\'I\'m\'\'\n\'\'going\'\'\n\'\'to\'\' \'\'Lisb-\non\'\'. \'\'I\'\'\n\'\'have\'\' \'\'a\'\'\n\'\'membership\'\'\n\'\'of\'\' \'\'Sena-\nte\'\' \'\'House\'\'\n\'\'Library\'\'.`;
-//   it('Correct answer: \n<pre>' + results +'</pre>\nAnswer returned: \n<pre>' + nicePara(inText6, 15) + '</pre>', function() {
-//     assert.strictEqual(nicePara(inText6, 15), results);
-//   });
-// });
-//
-// describe('\n\nInput text: \'' + inText7 + '\'\n\nLine length: ' + 15, function() {
-//   var results = `There\'re — few\n— reasons — to\n— write — a —\nsentence — with\n— all — these —\ndashes — but —\nhere\'s — one.`;
-//   it('Correct answer: \n<pre>' + results +'</pre>\nAnswer returned: \n<pre>' + nicePara(inText7, 15) + '</pre>', function() {
-//     assert.strictEqual(nicePara(inText7, 15), results);
-//   });
-// });
-//
-// describe('\n\nInput text: \'' + inText8 + '\'\n\nLine length: ' + 15, function() {
-//   var results = `If I had an up-\nto-date, down-\nto-earth, back-\nto-basics, rig-\nht-on, no-nons-\nense, hard-hit-\nting, rock-sol-\nid, yet chill-\ned-out, zen-li-\nke, laid-back\nkinda cat, I\ncould go about\nmy day with an\nup-to-date, do-\nwn-to-earth,\nback-to-basics,\nright-on, no-\nnonsense, hard-\nhitting, rock-\nsolid, yet chi-\nlled-out, zen-\nlike, laid-back\nkinda attitude.`;
-//   it('Correct answer: \n<pre>' + results +'</pre>\nAnswer returned: \n<pre>' + nicePara(inText8, 15) + '</pre>', function() {
-//     assert.strictEqual(nicePara(inText8, 15), results);
-//   });
-// });
-//
-// describe("Some edge case tests", function() {
-//   var Cases = [
-//     ["aaaaaaaaaa          ", 15, "aaaaaaaaaa"],
-//   ];
-//
-//   it("Testing for edge cases", function() {
-//     Cases.forEach(function([text, size, answer]) {
-//       var result = nicePara(text, size);
-//       assert.strictEqual(
-//         result,
-//         answer,
-//         `\n\nInput text: \n\n${text}\n\nLine length: ${size}\n\n* Correct answer: \n\n${answer}\n\n* Answer returned: \n\n${result}\n`
-//       );
-//     });
-//   });
-// });
+
+describe('\n\nInput text: \'' + inText5 + '\'\n\nLine length: ' + 35, function() {
+  var results = `The answer to that question is,\n\'Inheritance is incompatible with\nequality.\'`;
+  it('Correct answer: \n<pre>' + results +'</pre>\nAnswer returned: \n<pre>' + nicePara(inText5, 35) + '</pre>', function() {
+    assert.strictEqual(nicePara(inText5, 35), results);
+  });
+});
+
+describe('\n\nInput text: \'' + inText6 + '\'\n\nLine length: ' + 15, function() {
+  var results = `\'\'Yes\'\', \'\'th-\nat\'\' \'\'was\'\'\n\'\'the\'\' \'\'ma-\nin\'\' \'\'probl-\nem\'\'... \'\'I\'m\'\'\n\'\'going\'\'\n\'\'to\'\' \'\'Barmo-\nuth\'\'. \'\'I\'m\'\'\n\'\'going\'\'\n\'\'to\'\' \'\'Lisb-\non\'\'. \'\'I\'\'\n\'\'have\'\' \'\'a\'\'\n\'\'membership\'\'\n\'\'of\'\' \'\'Sena-\nte\'\' \'\'House\'\'\n\'\'Library\'\'.`;
+  it('Correct answer: \n<pre>' + results +'</pre>\nAnswer returned: \n<pre>' + nicePara(inText6, 15) + '</pre>', function() {
+    assert.strictEqual(nicePara(inText6, 15), results);
+  });
+});
+
+describe('\n\nInput text: \'' + inText7 + '\'\n\nLine length: ' + 15, function() {
+  var results = `There\'re — few\n— reasons — to\n— write — a —\nsentence — with\n— all — these —\ndashes — but —\nhere\'s — one.`;
+  it('Correct answer: \n<pre>' + results +'</pre>\nAnswer returned: \n<pre>' + nicePara(inText7, 15) + '</pre>', function() {
+    assert.strictEqual(nicePara(inText7, 15), results);
+  });
+});
+
+describe('\n\nInput text: \'' + inText8 + '\'\n\nLine length: ' + 15, function() {
+  var results = `If I had an up-\nto-date, down-\nto-earth, back-\nto-basics, rig-\nht-on, no-nons-\nense, hard-hit-\nting, rock-sol-\nid, yet chill-\ned-out, zen-li-\nke, laid-back\nkinda cat, I\ncould go about\nmy day with an\nup-to-date, do-\nwn-to-earth,\nback-to-basics,\nright-on, no-\nnonsense, hard-\nhitting, rock-\nsolid, yet chi-\nlled-out, zen-\nlike, laid-back\nkinda attitude.`;
+  it('Correct answer: \n<pre>' + results +'</pre>\nAnswer returned: \n<pre>' + nicePara(inText8, 15) + '</pre>', function() {
+    assert.strictEqual(nicePara(inText8, 15), results);
+  });
+});
+
+describe("Some edge case tests", function() {
+  var Cases = [
+    ["aaaaaaaaaa          ", 15, "aaaaaaaaaa"],
+  ];
+
+  it("Testing for edge cases", function() {
+    Cases.forEach(function([text, size, answer]) {
+      var result = nicePara(text, size);
+      assert.strictEqual(
+        result,
+        answer,
+        `\n\nInput text: \n\n${text}\n\nLine length: ${size}\n\n* Correct answer: \n\n${answer}\n\n* Answer returned: \n\n${result}\n`
+      );
+    });
+  });
+});
