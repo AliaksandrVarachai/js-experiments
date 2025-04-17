@@ -1,24 +1,61 @@
+// returns -1 if no position; NaN if self-contradiction
+// returns { position: number, selfContradiction: boolean }
+function getCheckedPosition(name, a, queueLen) {
+  const result = {
+    position: -1,
+    selfContradiction: false,
+  };
+  if (a.myPosition) {
+    result.position = a.myPosition - 1;
+  }
+  if (a.peopleInFrontMe) {
+    if (result.position > -1) {
+      result.selfContradiction = true;
+      return result;
+    }
+    result.position = a.peopleInFrontMe;
+  }
+  if (a.peopleBehindMe) {
+    if (result.position > -1) {
+      result.selfContradiction = true;
+      return result;
+    }
+    result.position = queueLen - a.peopleBehindMe - 1;
+  }
+  return result;
+}
+
+// self-contradiction must be checked before
+// returns true/false or name if self-contradiction
 function isContradiction(assertionsList) {
   const queueLen = assertionsList.length + 1;
   const queue = new Array(queueLen).fill('');
 
   // checks queue by numbers
   for (let [name, a] of assertionsList) {
-    if (a.myPosition) {
-      const pos = a.myPosition - 1;
-      if (queue[pos] && queue[pos] !== name) return true;
+    // if (a.myPosition) {
+    //   const pos = a.myPosition - 1;
+    //   if (queue[pos] && queue[pos] !== name) return true;
+    //   queue[pos] = name;
+    // }
+    // if (a.peopleInFrontMe) {
+    //   const pos = a.peopleInFrontMe;
+    //   if (queue[pos] && queue[pos] !== name) return true;
+    //   queue[pos] = name;
+    // }
+    // if (a.peopleBehindMe) {
+    //   const pos = queueLen - a.peopleBehindMe - 1;
+    //   if (queue[pos] && queue[pos] !== name) return true;
+    //   queue[pos] = name;
+    // }
+    // self-contradiciton
+    const { position, selfContradiction } = getCheckedPosition(name, a, queueLen);
+    if (queue[pos] && queue[pos] !== name) return true;
+    if (position > -1) queue[position] = name;
+
       queue[pos] = name;
     }
-    if (a.peopleInFrontMe) {
-      const pos = a.peopleInFrontMe;
-      if (queue[pos] && queue[pos] !== name) return true;
-      queue[pos] = name;
-    }
-    if (a.peopleBehindMe) {
-      const pos = queueLen - a.peopleBehindMe - 1;
-      if (queue[pos] && queue[pos] !== name) return true;
-      queue[pos] = name;
-    }
+
   }
 
   const nameRelationsMap = {
@@ -108,7 +145,7 @@ function findOutMrWrong(conversation) {
 //         peopleBehindMe: NaN,
 //         peopleInFrontMe: NaN,
       };
-    };
+    }
     const man = assertions[name];
 
     if (assertion.startsWith('I\'m in')) {
@@ -134,6 +171,15 @@ function findOutMrWrong(conversation) {
   // assertions{} are filled up now
   const liars = new Set(Object.keys(assertions));
   const assertionsList = Object.entries(assertions);
+
+  // check self-contradiction
+  for (let [name, a] of assertionsList) {
+    let { position, selfContradiction } = getCheckedPosition(name, a, assertionsList.length);
+    if (selfContradiction) return name;
+    if (position === 0 && a.manInFrontMe) return name;
+    if (position === assertionsList.length - 1 && a.manBehindMe) return name;
+  }
+
   for (let i = 0; i < assertionsList.length; ++i) {
     const [excludedName] = assertionsList[i];
     const excludedAssertionList = assertionsList.slice();
@@ -142,6 +188,7 @@ function findOutMrWrong(conversation) {
       liars.delete(excludedName)
     }
   }
+  debugger;
 
   // find list of trusted then filter them out of liars:
   const assertionsMap = assertionsList.reduce((acc, [name, a]) => {

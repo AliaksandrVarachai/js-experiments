@@ -4,6 +4,29 @@ const assert = chai.assert;
 const findOutMrWrong = require("./find-liar");
 
 describe("Sample Tests", () => {
+  describe("New tests", () => {
+    it("New conversation 9", () => {
+      const conversation = [
+        'Bcdvt:The man in front of me is Fhnb.',
+        'Bcdvt:The man behind me is Ofulabc.',
+        'Ewryjljj:There are 4 people behind me.',
+        "Ewryjljj:I'm in 3rd position.",
+        'Fhnb:The man behind me is Bcdvt.',
+        'Fhnb:There are 3 people behind me.',
+        'Iycbhshv:There are 6 people in front of me.',
+        "Iycbhshv:I'm in 7th position.",
+        'Ofulabc:The man behind me is Iycbhshv.',
+        'Ofulabc:The man in front of me is Bcdvt.',
+        'Rhwrubvz:There is 0 people in front of me.',
+        'Rhwrubvz:There is 1 people behind me.',
+        'Yaxhtf:There is 0 people in front of me.',
+        'Yaxhtf:The man behind me is Rhwrubvz.'
+      ];
+      assert.strictEqual(findOutMrWrong(conversation), "Rhwrubvz");
+      debugger;
+    });
+  });
+
   describe("Basic deduction", () => {
     it('Conversation 1', () => {
       const conversation = [
