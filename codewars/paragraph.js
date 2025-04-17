@@ -10,7 +10,7 @@ function nicePara(inText, lineLength) {
   }
 
   while (restText) {
-    debugger;
+    // debugger;
     if (restText.length <= lineLength) {
       paragraphs.push(restText);
       restText = '';
@@ -31,6 +31,9 @@ function nicePara(inText, lineLength) {
     }
 
     // check if the word can be broken
+    if (restText.startsWith('the all-things-to')) {
+      debugger;
+    }
     let wordLeftInx = pos;
     while (wordLeftInx > 0 && /[^\s-]/.test(restText[wordLeftInx - 1])) --wordLeftInx;
     const wordLeftHalf = restText.slice(wordLeftInx, pos - 1); // check if a work is broken not by hyphen
@@ -59,7 +62,11 @@ function nicePara(inText, lineLength) {
     if (pos > wordLeftInx) continue;
 
     // word cannot be broken at pos
-    pos = wordLeftInx - 1; // for ' '
+    if (restText[wordLeftInx - 1] === '-') {
+      pos = wordLeftInx;  // - at position
+    } else {
+      pos = wordLeftInx - 1; // ' ' at position
+    }
     updateRestTextByPos();
   }
   console.log(paragraphs);

@@ -10,6 +10,7 @@ var inText5 = "The answer to that question is, 'Inheritance is incompatible with
 var inText6 = "''Yes'', ''that'' ''was'' ''the'' ''main'' ''problem''... ''I'm'' ''going'' ''to'' ''Barmouth''. ''I'm'' ''going'' ''to'' ''Lisbon''. ''I'' ''have'' ''a'' ''membership'' ''of'' ''Senate'' ''House'' ''Library''.";
 var inText7 = "There're — few — reasons — to — write — a — sentence — with — all — these — dashes — but — here's — one.";
 var inText8 = "If I had an up-to-date, down-to-earth, back-to-basics, right-on, no-nonsense, hard-hitting, rock-solid, yet chilled-out, zen-like, laid-back kinda cat, I could go about my day with an up-to-date, down-to-earth, back-to-basics, right-on, no-nonsense, hard-hitting, rock-solid, yet chilled-out, zen-like, laid-back kinda attitude.";
+var inText9 = 'A lot of different plans are marching under the basic income banner. If you want to know what their true colours are, then don’t be fooled by the all-things-to-all-people language used about them. Look at the bottom line. How are they going to pay for it? The devil is in the detail.'
 
 describe('\n\nInput text: \'' + inText1 + '\'\n\nLine length: ' + 15, function() {
   var results = `Hi, I am some\ntext and I need\nto be arranged.`;
@@ -81,5 +82,12 @@ describe("Some edge case tests", function() {
         `\n\nInput text: \n\n${text}\n\nLine length: ${size}\n\n* Correct answer: \n\n${answer}\n\n* Answer returned: \n\n${result}\n`
       );
     });
+  });
+});
+
+describe('\n\nInput text: \'' + inText9 + '\'\n\nLine length: ' + 21, function() {
+  var results = `A lot of different\nplans are marching\nunder the basic inco-\nme banner. If you wa-\nnt to know what their\ntrue colours are, th-\nen don’t be fooled by\nthe all-things-to-\nall-people language\nused about them. Look\nat the bottom line.\nHow are they going to\npay for it? The devil\nis in the detail.`;
+  it('Correct answer: \n<pre>' + results +'</pre>\nAnswer returned: \n<pre>' + nicePara(inText8, 15) + '</pre>', function() {
+    assert.strictEqual(nicePara(inText9, 21), results);
   });
 });
