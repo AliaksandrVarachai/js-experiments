@@ -18,13 +18,13 @@ describe('\n\nInput text: \'' + inText1 + '\'\n\nLine length: ' + 15, function()
   });
 });
 
-// describe('\n\nInput text: \'' + inText2 + '\'\n\nLine length: ' + 23, function() {
-//   var results = `Her peculiar, electric\nwisdom rushed forth fr-\nom her agile brain in a\nwave of striking lucid-\nity.`;
-//   it('Correct answer: \n<pre>' + results +'</pre>\nAnswer returned: \n<pre>' + nicePara(inText2, 23) + '</pre>', function() {
-//     assert.strictEqual(nicePara(inText2, 23), results);
-//   });
-// });
-//
+describe('\n\nInput text: \'' + inText2 + '\'\n\nLine length: ' + 23, function() {
+  var results = `Her peculiar, electric\nwisdom rushed forth fr-\nom her agile brain in a\nwave of striking lucid-\nity.`;
+  it('Correct answer: \n<pre>' + results +'</pre>\nAnswer returned: \n<pre>' + nicePara(inText2, 23) + '</pre>', function() {
+    assert.strictEqual(nicePara(inText2, 23), results);
+  });
+});
+
 // describe('\n\nInput text: \'' + inText3 + '\'\n\nLine length: ' + 47, function() {
 //   var results = `The words and the meanings would be soaking\nwet, and the meaning would grow with its incre-\nasing layers.`;
 //   it('Correct answer: \n<pre>' + results +'</pre>\nAnswer returned: \n<pre>' + nicePara(inText3, 47) + '</pre>', function() {
