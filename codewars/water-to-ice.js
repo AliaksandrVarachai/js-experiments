@@ -57,37 +57,45 @@ function compress(water){
     return false;
   }
 
-  const lines = water.split('\n').filter(line => !!line).map(line => line.split(''));
+  // console.log('--------- water:')
+  // console.log(water)
+  const moleculesSet = new Set();
+  const lines = water.split('\n').filter(line => !!line.trim()).map(line => line.split(''));
   const molecules = []; // [i, j, 'v|h'], where i,j are O's coords
   for (let i = 0; i < lines.length - 1; ++i) {
     for (let j = 0; j < lines[i].length; ++j) {
-      if (lines[i][j] === '+' && lines[i + 1][j] === 'O') {
+      if (lines[i][j] === '+' && lines[i + 1][j] === 'O' && !moleculesSet.has(`${i + 1}-${j}`)) {
         lines[i][j] = 'O';
         lines[i + 1][j] = ' ';
         molecules.push([i, j, 'h'])
-      } else if (lines[i][j] === 'O' && lines[i + 1][j] === '+') {
+        moleculesSet.add(`${i}-${j}`)
+      } else if (lines[i][j] === 'O' && lines[i + 1][j] === '+' && !moleculesSet.has(`${i}-${j}`)) {
         lines[i][j] = ' ';
         lines[i + 1][j] = 'O';
         molecules.push([i + 1, j, 'h']);
+        moleculesSet.add(`${i + 1}-${j}`)
       }
     }
   }
 
   for (let j = 0; j < lines[0].length - 1; ++j) {
     for (let i = 0; i < lines.length; ++i) {
-      if (lines[i][j] === '+' && lines[i][j + 1] === 'O') {
+      if (lines[i][j] === '+' && lines[i][j + 1] === 'O' && !moleculesSet.has(`${i}-${j + 1}`)) {
         lines[i][j] = 'O';
         lines[i][j + 1] = ' ';
         molecules.push([i, j, 'v']);
-      } else if (lines[i][j] === 'O' && lines[i][j + 1] === '+') {
+        moleculesSet.add(`${i}-${j}`)
+      } else if (lines[i][j] === 'O' && lines[i][j + 1] === '+' && !moleculesSet.has(`${i}-${j}`)) {
         lines[i][j] = ' ';
         lines[i][j + 1] = 'O';
         molecules.push([i, j + 1, 'v']);
+        moleculesSet.add(`${i}-${j + 1}`)
       }
     }
   }
+  // console.log('-------lines:')
   // printLines(lines)
-  // console.log('----------------')
+
   let isShiftedToLeft, isShiftedToTop;
   do {
     isShiftedToLeft = false;
@@ -108,7 +116,10 @@ function compress(water){
     console.log(lines.map(line => line.join('').trimRight()).join('\n'));
   }
 
-  return lines.map(line => line.join('').trimRight()).join('\n').trim();
+  const result = lines.map(line => line.join('').trimRight()).join('\n').trim();
+  // console.log('------ result:');
+  // console.log(result)
+  return result;
 }
 
 module.exports = compress;
