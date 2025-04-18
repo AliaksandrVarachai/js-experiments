@@ -17,23 +17,22 @@ function wrap_cube(shape) {
   const [[i1, j1], [i2, j2]] = startFaces;
   wrappedFaces.X.push(arr[i1][j1]);
   wrappedFaces.Z.push(arr[i2][j2]);
+  debugger;
   processedFaces[`${i1}-${j1}`] = 'X';
   processedFaces[`${i2}-${j2}`] = 'Z';
 
   if (!processFace([i1, j1, 'X'], [i2, j2, 'Z'])) return null;
   if (!processFace([i2, j2, 'Z'], [i1, j1, 'X'])) return null;
 
-  return wrappedFaces.values().filter(arr => arr.length > 1);
+  return Object.values(wrappedFaces).filter(arr => arr.length > 1);
 
   function getTwoStartFaces(arr) {
     for(let i = 0; i < arr.length; ++i) {
       for (let j = 0; j < arr[i].length; ++j) {
         if (arr[i][j] !== ' ') {
-          [i - 1, i + 1].forEach(ii => {
-            [j - 1, j + 1].forEach(jj => {
-              if (arr[ii][jj] && arr[ii][jj] !== ' ') return [[i, j], [ii, jj]];
-            })
-          })
+          for (let [ii, jj] of [[i, j + 1], [i + 1, j]]) {
+            if (arr[ii] && arr[ii][jj] && arr[ii][jj] !== ' ') return [[i, j], [ii, jj]];
+          }
         }
       }
     }
@@ -60,20 +59,17 @@ function wrap_cube(shape) {
   function processFace(face, prevFace) {
     const [fi, fj, fValue] = face;
     const [pi, pj, pValue] = prevFace;
-    for (let i of [fi - 1, fi + 1]) {
-      for (let j of [fj - 1, fj + 1]) {
-        if (!arr[i][j] || i === pi && j === pj) continue;
-        if (arr[i][j] && arr[i][j] !== ' ') {
-          // not processed face is found
-          const faceKey = `${i}-${j}`;
-          const sin = (pi - fi) * (j - fj) - (i - fi) * (pj - fj); // 0; -1; +1
-          const value = getNextFace(fValue, pValue, sin);
-          // TODO: is it possible to have a closed cycle?
-          if (processedFaces[faceKey] && processedFaces[faceKey] !== value) return false;
-          processedFaces[faceKey] = value;
-          wrappedFaces[value].push(arr[i][j]);
-          processFace([i, j, value], [fi, fj, fValue]);
-        }
+    for (let [i, j] of [[fi - 1, fj], [fi + 1, fj], [fi, fj - 1], [fi, fj + 1]]) {
+      if (i === pi && j === pj || !arr[i] || !arr[i][j]) continue;
+      if (arr[i][j] !== ' ') {
+        const faceKey = `${i}-${j}`;
+        const sin = (pi - fi) * (j - fj) - (i - fi) * (pj - fj); // 0; -1; +1
+        const value = getNextFace(fValue, pValue, sin);
+        // TODO: is it possible to have a closed cycle?
+        if (processedFaces[faceKey] && processedFaces[faceKey] !== value) return false;
+        processedFaces[faceKey] = value;
+        wrappedFaces[value].push(arr[i][j]);
+        if (!processFace([i, j, value], [fi, fj, fValue])) return false;
       }
     }
     return true;

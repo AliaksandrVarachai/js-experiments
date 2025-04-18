@@ -1,4 +1,3 @@
-// const Test = require("@codewars/test-compat");
 const { assert, config } = require('chai');
 const { describe, it } = require('node:test');
 const wrap_cube = require('./wrap-cube');
@@ -6,39 +5,39 @@ const wrap_cube = require('./wrap-cube');
 
 const shapes = [
   ["ABCDE", [["A", "E"]]],
-  [
-    `
-  A
-  B
-CDEFG
-  H
-  I
-`,
-    [["A", "I", "C", "G"]]
-  ],
-  [
-    `
-ABC
- D
- E
- F
-`,
-    []
-  ],
-  ["ABC\nDEF", null],
-  ["ABD", []],
-  ["  ABCD  \n  E\n  F\n  G\n", [["F", "C"]]],
-  [
-    `
-A B
-CDE
-a b
-`,
-    [
-      ["A", "B"],
-      ["b", "a"]
-    ]
-  ]
+//   [
+//     `
+//   A
+//   B
+// CDEFG
+//   H
+//   I
+// `,
+//     [["A", "I", "C", "G"]]
+//   ],
+//   [
+//     `
+// ABC
+//  D
+//  E
+//  F
+// `,
+//     []
+//   ],
+//   ["ABC\nDEF", null],
+//   ["ABD", []],
+//   ["  ABCD  \n  E\n  F\n  G\n", [["F", "C"]]],
+//   [
+//     `
+// A B
+// CDE
+// a b
+// `,
+//     [
+//       ["A", "B"],
+//       ["b", "a"]
+//     ]
+//   ]
 ];
 
 var testit = function(a, b) {
