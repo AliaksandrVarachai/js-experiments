@@ -1,4 +1,7 @@
 function wrap_cube(shape) {
+  console.log('********* START')
+  console.log(shape)
+  console.log('********* END')
 //If a net can't be wrapped onto a cube, return null.
   // If it can, return a list of overlapping squares.
   // For example the output of Example 1 in the description is `[['A', 'E']].`
@@ -17,7 +20,6 @@ function wrap_cube(shape) {
   const [[i1, j1], [i2, j2]] = startFaces;
   wrappedFaces.X.push(arr[i1][j1]);
   wrappedFaces.Z.push(arr[i2][j2]);
-  debugger;
   processedFaces[`${i1}-${j1}`] = 'X';
   processedFaces[`${i2}-${j2}`] = 'Z';
 
@@ -65,8 +67,7 @@ function wrap_cube(shape) {
         const faceKey = `${i}-${j}`;
         const sin = (pi - fi) * (j - fj) - (i - fi) * (pj - fj); // 0; -1; +1
         const value = getNextFace(fValue, pValue, sin);
-        // TODO: is it possible to have a closed cycle?
-        if (processedFaces[faceKey] && processedFaces[faceKey] !== value) return false;
+        if (processedFaces[faceKey]) return false; // complete loop is impossible
         processedFaces[faceKey] = value;
         wrappedFaces[value].push(arr[i][j]);
         if (!processFace([i, j, value], [fi, fj, fValue])) return false;
