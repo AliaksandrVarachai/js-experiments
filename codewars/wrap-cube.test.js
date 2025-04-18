@@ -4,7 +4,7 @@ const wrap_cube = require('./wrap-cube');
 
 
 const shapes = [
-  // ["ABCDE", [["A", "E"]]],
+  ["ABCDE", [["A", "E"]]],
   [
     `
   A
@@ -15,29 +15,29 @@ CDEFG
 `,
     [["A", "I", "C", "G"]]
   ],
-//   [
-//     `
-// ABC
-//  D
-//  E
-//  F
-// `,
-//     []
-//   ],
-//   ["ABC\nDEF", null],
-//   ["ABD", []],
-//   ["  ABCD  \n  E\n  F\n  G\n", [["F", "C"]]],
-//   [
-//     `
-// A B
-// CDE
-// a b
-// `,
-//     [
-//       ["A", "B"],
-//       ["b", "a"]
-//     ]
-//   ]
+  [
+    `
+ABC
+ D
+ E
+ F
+`,
+    []
+  ],
+  ["ABC\nDEF", null],
+  ["ABD", []],
+  ["  ABCD  \n  E\n  F\n  G\n", [["F", "C"]]],
+  [
+    `
+A B
+CDE
+a b
+`,
+    [
+      ["A", "B"],
+      ["b", "a"]
+    ]
+  ]
 ];
 
 var testit = function(a, b) {

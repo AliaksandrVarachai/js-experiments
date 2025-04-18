@@ -74,6 +74,6 @@ function wrap_cube(shape) {
     }
     return true;
   }
-};
+}
 
 module.exports = wrap_cube;
