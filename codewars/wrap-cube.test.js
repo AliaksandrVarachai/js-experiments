@@ -4,17 +4,17 @@ const wrap_cube = require('./wrap-cube');
 
 
 const shapes = [
-  ["ABCDE", [["A", "E"]]],
-//   [
-//     `
-//   A
-//   B
-// CDEFG
-//   H
-//   I
-// `,
-//     [["A", "I", "C", "G"]]
-//   ],
+  // ["ABCDE", [["A", "E"]]],
+  [
+    `
+  A
+  B
+CDEFG
+  H
+  I
+`,
+    [["A", "I", "C", "G"]]
+  ],
 //   [
 //     `
 // ABC
