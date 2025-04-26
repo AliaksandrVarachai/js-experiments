@@ -1,5 +1,6 @@
 function solve(s, ops) {
-  const a = '0123'.split('').map(Number);
+  const a = [];
+  for (let i = 0; i < ops.length; ++i) a.push(i);
   const n = a.length;
   const parentheses = [];
   for (let i = 0; i < n; ++i) {
@@ -8,11 +9,8 @@ function solve(s, ops) {
     }
   }
   const pLen = parentheses.length;
-  console.log(`pLen=${pLen}:`, parentheses, );
   const aMax = a.map((_, i) => i + pLen - n);
-  console.log('aMax:', aMax)
 
-// упорядоченная выборка без повторений n из m
   function nextStep() {
     let i = n - 1;
     while (i >= 0 && a[i] === aMax[i]) i--;
@@ -36,10 +34,9 @@ function solve(s, ops) {
     return set;
   });
 
-  console.log(forbiddenParentheses)
-
-
-  let counter = 0
+  console.time('test');
+  // TODO: replace ineffective algorightm
+  let trueCounter = 0
   do {
     const forbidden = new Set();
     let isForbidden = false;
@@ -51,15 +48,17 @@ function solve(s, ops) {
       forbiddenParentheses[pInx].forEach(i => forbidden.add(i));
     }
     if (isForbidden) continue;
-    console.log(a, getStringExpression())
-    counter++;
+    const strExpression = getStringExpression();
+    const ast = toAST(strExpression);
+    const result = calculateAST(ast);
+
+    if (result) trueCounter++;
   } while (nextStep());
-  console.log('total='+counter)
+  console.timeEnd('test');
+
+  return trueCounter;
 
   function getStringExpression() {
-    const str = new Array(a.length + 1).fill('0') // 'ttfftf'
-    const op = new Array(a.length).fill('^'); '|^&|^'
-    op.push('');
     const p = [];
     for (let i = 0; i <= a.length; ++i) p.push({ o: 0, c: 0 })
     for (let elA of a) {
@@ -69,18 +68,11 @@ function solve(s, ops) {
     }
     return p.map((elP, i) => {
       if (elP.c) {
-        return '('.repeat(elP.o) + str[i] + ')'.repeat(elP.c) +  op[i];
+        return '('.repeat(elP.o) + s[i] + ')'.repeat(elP.c) +  ops[i];
       }
-      return '('.repeat(elP.o) + str[i] + op[i] + ')'.repeat(elP.c)
+      return '('.repeat(elP.o) + s[i] + (ops[i] ?? '') + ')'.repeat(elP.c)
     }).join('');
   }
-
-  const expr = '((t^f)|((t&f)&f))'
-// const expr = '((t&f)|(f|t))'
-  const ast = toAST(expr);
-  console.log(ast)
-  const result = calculateAST(ast);
-  console.log(result)
 
   function toAST(expr) {
     let p = 1; // ignore the 1st and the last parenthesis
@@ -111,8 +103,6 @@ function solve(s, ops) {
   }
 
   function calculateAST(ast) {
-    // const calcAst = {};
-    debugger;
     let l, r;
     if (typeof ast.l === 'object') {
       l = calculateAST(ast.l);
@@ -133,5 +123,7 @@ function solve(s, ops) {
   }
 }
 
-solve("ttftff","|&^&&");
+// console.log(solve("ttftff","|&^&&"), 16);
+// console.log(solve("ttftfftf","|&^&&||"), 339);
+console.log(solve("ttftfftft","|&^&&||^"), 851);
 
