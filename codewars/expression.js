@@ -56,7 +56,9 @@ do {
 console.log('total='+counter)
 
 function getStringExpression() {
-  const str = new Array(a.length + 1).fill('0')
+  const str = new Array(a.length + 1).fill('0') // 'ttfftf'
+  const op = new Array(a.length).fill('^'); '|^&|^'
+  op.push('');
   const p = [];
   for (let i = 0; i <= a.length; ++i) p.push({ o: 0, c: 0 })
   for (let elA of a) {
@@ -64,5 +66,68 @@ function getStringExpression() {
     p[o].o++;
     p[c].c++;
   }
-  return p.map((elP, i) => '('.repeat(elP.o) + str[i] + ')'.repeat(elP.c)).join('');
+  return p.map((elP, i) => {
+    if (elP.c) {
+      return '('.repeat(elP.o) + str[i] + ')'.repeat(elP.c) +  op[i];
+    }
+    return '('.repeat(elP.o) + str[i] + op[i] + ')'.repeat(elP.c)
+  }).join('');
 }
+
+function toAST(expr) {
+  let p = 1; // ignore the 1st and the last parenthesis
+  function createAST(node) {
+    let val = expr[p];
+    while (p < expr.length - 1 && val !== ')') {
+      if (val === '(') {
+        p++;
+        if (node.l === undefined) node.l = createAST({});
+        else node.r = createAST({});
+      } else if (val === 't' || val === 'f') {
+        if (node.l === undefined) {
+          node.l = val;
+        } else {
+          node.r = val;
+        }
+        p++;
+      } else {
+        node.op = val;
+        p++;
+      }
+      val = expr[p];
+    }
+    p++;
+    return node;
+  }
+  return createAST({});
+}
+
+function calculateAST(ast) {
+  // const calcAst = {};
+  debugger;
+  let l, r;
+  if (typeof ast.l === 'object') {
+    l = calculateAST(ast.l);
+  } else {
+    l = ast.l === 't';
+  }
+  if (typeof ast.r === 'object') {
+    r = calculateAST(ast.r);
+  } else {
+    r = ast.r === 't';
+  }
+  switch(ast.op) {
+    case '&': return l && r;
+    case '|': return l || r;
+    case '^': return (l && !r) || (!l && r);
+    default: throw Error(`Unknown operator ${ast.op}`);
+  }
+}
+
+const expr = '((t^f)|((t&f)&f))'
+// const expr = '((t&f)|(f|t))'
+const ast = toAST(expr);
+console.log(ast)
+const result = calculateAST(ast);
+console.log(result)
+
