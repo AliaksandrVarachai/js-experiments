@@ -1,133 +1,137 @@
-const a = '0123'.split('').map(Number);
-const n = a.length;
-const parentheses = [];
-for (let i = 0; i < n; ++i) {
-  for (let j = i + 1; j <= n; ++j) {
-    parentheses.push([i, j]);
+function solve(s, ops) {
+  const a = '0123'.split('').map(Number);
+  const n = a.length;
+  const parentheses = [];
+  for (let i = 0; i < n; ++i) {
+    for (let j = i + 1; j <= n; ++j) {
+      parentheses.push([i, j]);
+    }
   }
-}
-const pLen = parentheses.length;
-console.log(`pLen=${pLen}:`, parentheses, );
-const aMax = a.map((_, i) => i + pLen - n);
-console.log('aMax:', aMax)
+  const pLen = parentheses.length;
+  console.log(`pLen=${pLen}:`, parentheses, );
+  const aMax = a.map((_, i) => i + pLen - n);
+  console.log('aMax:', aMax)
 
 // упорядоченная выборка без повторений n из m
-function nextStep() {
-  let i = n - 1;
-  while (i >= 0 && a[i] === aMax[i]) i--;
-  if (i < 0) return false;
-  a[i]++;
-  let k = i + 1;
-  while (k < n) {
-    a[k] = a[i] + k - i;
-    k++;
-  }
-  return true;
-}
-
-const forbiddenParentheses = parentheses.map(([o, c], inx) => {
-  const set = new Set();
-  for (let i = 0; i < parentheses.length; ++i) {
-    if (i === inx) continue;
-    const [o1, c1] = parentheses[i];
-    if ((o1 < o && o <= c1 && c1 < c) || (o < o1 && o1 <= c && c < c1)) set.add(i);
-  }
-  return set;
-});
-
-console.log(forbiddenParentheses)
-
-
-let counter = 0
-do {
-  const forbidden = new Set();
-  let isForbidden = false;
-  for (let pInx of a) {
-    if (forbidden.has(pInx)) {
-      isForbidden = true;
-      break;
+  function nextStep() {
+    let i = n - 1;
+    while (i >= 0 && a[i] === aMax[i]) i--;
+    if (i < 0) return false;
+    a[i]++;
+    let k = i + 1;
+    while (k < n) {
+      a[k] = a[i] + k - i;
+      k++;
     }
-    forbiddenParentheses[pInx].forEach(i => forbidden.add(i));
+    return true;
   }
-  if (isForbidden) continue;
-  console.log(a, getStringExpression())
-  counter++;
-} while (nextStep());
-console.log('total='+counter)
 
-function getStringExpression() {
-  const str = new Array(a.length + 1).fill('0') // 'ttfftf'
-  const op = new Array(a.length).fill('^'); '|^&|^'
-  op.push('');
-  const p = [];
-  for (let i = 0; i <= a.length; ++i) p.push({ o: 0, c: 0 })
-  for (let elA of a) {
-    const [o, c] = parentheses[elA];
-    p[o].o++;
-    p[c].c++;
-  }
-  return p.map((elP, i) => {
-    if (elP.c) {
-      return '('.repeat(elP.o) + str[i] + ')'.repeat(elP.c) +  op[i];
+  const forbiddenParentheses = parentheses.map(([o, c], inx) => {
+    const set = new Set();
+    for (let i = 0; i < parentheses.length; ++i) {
+      if (i === inx) continue;
+      const [o1, c1] = parentheses[i];
+      if ((o1 < o && o <= c1 && c1 < c) || (o < o1 && o1 <= c && c < c1)) set.add(i);
     }
-    return '('.repeat(elP.o) + str[i] + op[i] + ')'.repeat(elP.c)
-  }).join('');
-}
+    return set;
+  });
 
-function toAST(expr) {
-  let p = 1; // ignore the 1st and the last parenthesis
-  function createAST(node) {
-    let val = expr[p];
-    while (p < expr.length - 1 && val !== ')') {
-      if (val === '(') {
-        p++;
-        if (node.l === undefined) node.l = createAST({});
-        else node.r = createAST({});
-      } else if (val === 't' || val === 'f') {
-        if (node.l === undefined) {
-          node.l = val;
-        } else {
-          node.r = val;
-        }
-        p++;
-      } else {
-        node.op = val;
-        p++;
+  console.log(forbiddenParentheses)
+
+
+  let counter = 0
+  do {
+    const forbidden = new Set();
+    let isForbidden = false;
+    for (let pInx of a) {
+      if (forbidden.has(pInx)) {
+        isForbidden = true;
+        break;
       }
-      val = expr[p];
+      forbiddenParentheses[pInx].forEach(i => forbidden.add(i));
     }
-    p++;
-    return node;
-  }
-  return createAST({});
-}
+    if (isForbidden) continue;
+    console.log(a, getStringExpression())
+    counter++;
+  } while (nextStep());
+  console.log('total='+counter)
 
-function calculateAST(ast) {
-  // const calcAst = {};
-  debugger;
-  let l, r;
-  if (typeof ast.l === 'object') {
-    l = calculateAST(ast.l);
-  } else {
-    l = ast.l === 't';
+  function getStringExpression() {
+    const str = new Array(a.length + 1).fill('0') // 'ttfftf'
+    const op = new Array(a.length).fill('^'); '|^&|^'
+    op.push('');
+    const p = [];
+    for (let i = 0; i <= a.length; ++i) p.push({ o: 0, c: 0 })
+    for (let elA of a) {
+      const [o, c] = parentheses[elA];
+      p[o].o++;
+      p[c].c++;
+    }
+    return p.map((elP, i) => {
+      if (elP.c) {
+        return '('.repeat(elP.o) + str[i] + ')'.repeat(elP.c) +  op[i];
+      }
+      return '('.repeat(elP.o) + str[i] + op[i] + ')'.repeat(elP.c)
+    }).join('');
   }
-  if (typeof ast.r === 'object') {
-    r = calculateAST(ast.r);
-  } else {
-    r = ast.r === 't';
-  }
-  switch(ast.op) {
-    case '&': return l && r;
-    case '|': return l || r;
-    case '^': return (l && !r) || (!l && r);
-    default: throw Error(`Unknown operator ${ast.op}`);
-  }
-}
 
-const expr = '((t^f)|((t&f)&f))'
+  const expr = '((t^f)|((t&f)&f))'
 // const expr = '((t&f)|(f|t))'
-const ast = toAST(expr);
-console.log(ast)
-const result = calculateAST(ast);
-console.log(result)
+  const ast = toAST(expr);
+  console.log(ast)
+  const result = calculateAST(ast);
+  console.log(result)
+
+  function toAST(expr) {
+    let p = 1; // ignore the 1st and the last parenthesis
+    function createAST(node) {
+      let val = expr[p];
+      while (p < expr.length - 1 && val !== ')') {
+        if (val === '(') {
+          p++;
+          if (node.l === undefined) node.l = createAST({});
+          else node.r = createAST({});
+        } else if (val === 't' || val === 'f') {
+          if (node.l === undefined) {
+            node.l = val;
+          } else {
+            node.r = val;
+          }
+          p++;
+        } else {
+          node.op = val;
+          p++;
+        }
+        val = expr[p];
+      }
+      p++;
+      return node;
+    }
+    return createAST({});
+  }
+
+  function calculateAST(ast) {
+    // const calcAst = {};
+    debugger;
+    let l, r;
+    if (typeof ast.l === 'object') {
+      l = calculateAST(ast.l);
+    } else {
+      l = ast.l === 't';
+    }
+    if (typeof ast.r === 'object') {
+      r = calculateAST(ast.r);
+    } else {
+      r = ast.r === 't';
+    }
+    switch(ast.op) {
+      case '&': return l && r;
+      case '|': return l || r;
+      case '^': return (l && !r) || (!l && r);
+      default: throw Error(`Unknown operator ${ast.op}`);
+    }
+  }
+}
+
+solve("ttftff","|&^&&");
 
