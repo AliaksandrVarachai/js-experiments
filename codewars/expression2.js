@@ -1,6 +1,4 @@
 function solve(str, ops) {
-  let counter = 0;
-
   function applyOp(a, b, op) {
     let t, f;
     switch(op) {
@@ -22,18 +20,22 @@ function solve(str, ops) {
     return { t, f };
   }
 
+  let counter = 0;
   function calc(s, o) {
-    debugger;
+    counter++;
+    if (counter % 1000 === 0) {
+      console.log(s.length)
+    }
     if (s.length === 1) {
       return s === 't' ? { t: 1, f: 0 } : { t: 0, f: 1 };
     }
     const output = { t: 0, f: 0 };
-    for (let i = 1; i < s.length - 1; ++i) {
-      const operator = o[i - 1];
-      const sL = s.slice(0, i);
-      const opL = o.slice(0, i - 1);
-      const sR = s.slice(i);
-      const opR = o.slice(i)
+    for (let i = 0; i < s.length - 1; ++i) {
+      const operator = o[i];
+      const sL = s.slice(0, i + 1);
+      const sR = s.slice(i + 1);
+      const opL = o.slice(0, i);
+      const opR = o.slice(i + 1);
       const l = calc(sL, opL);
       const r = calc(sR, opR);
       const { t, f } = applyOp(l, r, operator);
@@ -47,4 +49,10 @@ function solve(str, ops) {
   return t;
 }
 
-console.log(solve("tft","^&"), 2);
+// console.log(solve("tft","^&"), 2);
+// console.log(solve("ttftff","|&^&&"), 16);
+// console.log(solve("ttftfftf","|&^&&||"), 339);
+// console.log(solve("ttftfftft","|&^&&||^"), 851);
+// console.log(solve("ttftfftftf","|&^&&||^&"), 2434);
+
+console.log(solve("ttftfftftffttfftftftfftft","|&^&&||^&&^^|&&||^&&||&^"), 'unknown');
