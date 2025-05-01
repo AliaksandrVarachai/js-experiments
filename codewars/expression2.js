@@ -49,10 +49,10 @@ function solve(str, ops) {
   return t;
 }
 
-// console.log(solve("tft","^&"), 2);
-// console.log(solve("ttftff","|&^&&"), 16);
-// console.log(solve("ttftfftf","|&^&&||"), 339);
-// console.log(solve("ttftfftft","|&^&&||^"), 851);
-// console.log(solve("ttftfftftf","|&^&&||^&"), 2434);
+console.log(solve("tft","^&"), 2);
+console.log(solve("ttftff","|&^&&"), 16);
+console.log(solve("ttftfftf","|&^&&||"), 339);
+console.log(solve("ttftfftft","|&^&&||^"), 851);
+console.log(solve("ttftfftftf","|&^&&||^&"), 2434);
 
 console.log(solve("ttftfftftffttfftftftfftft","|&^&&||^&&^^|&&||^&&||&^"), 'unknown');
