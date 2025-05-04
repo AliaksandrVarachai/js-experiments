@@ -22,7 +22,7 @@ function getPrimeByPos(primePos) {
 }
 
 function decode(n) {
-  if (n === 1) return 3;
+  // if (n === 1) return 3;
   const bin = n.toString(2) + '1';
   let i = 0;
   let arr = binToArray([]); // modifies i
