@@ -38,35 +38,37 @@ console.log('***** end', add, sub, mult, div)
 
 
 // JS template works!
+type ClassType<A extends unknown[] = unknown[]> = { new (...args: A) };
 
-class MyClass {
-  constructor(name) {
-    this.name = name;
-  }
-  getName() { // goes to MyClass.prototype (enumberable: false)
-    return this.name;
-  }
-}
-
-function wrapper(Constructor) {
-  return class MyWrappedClass extends MyClass {
-    constructor(...args) {
+function wrapper<A extends unknown[]>(Constructor: ClassType<A>) {
+  return class Wrapper extends Constructor {
+    constructor(...args: A) {
       super(...args);
-      const myClassMethodNames = Object.getOwnPropertyNames(MyClass.prototype).filter(name => name !== 'constructor');
+      const myClassMethodNames = Object.getOwnPropertyNames(Constructor.prototype).filter(name => name !== 'constructor');
       myClassMethodNames.forEach(methodName => {
-        const method = MyClass.prototype[methodName];
+        const method = Constructor.prototype[methodName];
         if (typeof method !== 'function') return;
         // MyWrappedClass.prototype => Object.create(MyClass.prototype) => MyClass.prototype is not staled
-        Object.defineProperty(MyWrappedClass.prototype, methodName, {
+        Object.defineProperty(Wrapper.prototype, methodName, {
           enumerable: true,
-          value: (...args) => {
+          value: (...methodArgs: unknown[]) => {
             console.log(`${methodName} is called`);
-            return super[methodName].apply(this, ...args);
+            return super[methodName].apply(this, ...methodArgs);
           }
         })
       })
       this.url = 'MyUrl';
     }
+  }
+}
+
+class MyClass {
+  name: string;
+  constructor(name: string) {
+    this.name = name;
+  }
+  getName() { // goes to MyClass.prototype (enumberable: false)
+    return this.name;
   }
 }
 
