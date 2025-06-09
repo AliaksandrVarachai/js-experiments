@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_shared_my_new_components",
+  "info": {
+    "displayName": "MyNewComponent",
+    "icon": "alien"
+  },
+  "options": {},
+  "attributes": {
+    "MyNewComponentName": {
+      "type": "string"
+    }
+  }
+}
